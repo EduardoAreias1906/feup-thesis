@@ -1,0 +1,503 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nty/global//global/global/global}
+    \entry{k12_barbour_2017}{incollection}{}{}
+      \name{author}{1}{}{%
+        {{hash=6c85dacf175ff4880f338dd6af984fd3}{%
+           family={Barbour},
+           familyi={B\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+      }
+      \name{editor}{2}{}{%
+        {{hash=127fbd0720a04b646981045d5ba8cf9f}{%
+           family={Kennedy},
+           familyi={K\bibinitperiod},
+           given={K.},
+           giveni={K\bibinitperiod}}}%
+        {{hash=77249071a98a00cdae21f41514730e63}{%
+           family={Ferdig},
+           familyi={F\bibinitperiod},
+           given={R.\bibnamedelimi E.},
+           giveni={R\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {ETC Press}%
+      }
+      \strng{namehash}{6c85dacf175ff4880f338dd6af984fd3}
+      \strng{fullhash}{6c85dacf175ff4880f338dd6af984fd3}
+      \strng{fullhashraw}{6c85dacf175ff4880f338dd6af984fd3}
+      \strng{bibnamehash}{6c85dacf175ff4880f338dd6af984fd3}
+      \strng{authorbibnamehash}{6c85dacf175ff4880f338dd6af984fd3}
+      \strng{authornamehash}{6c85dacf175ff4880f338dd6af984fd3}
+      \strng{authorfullhash}{6c85dacf175ff4880f338dd6af984fd3}
+      \strng{authorfullhashraw}{6c85dacf175ff4880f338dd6af984fd3}
+      \strng{editorbibnamehash}{5b7d685731497cdfdcb21078e7f4f6d7}
+      \strng{editornamehash}{5b7d685731497cdfdcb21078e7f4f6d7}
+      \strng{editorfullhash}{5b7d685731497cdfdcb21078e7f4f6d7}
+      \strng{editorfullhashraw}{5b7d685731497cdfdcb21078e7f4f6d7}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Handbook of Research on K-12 Online and Blended Learning}
+      \field{title}{K–12 Online Learning and School Choice: Growth and Expansion in the Absence of Evidence}
+      \field{year}{2017}
+      \field{pages}{433\bibrangedash 456}
+      \range{pages}{24}
+      \verb{urlraw}
+      \verb https://press.etc.cmu.edu/index.php/product/handbook-of-research-on-k-12-online-and-blended-learning/
+      \endverb
+      \verb{url}
+      \verb https://press.etc.cmu.edu/index.php/product/handbook-of-research-on-k-12-online-and-blended-learning/
+      \endverb
+    \endentry
+    \entry{barbour_preparing_2024}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=b53d22990df1386de33277f839327f26}{%
+           family={Barbour},
+           familyi={B\bibinitperiod},
+           given={Michael\bibnamedelima K.},
+           giveni={M\bibinitperiod\bibinitdelim K\bibinitperiod}}}%
+        {{hash=ea332f1e87c884052826a59346a9e252}{%
+           family={Hodges},
+           familyi={H\bibinitperiod},
+           given={C.\bibnamedelimi B.},
+           giveni={C\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+      }
+      \strng{namehash}{55cb40aed1d4bd5aa548ffe1204023dd}
+      \strng{fullhash}{55cb40aed1d4bd5aa548ffe1204023dd}
+      \strng{fullhashraw}{55cb40aed1d4bd5aa548ffe1204023dd}
+      \strng{bibnamehash}{55cb40aed1d4bd5aa548ffe1204023dd}
+      \strng{authorbibnamehash}{55cb40aed1d4bd5aa548ffe1204023dd}
+      \strng{authornamehash}{55cb40aed1d4bd5aa548ffe1204023dd}
+      \strng{authorfullhash}{55cb40aed1d4bd5aa548ffe1204023dd}
+      \strng{authorfullhashraw}{55cb40aed1d4bd5aa548ffe1204023dd}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Open Praxis}
+      \field{number}{4}
+      \field{title}{Preparing Teachers for Effective K-12 Online Learning in the Age of Disruptions}
+      \field{volume}{16}
+      \field{year}{2024}
+      \field{pages}{583\bibrangedash 594}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.55982/openpraxis.16.4.678
+      \endverb
+    \endentry
+    \entry{beck_atrisk_2024}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=ea63b7fe1ca0bdb6049602deecfbfa74}{%
+           family={Beck},
+           familyi={B\bibinitperiod},
+           given={Dennis},
+           giveni={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{ea63b7fe1ca0bdb6049602deecfbfa74}
+      \strng{fullhash}{ea63b7fe1ca0bdb6049602deecfbfa74}
+      \strng{fullhashraw}{ea63b7fe1ca0bdb6049602deecfbfa74}
+      \strng{bibnamehash}{ea63b7fe1ca0bdb6049602deecfbfa74}
+      \strng{authorbibnamehash}{ea63b7fe1ca0bdb6049602deecfbfa74}
+      \strng{authornamehash}{ea63b7fe1ca0bdb6049602deecfbfa74}
+      \strng{authorfullhash}{ea63b7fe1ca0bdb6049602deecfbfa74}
+      \strng{authorfullhashraw}{ea63b7fe1ca0bdb6049602deecfbfa74}
+      \field{extraname}{1}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Research on Technology in Education}
+      \field{note}{(Ahead-of-print)}
+      \field{title}{At-risk and online: Parent perceptions of at-risk learner's supports in a fully online school}
+      \field{year}{2024}
+      \verb{doi}
+      \verb 10.1080/15391523.2023.2285497
+      \endverb
+    \endentry
+    \entry{beck_prepared_2023}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=ea63b7fe1ca0bdb6049602deecfbfa74}{%
+           family={Beck},
+           familyi={B\bibinitperiod},
+           given={Dennis},
+           giveni={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{ea63b7fe1ca0bdb6049602deecfbfa74}
+      \strng{fullhash}{ea63b7fe1ca0bdb6049602deecfbfa74}
+      \strng{fullhashraw}{ea63b7fe1ca0bdb6049602deecfbfa74}
+      \strng{bibnamehash}{ea63b7fe1ca0bdb6049602deecfbfa74}
+      \strng{authorbibnamehash}{ea63b7fe1ca0bdb6049602deecfbfa74}
+      \strng{authornamehash}{ea63b7fe1ca0bdb6049602deecfbfa74}
+      \strng{authorfullhash}{ea63b7fe1ca0bdb6049602deecfbfa74}
+      \strng{authorfullhashraw}{ea63b7fe1ca0bdb6049602deecfbfa74}
+      \field{extraname}{2}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Frontiers in Education}
+      \field{title}{Be Prepared: Online School Experience and Student Achievement During the Pandemic}
+      \field{volume}{8}
+      \field{year}{2023}
+      \field{pages}{1161003}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.3389/feduc.2023.1161003
+      \endverb
+    \endentry
+    \entry{beck_advocate_2020}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=ea63b7fe1ca0bdb6049602deecfbfa74}{%
+           family={Beck},
+           familyi={B\bibinitperiod},
+           given={Dennis},
+           giveni={D\bibinitperiod}}}%
+        {{hash=92b21a57c9cb657d1c226edc55e6ff3e}{%
+           family={Levine},
+           familyi={L\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{3ac5ca91ffa3a25d1e9de6311f6872a8}
+      \strng{fullhash}{3ac5ca91ffa3a25d1e9de6311f6872a8}
+      \strng{fullhashraw}{3ac5ca91ffa3a25d1e9de6311f6872a8}
+      \strng{bibnamehash}{3ac5ca91ffa3a25d1e9de6311f6872a8}
+      \strng{authorbibnamehash}{3ac5ca91ffa3a25d1e9de6311f6872a8}
+      \strng{authornamehash}{3ac5ca91ffa3a25d1e9de6311f6872a8}
+      \strng{authorfullhash}{3ac5ca91ffa3a25d1e9de6311f6872a8}
+      \strng{authorfullhashraw}{3ac5ca91ffa3a25d1e9de6311f6872a8}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Online Learning Research}
+      \field{number}{3}
+      \field{title}{The role of the advocate in cyber schools during the COVID-19 pandemic}
+      \field{volume}{6}
+      \field{year}{2020}
+      \field{pages}{195\bibrangedash 217}
+      \range{pages}{23}
+      \verb{urlraw}
+      \verb https://www.learntechlib.org/primary/p/217172/
+      \endverb
+      \verb{url}
+      \verb https://www.learntechlib.org/primary/p/217172/
+      \endverb
+    \endentry
+    \entry{case_borup_2017}{incollection}{}{}
+      \name{author}{2}{}{%
+        {{hash=432d7ac908bf664f645c1ec6dc39af93}{%
+           family={Borup},
+           familyi={B\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+        {{hash=f39277bc29abc2bb33c21cd7062b99d4}{%
+           family={Kennedy},
+           familyi={K\bibinitperiod},
+           given={Kathryn},
+           giveni={K\bibinitperiod}}}%
+      }
+      \name{editor}{2}{}{%
+        {{hash=127fbd0720a04b646981045d5ba8cf9f}{%
+           family={Kennedy},
+           familyi={K\bibinitperiod},
+           given={K.},
+           giveni={K\bibinitperiod}}}%
+        {{hash=77249071a98a00cdae21f41514730e63}{%
+           family={Ferdig},
+           familyi={F\bibinitperiod},
+           given={R.\bibnamedelimi E.},
+           giveni={R\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {ETC Press}%
+      }
+      \strng{namehash}{340d827711ca9fdb9bc3946cd470172d}
+      \strng{fullhash}{340d827711ca9fdb9bc3946cd470172d}
+      \strng{fullhashraw}{340d827711ca9fdb9bc3946cd470172d}
+      \strng{bibnamehash}{340d827711ca9fdb9bc3946cd470172d}
+      \strng{authorbibnamehash}{340d827711ca9fdb9bc3946cd470172d}
+      \strng{authornamehash}{340d827711ca9fdb9bc3946cd470172d}
+      \strng{authorfullhash}{340d827711ca9fdb9bc3946cd470172d}
+      \strng{authorfullhashraw}{340d827711ca9fdb9bc3946cd470172d}
+      \strng{editorbibnamehash}{5b7d685731497cdfdcb21078e7f4f6d7}
+      \strng{editornamehash}{5b7d685731497cdfdcb21078e7f4f6d7}
+      \strng{editorfullhash}{5b7d685731497cdfdcb21078e7f4f6d7}
+      \strng{editorfullhashraw}{5b7d685731497cdfdcb21078e7f4f6d7}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Handbook of Research on K-12 Online and Blended Learning}
+      \field{title}{The Case for K-12 Online Learning}
+      \field{year}{2017}
+      \field{pages}{405\bibrangedash 432}
+      \range{pages}{28}
+      \verb{urlraw}
+      \verb https://press.etc.cmu.edu/index.php/product/handbook-of-research-on-k-12-online-and-blended-learning/
+      \endverb
+      \verb{url}
+      \verb https://press.etc.cmu.edu/index.php/product/handbook-of-research-on-k-12-online-and-blended-learning/
+      \endverb
+    \endentry
+    \entry{fostering_curtis_2015}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=3e0d01223466aac66b4c3cd664bb2f7f}{%
+           family={Curtis},
+           familyi={C\bibinitperiod},
+           given={Heidi},
+           giveni={H\bibinitperiod}}}%
+        {{hash=5ae1eadfa1f68ab11c02deb89bd0d6b5}{%
+           family={Werth},
+           familyi={W\bibinitperiod},
+           given={Loredana},
+           giveni={L\bibinitperiod}}}%
+      }
+      \strng{namehash}{18c938e1d503e81d2d5d2c709c379308}
+      \strng{fullhash}{18c938e1d503e81d2d5d2c709c379308}
+      \strng{fullhashraw}{18c938e1d503e81d2d5d2c709c379308}
+      \strng{bibnamehash}{18c938e1d503e81d2d5d2c709c379308}
+      \strng{authorbibnamehash}{18c938e1d503e81d2d5d2c709c379308}
+      \strng{authornamehash}{18c938e1d503e81d2d5d2c709c379308}
+      \strng{authorfullhash}{18c938e1d503e81d2d5d2c709c379308}
+      \strng{authorfullhashraw}{18c938e1d503e81d2d5d2c709c379308}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Online Learning Research}
+      \field{number}{2}
+      \field{title}{Fostering Student Success and Engagement in a K-12 Online School}
+      \field{volume}{1}
+      \field{year}{2015}
+      \field{pages}{163\bibrangedash 190}
+      \range{pages}{28}
+      \verb{urlraw}
+      \verb https://www.learntechlib.org/primary/p/151187/
+      \endverb
+      \verb{url}
+      \verb https://www.learntechlib.org/primary/p/151187/
+      \endverb
+    \endentry
+    \entry{online_johnson_2022}{article}{}{}
+      \name{author}{4}{}{%
+        {{hash=683b297eebf03de4564532990a03d5af}{%
+           family={Johnson},
+           familyi={J\bibinitperiod},
+           given={Carla\bibnamedelima C.},
+           giveni={C\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+        {{hash=747fd4d5e708b5d33c99b1306591ee0a}{%
+           family={Walton},
+           familyi={W\bibinitperiod},
+           given={Janet\bibnamedelima B.},
+           giveni={J\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+        {{hash=3f4d3009631359a536544dff21b6f90e}{%
+           family={Strickler},
+           familyi={S\bibinitperiod},
+           given={Lacey},
+           giveni={L\bibinitperiod}}}%
+        {{hash=8ab153235b2b7f43a514d5496ce2e643}{%
+           family={Elliott},
+           familyi={E\bibinitperiod},
+           given={Jennifer\bibnamedelima B.},
+           giveni={J\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+      }
+      \strng{namehash}{44fb8caad570bd94c25b50d35b207194}
+      \strng{fullhash}{8115e35b2b24965ccfd8c974f7e57c25}
+      \strng{fullhashraw}{8115e35b2b24965ccfd8c974f7e57c25}
+      \strng{bibnamehash}{44fb8caad570bd94c25b50d35b207194}
+      \strng{authorbibnamehash}{44fb8caad570bd94c25b50d35b207194}
+      \strng{authornamehash}{44fb8caad570bd94c25b50d35b207194}
+      \strng{authorfullhash}{8115e35b2b24965ccfd8c974f7e57c25}
+      \strng{authorfullhashraw}{8115e35b2b24965ccfd8c974f7e57c25}
+      \field{sortinit}{J}
+      \field{sortinithash}{b2f54a9081ace9966a7cb9413811edb4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Review of Educational Research}
+      \field{number}{3}
+      \field{title}{Online Teaching in K-12 Education in the United States: A Systematic Review}
+      \field{volume}{93}
+      \field{year}{2022}
+      \field{pages}{353\bibrangedash 411}
+      \range{pages}{59}
+      \verb{doi}
+      \verb 10.3102/00346543221105550
+      \endverb
+    \endentry
+    \entry{martin_systematic_2020}{article}{}{}
+      \name{author}{3}{}{%
+        {{hash=31f646ceaf33380e34d4e3973ee39668}{%
+           family={Martin},
+           familyi={M\bibinitperiod},
+           given={Florence},
+           giveni={F\bibinitperiod}}}%
+        {{hash=8b5a96f677e27eb8a7470e4dda407b22}{%
+           family={Sun},
+           familyi={S\bibinitperiod},
+           given={T.},
+           giveni={T\bibinitperiod}}}%
+        {{hash=c456fd4c5cb6788e5dd96f91dae3f5da}{%
+           family={Westine},
+           familyi={W\bibinitperiod},
+           given={C.\bibnamedelimi D.},
+           giveni={C\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+      }
+      \strng{namehash}{84aea90022d08a451caf177f39e9b59d}
+      \strng{fullhash}{84aea90022d08a451caf177f39e9b59d}
+      \strng{fullhashraw}{84aea90022d08a451caf177f39e9b59d}
+      \strng{bibnamehash}{84aea90022d08a451caf177f39e9b59d}
+      \strng{authorbibnamehash}{84aea90022d08a451caf177f39e9b59d}
+      \strng{authornamehash}{84aea90022d08a451caf177f39e9b59d}
+      \strng{authorfullhash}{84aea90022d08a451caf177f39e9b59d}
+      \strng{authorfullhashraw}{84aea90022d08a451caf177f39e9b59d}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Research on Technology in Education}
+      \field{number}{3}
+      \field{title}{A systematic review of research on K-12 online teaching and learning: Comparison of research from two decades 2000 to 2019}
+      \field{volume}{52}
+      \field{year}{2020}
+      \field{pages}{353\bibrangedash 374}
+      \range{pages}{22}
+      \verb{doi}
+      \verb 10.1080/15391523.2019.1605825
+      \endverb
+    \endentry
+    \entry{molnar_virtual_2023}{book}{}{}
+      \name{author}{9}{}{%
+        {{hash=80549d2942524349b397eacc203f1927}{%
+           family={Molnar},
+           familyi={M\bibinitperiod},
+           given={Alex},
+           giveni={A\bibinitperiod}}}%
+        {{hash=e8d27f01937fe712e5c8757d89074208}{%
+           family={Miron},
+           familyi={M\bibinitperiod},
+           given={Gary},
+           giveni={G\bibinitperiod}}}%
+        {{hash=b53d22990df1386de33277f839327f26}{%
+           family={Barbour},
+           familyi={B\bibinitperiod},
+           given={Michael\bibnamedelima K.},
+           giveni={M\bibinitperiod\bibinitdelim K\bibinitperiod}}}%
+        {{hash=2cdcfe6f4d96c5570b603f2a275863b0}{%
+           family={Huerta},
+           familyi={H\bibinitperiod},
+           given={Luis},
+           giveni={L\bibinitperiod}}}%
+        {{hash=dc7929fa405920b893f158790df95d0e}{%
+           family={Shafer},
+           familyi={S\bibinitperiod},
+           given={Steven\bibnamedelima R.},
+           giveni={S\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+        {{hash=9a4bec94787a086ce7e2d842d679aed7}{%
+           family={Rice},
+           familyi={R\bibinitperiod},
+           given={Jennifer\bibnamedelima King},
+           giveni={J\bibinitperiod\bibinitdelim K\bibinitperiod}}}%
+        {{hash=2249bf3fab2586cf415d87b6ccbc690e}{%
+           family={Glover},
+           familyi={G\bibinitperiod},
+           given={Angela},
+           giveni={A\bibinitperiod}}}%
+        {{hash=4a4a3d2931d632d9c8df99473125ebdc}{%
+           family={Knight},
+           familyi={K\bibinitperiod},
+           given={Heather},
+           giveni={H\bibinitperiod}}}%
+        {{hash=d8f5737a4690852ea912dbf8fd9203a9}{%
+           family={Key},
+           familyi={K\bibinitperiod},
+           given={Jennifer},
+           giveni={J\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Boulder, CO}%
+      }
+      \list{publisher}{1}{%
+        {National Education Policy Center}%
+      }
+      \strng{namehash}{c971847a8897160f89595d208657bf83}
+      \strng{fullhash}{74202dfc6b3c1486e87c6f295f0811aa}
+      \strng{fullhashraw}{74202dfc6b3c1486e87c6f295f0811aa}
+      \strng{bibnamehash}{c971847a8897160f89595d208657bf83}
+      \strng{authorbibnamehash}{c971847a8897160f89595d208657bf83}
+      \strng{authornamehash}{c971847a8897160f89595d208657bf83}
+      \strng{authorfullhash}{74202dfc6b3c1486e87c6f295f0811aa}
+      \strng{authorfullhashraw}{74202dfc6b3c1486e87c6f295f0811aa}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Virtual Schools in the U.S. 2023}
+      \field{year}{2023}
+      \verb{urlraw}
+      \verb https://nepc.colorado.edu/publication/virtual-schools-annual-2023
+      \endverb
+      \verb{url}
+      \verb https://nepc.colorado.edu/publication/virtual-schools-annual-2023
+      \endverb
+    \endentry
+    \entry{virtual_toppin_2016}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=b9e0aebc3eee0edd55c77d14a8f03e6e}{%
+           family={Toppin},
+           familyi={T\bibinitperiod},
+           given={Ian\bibnamedelima N.},
+           giveni={I\bibinitperiod\bibinitdelim N\bibinitperiod}}}%
+        {{hash=828ed85808f043930d005e5cc6f79431}{%
+           family={Toppin},
+           familyi={T\bibinitperiod},
+           given={Sheila\bibnamedelima M.},
+           giveni={S\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+      }
+      \strng{namehash}{66a0a1a8c44b39d4d3ef551bf719d68a}
+      \strng{fullhash}{66a0a1a8c44b39d4d3ef551bf719d68a}
+      \strng{fullhashraw}{66a0a1a8c44b39d4d3ef551bf719d68a}
+      \strng{bibnamehash}{66a0a1a8c44b39d4d3ef551bf719d68a}
+      \strng{authorbibnamehash}{66a0a1a8c44b39d4d3ef551bf719d68a}
+      \strng{authornamehash}{66a0a1a8c44b39d4d3ef551bf719d68a}
+      \strng{authorfullhash}{66a0a1a8c44b39d4d3ef551bf719d68a}
+      \strng{authorfullhashraw}{66a0a1a8c44b39d4d3ef551bf719d68a}
+      \field{sortinit}{T}
+      \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Education and Information Technologies}
+      \field{title}{Virtual schools: The changing landscape of K-12 education in the U.S.}
+      \field{volume}{21}
+      \field{year}{2016}
+      \field{pages}{1571\bibrangedash 1589}
+      \range{pages}{19}
+      \verb{doi}
+      \verb 10.1007/s10639-015-9402-8
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
