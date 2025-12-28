@@ -68,7 +68,7 @@
 \graphicspath{{figures/}}
 
 %% Use folder ``backmatter'' to keep all your bibliography files
-\addbibresource{backmatter/references.bib}
+%\addbibresource{backmatter/references.bib}
 
 %%========================================
 %% Start of document
@@ -148,10 +148,9 @@
 %%----------------------------------------
 \StartBody
 
-%% Use a separate file for each chapter
-%%\--include{body/chapter0} %% thesis manifest
-\include{body/chapter1} 
-%%\--include{body/chapter2}
+\include{body/thesis-manifest} 
+\include{body/literature-review} 
+\include{body/state-of-art}
 %%\--include{body/chapter3}
 %% Uncomment to see a listing example for option meic (meic.cfg loaded)
 %\--include{body/chapter45-listing}
@@ -161,7 +160,9 @@
 %%----------------------------------------
 
 %% Bibliography
-\PrintBib
+\bibliographystyle{plainnat}
+\bibliography{backmatter/references}
+%\PrintBib
 
 
 %% comment next 2 commands if numbered appendices are not used

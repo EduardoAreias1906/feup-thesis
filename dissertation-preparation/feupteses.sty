@@ -193,7 +193,7 @@ with the `report' document style}{}}{}
 \widowpenalty=6000
 
 \RequirePackage{mathptmx}	       % font times
-\RequirePackage[scaled]{couriers}  % font courier
+%\RequirePackage[scaled]{couriers}  % font courier
 \RequirePackage[scaled]{helvet}    % font helvetica
 \RequirePackage[pdftex]{graphicx}  % direct creation of PDF
 \RequirePackage{url}               % URL-sensitive line breaks
@@ -203,12 +203,12 @@ with the `report' document style}{}}{}
 \RequirePackage{xcolor}            % driver-independent color extensions
 \RequirePackage{float}             % Improved interface for floating objects
 \RequirePackage{array}             % modern tabular an array environments
-\RequirePackage{multirow}          % Create tabular cells spanning multiple rows
+%\RequirePackage{multirow}          % Create tabular cells spanning multiple rows
 \RequirePackage{longtable}         % for tables that spans more than one page
-\RequirePackage[printonlyused]{acronym} % for acronyms
+%\RequirePackage[printonlyused]{acronym} % for acronyms
 \RequirePackage{eurosym}           % for the Euro currency symbol
-\RequirePackage{siunitx}           % for SI unit rules and style conventions
-\DeclareSIUnit{\eurocurrency}{\text{\euro}}  % for the Euro symbol in siunitex
+%\RequirePackage{siunitx}           % for SI unit rules and style conventions
+%\DeclareSIUnit{\eurocurrency}{\text{\euro}}  % for the Euro symbol in siunitex
 
 \RequirePackage[pagewise]{lineno}  % line numbers on paragraphs
 \modulolinenumbers[2]
@@ -216,25 +216,9 @@ with the `report' document style}{}}{}
   \RequirePackage[firstpage]{draftwatermark}
 \fi
 
-%% bibliography
-\RequirePackage{csquotes}          % context sensitive quotation facilities
-\if@iso
-    \usepackage[backend=biber,style=iso-authoryear]{biblatex}
-\else
-    \if@numericrefs
-      \usepackage[backend=biber,style=numeric-comp]{biblatex}
-    \else
-      \if@alpharefs 
-         \usepackage[backend=biber,style=alphabetic]{biblatex}
-      \else
-         \if@ieeerefs
-           \usepackage[backend=biber,style=ieee]{biblatex}
-         \else
-           \usepackage[backend=biber,authordate]{biblatex-chicago}
-        \fi
-      \fi
-  \fi
-\fi
+%% Bibliography: Use natbib/bibtex as fallback
+\usepackage[sort,numbers,square]{natbib}
+%\usepackage[backend=biber,style=numeric-comp]{biblatex}
 
 %% Global style defaults
 
@@ -547,7 +531,7 @@ with the `report' document style}{}}{}
 \newcommand{\@StartPrelim}{\cleardoublepage\pagenumbering{roman}\setcounter{page}{1}\pagestyle{fancy}}
 
 %% External commands
-\newcommand{\StartBody}{\cleardoublepage\pagenumbering{arabic}\setcounter{page}{1}\pagestyle{fancy}\Activate@lineno\acresetall}
+\newcommand{\StartBody}{\cleardoublepage\pagenumbering{arabic}\setcounter{page}{1}\pagestyle{fancy}\Activate@lineno}
 
 \newenvironment{Prolog}{\maketitle\if@committeepage\committeepage\fi\@StartPrelim\begin{singlespace}}{\end{singlespace}}
 
