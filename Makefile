@@ -34,10 +34,9 @@ preparation:
 	echo "Cleaning up intermediate files..."; \
 	if command -v latexmk >/dev/null 2>&1; then \
 		latexmk -c; \
-	else \
-		rm -f *.aux *.log *.out *.toc *.fls *.fdb_latexmk *.bcf *.run.xml *.bbl *.blg *.synctex.gz; \
-		find . -type f -name "*.aux" -delete; \
-	fi
+	fi; \
+	rm -f *.aux *.log *.out *.toc *.fls *.fdb_latexmk *.bcf *.run.xml *.bbl *.blg *.synctex.gz; \
+	find . -type f -name "*.aux" -delete
 
 # Placeholder for the future thesis report
 thesis:
