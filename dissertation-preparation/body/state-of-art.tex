@@ -1,107 +1,86 @@
-\chapter{State of Art} \label{chap:stateofart}
+\chapter{State of the Art}
+\label{chap:stateofart}
+%% Purpose: This chapter provides the technical foundation. It shifts from the educational problem (Chapter 2) to the computational solution (Chapter 3), justifying the specific algorithms and frameworks selected for this thesis.
 
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit. 
-Donec a eros. Phasellus non nulla non massa venenatis convallis. 
-In porta. Mauris quis magna. 
+\section{Overview}
+%% Purpose: Bridge the gap between Chapter 2 and Chapter 3.
+While the previous chapter focused on the educational context of K--12 online learning and the needs of at-risk populations, this chapter reviews the technological landscape.
+Specifically, it addresses the field of Educational Data Mining (EDM) and the computational methods available for discovering patterns in student behavior.
+The chapter begins by defining the scope of EDM and distinguishing it from Learning Analytics.
+It then contrasts traditional approaches, such as Educational Process Mining, with the proposed framework of \textit{Virtual Choreographies}.
+Finally, it reviews the specific unsupervised machine learning algorithms (clustering and dimensionality reduction) that will be used to implement this framework in the Connections Academy dataset.
 
-\section{Introduction}
+\section{Educational Data Mining}
+\label{sec:edm}
+%% Purpose: Define the field using the standard "Romero & Ventura" survey. This proves you understand the academic territory.
 
-\citet{kn:MVL06-xata} fusce risus mi, tristique eu, consectetuer 
-id, auctor sed, elit. Donec laoreet. Duis consectetuer interdum 
-libero.
+Educational Data Mining (EDM) is defined as the area of scientific inquiry centered on the development of methods for making discoveries within the unique kinds of data that come from educational settings~\cite{romero_edm_survey}.
+In their comprehensive survey, Romero and Ventura~\cite{romero_edm_survey} distinguish EDM from Learning Analytics (LA) based on their primary focus:
+\begin{itemize}
+    \item \textbf{Learning Analytics (LA):} Often focuses on human-led decision making (e.g., visual dashboards for teachers) and relies on statistics.
+    \item \textbf{Educational Data Mining (EDM):} Emphasizes automated discovery and the development of algorithms to find hidden patterns without human intervention.
+\end{itemize}
 
-In euarcu. Fusce luctus diam eget lectus. Duis interdum lacus sed
-ligula. Proin vestibulum felis eget lacus. Vivamus vestibulum, tellus
-ut congue viverra, mauris lacus tempor turpis, eu congue nisi magna at
-dolor. Ut molestie vehicula libero. Praesent in neque sed risus tempus
-ornare. Donec hendrerit, erat eu semper aliquam, pede nulla dapibus
-risus, ut pretium orci pede et neque.
-Etiam eget tortor a metus convallis viverra. Quisque eget nisi sed
-orci facilisis interdum. Aliquam non felis. 
+In the context of K--12 online schools, EDM is typically applied to three main tasks~\cite{romero_edm_survey}:
+\begin{enumerate}
+    \item \textbf{Prediction:} Using historical data (grades, login frequency) to forecast student outcomes or dropout risk.
+    \item \textbf{Structure Discovery:} Finding underlying structures in data, such as grouping students with similar learning strategies.
+    \item \textbf{Relationship Mining:} Identifying relationships between variables, such as which specific activities lead to higher engagement.
+\end{enumerate}
 
-\section{Section Example}\label{sec:se21}
+This dissertation focuses primarily on \textit{Structure Discovery}, using unsupervised learning to find patterns that are not immediately obvious to teachers.
 
-\emph{Scalable Vector Graphics}\index{SVG}\index{XML!SVG} 
-Curabitur ipsum tortor, ornare vitae, dapibus pretium, 
-hendrerit sed, urna~\citep{kn:svgdoc}.
+\section{Modeling Student Behavior}
+\label{sec:modeling}
+%% Purpose: The Core Argument. Compare the "Old Way" (Process Mining) to your "New Way" (Choreographies).
 
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec a eros. 
-\citet{kn:svgibm,kn:svgw3c} phasellus non nulla non massa venenatis convallis. 
-In porta. Mauris quis magna.
+To analyze student engagement beyond simple metrics (e.g., ``total time online'' or ``number of clicks''), researchers use advanced techniques to model the \emph{sequence} of student actions.
 
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec a
-eros. Phasellus non nulla non massa venenatis convallis. In
-porta. Mauris quis magna. Proin mauris eros, aliquet id, eleifend
-vitae, semper quis, erat. Aliquam id lectus non odio dignissim
-blandit. Vestibulum porttitor arcu ut ligula.
+\subsection{Educational Process Mining (EPM)}
+%% Source: Bogarin et al. (2018) - The standard reference for EPM.
 
-Vestibulum ante ipsum primis in faucibus orci luctus et
-ultrices posuere cubilia Curae; Phasellus bibendum, nulla eget varius
-aliquam, tortor nulla sollicitudin quam, vel vestibulum nisl magna at
-sem. Aliquam velit sapien, ultrices viverra, tempus quis, ultrices at,
-dui. Aliquam sit amet justo. Quisque tristique, metus eu iaculis
-sagittis, urna leo bibendum diam, a ultricies sem diam a augue. Mauris
-consectetuer, libero vel euismod tincidunt, nisi metus viverra ante,
-quis pretium sapien odio nec risus. Nunc semper auctor
-nulla\footnote{Example of a footnote.}. 
+A dominant approach in the literature is Educational Process Mining (EPM).
+As detailed in the survey by Bogarín et al.~\cite{bogarin_survey_2018}, EPM applies process mining techniques—originally designed for business workflow analysis—to educational data.
+EPM treats the learning process as a series of events (e.g., \texttt{Quiz Start} $\rightarrow$ \texttt{Quiz End}) and attempts to discover the ``process model'' or flow that students follow.
 
-\subsection{Subsection Example} \label{sec:se311}
+While effective for structured tasks (like a specific exam), Bogarín et al.~\cite{bogarin_survey_2018} note that EPM can face challenges in more flexible open-ended learning environments.
+In full-time virtual schools where students have autonomy over their schedule, EPM often results in ``spaghetti models''—complex, tangled diagrams that are difficult to interpret because students do not follow a strict linear path.
 
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nunc eu
-nulla. Pellentesque vitae nibh ultrices quam iaculis
-convallis. Aliquam purus eros, varius eget, volutpat sodales,
-imperdiet nec, lacus \textit{applets}~\citep{kn:batik}. 
+\subsection{The Virtual Choreographies Framework}
+%% Source: Cassola et al. (2022) - The INESC TEC framework you are adopting.
 
-Curabitur in elit sed sem rutrum posuere. Class aptent taciti 
-sociosqu ad litora torquent per conubia nostra, per
-inceptos himenaeos~\citep{kn:svgdoc}. 
+To address the limitations of rigid process maps, this dissertation adopts the concept of \textbf{Virtual Choreographies}.
+This framework was developed within INESC TEC to identify behavioral patterns in complex environments.
+Cassola et al.~\cite{cassola_using_2022} define a \emph{Virtual Choreography} as a platform-independent representation of actions, interactions, and events that unfold over time.
 
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nunc eu
-nulla. Pellentesque vitae nibh ultrices quam iaculis
-convallis. Aliquam purus eros, varius eget, volutpat sodales,
-imperdiet nec, lacus. Curabitur in elit sed sem rutrum posuere. Class
-aptent taciti sociosqu ad litora torquent per conubia nostra, per
-inceptos himenaeos. Duis sem. Praesent ultricies odio vel
-sapien. Integer faucibus malesuada libero. Cras semper, dolor id
-ullamcorper varius, magna risus volutpat felis, id pellentesque nulla
-ante at erat. Integer sodales. 
+Although originally applied to domains such as Virtual Reality~\cite{cassola_design_2022} and energy consumption behavior~\cite{cassola_using_2022}, the core mathematical concept is highly applicable to education.
+Unlike raw clickstreams, a Virtual Choreography maps technical events into \textbf{semantic actions} (e.g., mapping \texttt{URL:/math/quiz/1} to \texttt{Assessment}).
+This abstraction allows for:
+\begin{itemize}
+    \item \textbf{Platform Independence:} The analysis focuses on the \textit{behavior} (studying), not the \textit{system} (clicking a specific button ID).
+    \item \textbf{Routine Discovery:} By analyzing these choreographies, we can identify clusters of students who share similar daily routines (e.g., ``Late Night Crammers'' vs. ``Steady Workers''), regardless of the specific course they are taking.
+\end{itemize}
 
-Quisque sit amet odio. In at risus sit amet turpis interdum
-posuere. Maecenas iaculis vehicula sem. Ut leo arcu, malesuada vel,
-imperdiet id, dignissim a, purus. Duis eleifend, lectus non venenatis
-dignissim, risus libero imperdiet mi, nec gravida massa libero sed
-mauris. Nullam lobortis libero non sapien. Integer convallis iaculis
-erat. Morbi dictum. Ut ultrices pellentesque velit. Cras ac
-ante. Etiam in neque tincidunt lacus gravida vehicula. Proin et nisi. 
+\section{Unsupervised Learning Techniques}
+\label{sec:algorithms}
+%% Purpose: Explain the specific AI tools (Algorithms) used to implement the framework.
 
-Vivamus non nunc nec risus tempor varius. Quisque bibendum mi at
-dolor. Aliquam consectetuer condimentum risus. Aliquam luctus pulvinar
-sem. Duis aliquam, urna et vulputate tristique, dui elit aliquet nibh,
-vel dignissim magna turpis id sapien. Duis commodo sem id
-quam. Phasellus dolor. Class aptent taciti sociosqu ad litora torquent
-per conubia nostra, per inceptos himenaeos. 
+The discovery of these choreographies relies on unsupervised machine learning algorithms to group similar behaviors without pre-defined labels.
 
-\subsection{Subsection Example} \label{sec:se312}
+\subsection{Clustering Algorithms}
+Clustering is the task of grouping a set of objects so that objects in the same group (cluster) are more similar to each other than to those in other groups.
+In EDM, the most widely used algorithm is \textbf{k-Means}, due to its computational efficiency and interpretability~\cite{romero_edm_survey}.
+However, k-Means requires the number of clusters ($k$) to be specified in advance, often necessitating the use of validation metrics (such as the Elbow Method or Silhouette Score) to determine the optimal number of student profiles.
 
-Loren ipsum dolor sit amet, consectetuer adipiscing elit. 
-Praesent sit amet sem. Maecenas eleifend facilisis leo. Vestibulum et
-mi. Aliquam posuere, ante non tristique consectetuer, dui elit
-scelerisque augue, eu vehicula nibh nisi ac est. Suspendisse elementum
-sodales felis. Nullam laoreet fermentum urna. 
-
-Duis eget diam. In est justo, tristique in, lacinia vel, feugiat eget,
-quam. Pellentesque habitant morbi tristique senectus et netus et
-malesuada fames ac turpis egestas. Fusce feugiat, elit ac placerat
-fermentum, augue nisl ultricies eros, id fringilla enim sapien eu
-felis. Vestibulum ante ipsum primis in faucibus orci luctus et
-ultrices posuere cubilia Curae; Sed dolor mi, porttitor quis,
-condimentum sed, luctus in. 
+\subsection{Dimensionality Reduction}
+Student behavioral data is often high-dimensional (e.g., counts of 50 different action types over 30 weeks).
+To visualize these clusters effectively, dimensionality reduction techniques are required.
+\textbf{t-SNE} (t-Distributed Stochastic Neighbor Embedding) and \textbf{UMAP} (Uniform Manifold Approximation and Projection) are state-of-the-art non-linear techniques used to project high-dimensional data into 2D or 3D space.
+These visualizations allow researchers to ``see'' the separation between different student groups and validate whether the identified choreographies represent distinct behavioral patterns.
 
 \section{Summary}
+%% Purpose: Wrap up. Connects the "Tool" (Choreographies) back to the "Problem" (At-risk students) from Chapter 2.
 
-Aliquam erat volutpat. Nunc pede ipsum, porttitor eu, bibendum non,
-bibendum nec, nisl. Maecenas eget mauris. Nullam pulvinar. Curabitur
-rutrum commodo est. Nam sapien pede, interdum eu, accumsan ultrices,
-venenatis sit amet, tellus. Praesent ac ante bibendum enim varius
-suscipit. Donec enim. Proin nisi. Quisque libero turpis, varius ut,
-elementum vel, pulvinar sed, nunc. 
+Current research in K--12 online learning (Chapter 2) highlights the need for better support systems for at-risk students.
+Technologically, while Educational Process Mining offers tools to analyze sequences, it can be overly rigid for the flexible nature of online schooling.
+By adapting the \textit{Virtual Choreographies} framework~\cite{cassola_using_2022} and combining it with standard EDM clustering techniques~\cite{romero_edm_survey}, this thesis aims to discover interpretable patterns of student behavior that can inform the educational strategies discussed in the literature review.
