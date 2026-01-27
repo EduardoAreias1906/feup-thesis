@@ -1,297 +1,108 @@
-\chapter{Chapter WITH Examples} \label{chap:ch3}
+\chapter{Proposed Approach}
+\label{chap:approach}
 
-Maecenas eleifend facilisis leo. Vestibulum et
-mi. Aliquam posuere, ante non tristique consectetuer, dui elit
-scelerisque augue, eu vehicula nibh nisi ac est. 
-Suspendisse elementum sodales felis. Nullam laoreet fermentum urna. 
+\section{Overview}
+Building upon the research context defined in the Thesis Manifest (Chapter~\ref{chap:manifest}) and the technical state of the art (Chapter~\ref{chap:stateofart}), this chapter details the methodological approach adopted to identify and analyze Virtual Choreographies in K--12 online schools. 
 
-\section{Introduction}
+The proposed solution is a data-driven pipeline designed to transform raw interaction logs from the Connections Academy Learning Management System (LMS) into interpretable behavioral patterns. The approach combines the semantic abstraction of the \textit{Virtual Choreographies} framework~\cite{cassola_using_2022} with the unsupervised machine learning techniques reviewed in Chapter~\ref{chap:stateofart}.
 
-Pellentesque rutrum, sapien at viverra 
-facilisis\footnote{\url{https://en.wikipedia.org/wiki/Equation}}\footnote{\url{https://www.overleaf.com/learn/latex/Mathematical_expressions}}:
+The ultimate goal is to move from low-level clickstream data to high-level educational insights that allow us to distinguish successful learning routines from those that signal disengagement, with a particular focus on the ``at-risk'' populations identified in the literature~\cite{beck_atrisk_2024}.
 
-\begin{eqnarray}
-CIF_1: \hspace*{5mm}F_0^j(a) &=& \frac{1}{2\pi \iota} \oint_{\gamma} \frac{F_0^j(z)}{z - a} dz \label{eq:cif1} \\
-CIF_2: \hspace*{5mm}F_1^j(a) &=& \frac{1}{2\pi \iota} \oint_{\gamma} \frac{F_0^j(x)}{x - a} dx \label{eq:cif2}
-\end{eqnarray}
+\section{Methodological Architecture}
+The research will follow a four-stage pipeline: (1) Data Collection and Preprocessing, (2) Semantic Abstraction, (3) Pattern Discovery (Clustering), and (4) Evaluation and Association.
 
-Equação~\ref{eq:cif2} lorem ipsum dolor sit amet, consectetuer
-adipiscing elit. Suspendisse tincidunt viverra elit. Donec tempus
-vulputate mauris. Donec arcu. Vestibulum condimentum porta
-justo. Curabitur ornare tincidunt lacus. Curabitur ac massa vel ante
-tincidunt placerat. Cras vehicula semper elit. Curabitur gravida, est
-a elementum suscipit, est eros ullamcorper quam, sed cursus velit
-velit tempor neque. Duis tempor condimentum ante. Nam
-sollicitudin. Vestibulum adipiscing, orci eu tempor dapibus, risus
-sapien porta metus, et cursus leo metus eget nibh. 
-
-Pellentesque rutrum, sapien at viverra facilisis, metus eros blandit
-sem, quis dictum erat metus eget erat. Vivamus malesuada dapibus
-nulla. Maecenas nec purus. Suspendisse auctor mattis augue. Phasellus
-enim nisi, iaculis sit amet, pellentesque a, iaculis in, dui. Integer
-risus. 
-
-Curabitur ac massa vel ante tincidunt placerat. 
-Curabitur gravida, est cras vehicula semper elit
-a elementum suscipit, est eros ullamcorper quam, sed cursus velit
-velit tempor neque. Duis tempor condimentum ante. Nam
-sollicitudin. Vestibulum adipiscing, orci eu tempor dapibus, risus
-sapien porta metus, et cursus leo metus eget nibh.
-
-\section{Section Example} \label{sec:se32}
-
-Curabitur ac massa vel ante tincidunt placerat \parencite{kn:ZPMD97}: 
-
+\subsection{Stage 1: Data Collection and Context}
+The dataset for this dissertation is provided by Pearson Online and Blended Learning, encompassing activity logs from 32 Connections Academy schools across the United States.
 \begin{itemize}
-\item \textbf{Components} --- Suspendisse auctor mattis augue \emph{push};
-\item \textbf{Praesent} --- Sit amet sem maecenas eleifend facilisis leo;
-\item \textbf{Pellentesque} --- Habitant morbi tristique senectus et netus.
+    \item \textbf{Population:} The study focuses on K--12 students. To address the concerns raised by Beck~\cite{beck_prepared_2023}, the data processing will preserve metadata that allows us to distinguish between general enrollment and students identified as ``at-risk'' (due to prior academic failure or medical/social challenges).
+    \item \textbf{Data Granularity:} The raw data consists of server-level logs capturing timestamped events (e.g., login times, page accesses, quiz submissions, live lesson attendance).
+    \item \textbf{Privacy:} All data is pseudonymized to ensure student privacy. Personal identifiers are replaced with unique hash keys before the analysis begins.
 \end{itemize}
 
-\subsection{Subsection Example --- Figures} \label{sec:se321}
+\subsection{Stage 2: Semantic Abstraction (The Virtual Choreography)}
+A core challenge identified in Section~\ref{sec:modeling} is the ``spaghetti model'' problem inherent in analyzing flexible online learning environments~\cite{bogarin_survey_2018}. To overcome this, we apply the \textit{Virtual Choreography} abstraction layer.
 
-Suspendisse elementum sodales felis Figure~\ref{fig:arch} on 
-page~\pageref{fig:arch} is a floating figure\footnote{\url{https://tex.stackexchange.com/questions/381426/advantage-of-floating-figures}}.
+We will map raw URLs and system events into a finite set of \textbf{Semantic Actions}. As emphasized in the literature review regarding student isolation~\cite{fostering_curtis_2015}, this mapping will prioritize not only content consumption but also \textbf{social and interactive behaviors}.
 
-% DO NOT use [h] or [H] so figures may float to the right place
-\begin{figure}
-    \includegraphics[width=0.86\textwidth]{puzzle}
-    \caption{A figure, caption below}
-    \label{fig:arch}
-\end{figure}
+Table~\ref{tab:mapping} illustrates proposed examples of this mapping strategy:
 
-Loren ipsum dolor sit amet, consectetuer adipiscing elit. 
-Praesent sit amet sem. Maecenas eleifend facilisis leo. Vestibulum et
-mi. Aliquam posuere, ante non tristique consectetuer, dui elit
-scelerisque augue, eu vehicula nibh nisi ac est. Nullam laoreet fermentum 
-urna.
-
-Duis eget diam. In est justo, tristique in, lacinia vel, feugiat eget,
-quam. Pellentesque habitant morbi tristique senectus et netus et
-malesuada fames ac turpis egestas. Fusce feugiat, elit ac placerat
-fermentum, augue nisl ultricies eros, id fringilla enim sapien eu
-felis. Vestibulum ante ipsum primis in faucibus orci luctus et
-ultrices posuere cubilia Curae; Sed dolor mi, porttitor quis,
-condimentum sed, luctus in. 
-
-\subsection{Subsection Example --- Tables} \label{sec:se322}
-
-Suspendisse elementum sodales felis Table~\ref{tab:example} is a 
-floating table.
-
-% DO NOT use [h] or [H] so tables may float to the right place
-\begin{table}
-  \caption{A table, caption on top}
-\begin{tabular}{|c|r@{.}lr@{.}lr@{.}l||r|}
-	\hline
-\multicolumn{8}{|c|}
-	{\rule[-3mm]{0mm}{8mm}Iteration $k$ de $f(x_n)$} \\
-\textbf{\em k}
-	& \multicolumn{2}{c}{$x_1^k$}
-	& \multicolumn{2}{c}{$x_2^k$}
-	& \multicolumn{2}{c||}{$x_3^k$}
-	& comments \\ \hline \hline
-0   & -0&3                 & 0&6                 &  0&7   & - \\
-1   &  0&47102965 & 0&04883157 & -0&53345964  & $\delta<\epsilon$ \\
-2   &  0&49988691 & 0&00228830 & -0&52246185  & $\delta < \varepsilon$ \\
-3   &  0&49999976 & 0&00005380 & -0&523656   &   $N$ \\
-4   &  0&5                 & 0&00000307 & -0&52359743  & \\
-\vdots	& \multicolumn{2}{c}{\vdots}
-	& \multicolumn{2}{c}{$\ddots$}
-	& \multicolumn{2}{c||}{\vdots}  & \\
-7   &  0&5   & 0&0    & \textbf{-0}&\textbf{52359878}
-		 & $\delta<10^{-8}$ \\ \hline
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Raw Log Pattern (Example)} & \textbf{Semantic Action} & \textbf{Category} \\ \hline
+\texttt{URL:/math/algebra/quiz/start} & \textbf{Assessment\_Start} & Evaluation \\ \hline
+\texttt{URL:/live-lesson/room-101} & \textbf{Synchronous\_Participation} & Social/Instruction \\ \hline
+\texttt{URL:/mail/compose/teacher} & \textbf{Teacher\_Interaction} & Social \\ \hline
+\texttt{URL:/feedback/view} & \textbf{Feedback\_Review} & Metacognition \\ \hline
+\texttt{URL:/content/pdf/view} & \textbf{Content\_Study} & Asynchronous \\ \hline
 \end{tabular}
-  \label{tab:example}
+\caption{Examples of mapping raw logs to Semantic Actions.}
+\label{tab:mapping}
 \end{table}
 
-Loren ipsum dolor sit amet, consectetuer adipiscing elit. 
-Praesent sit amet sem. Maecenas eleifend facilisis leo. Vestibulum et
-mi. Aliquam posuere, ante non tristique consectetuer, dui elit
-scelerisque augue, eu vehicula nibh nisi ac est. Suspendisse elementum
-sodales felis. Nullam laoreet fermentum urna. 
+This abstraction creates a sequence of events $S = \{a_1, a_2, ..., a_n\}$ for each student per day, which constitutes the basis of a daily choreography.
 
-Duis eget diam. In est justo, tristique in, lacinia vel, feugiat eget,
-quam. Pellentesque habitant morbi tristique senectus et netus et
-malesuada fames ac turpis egestas. Fusce feugiat, elit ac placerat
-fermentum, augue nisl ultricies eros, id fringilla enim sapien eu
-felis. Vestibulum ante ipsum primis in faucibus orci luctus et
-ultrices posuere cubilia Curae; Sed dolor mi, porttitor quis,
-condimentum sed, luctus in. 
+\subsection{Stage 3: Pattern Discovery}
+To answer \textbf{RQ1 (Identification)}, we will employ unsupervised learning to group similar daily sequences.
+\begin{enumerate}
+    \item \textbf{Vectorization:} Student daily activities will be converted into numerical vectors (e.g., using n-gram frequency or sequence embeddings) to represent the ``rhythm'' of their day.
+    \item \textbf{Clustering:} As discussed in Section~\ref{sec:algorithms}, we will apply the \textbf{k-Means} algorithm to identify distinct clusters of behavior. The optimal number of clusters ($k$) will be determined using the Elbow Method and Silhouette Analysis.
+    \item \textbf{Visualization:} To inspect the robustness of these clusters (\textbf{RQ2}), we will use \textbf{UMAP} (Uniform Manifold Approximation and Projection) to project the high-dimensional data into 2D space. This will allow for visual inspection of the separation between behavioral groups, ensuring the identified choreographies are distinct and interpretable.
+\end{enumerate}
 
-\subsection{Subsection Example --- SI} \label{sec:si}
- 
-Always use the \texttt{siunitx} package\footnote{Manual available at 
-\url{https://ctan.org/pkg/siunitx}.} to write values, units, etc.\ 
-according to the International System of Units convention rules and style conventions (see \url{https://physics.nist.gov/cuu/Units/checklist.html}).
+\section{Experimental Process and Evaluation Design}
+The evaluation is designed to directly address the Research Questions and test the Hypotheses (H1--H5) defined in the Thesis Manifest.
 
-For example:
-\SI{50}{\kilo\gram}, 
-\SI{15}{\celsius}, 
-\SI{20,01}{\meter\per\second}, 
-\SI{120}{\kilo\byte\per\second}, 
-\SI{34}{\percent}, 
-\SI{289300.00}{\eurocurrency}, 
-%\SI{28.3}{\mega\eurocurrency}, 
-\num{10245.450234}.
+\subsection{Stability and Robustness (Addressing RQ1 \& RQ2)}
+Once clusters are identified, we will validate them by:
+\begin{itemize}
+    \item \textbf{Temporal Stability:} Analyzing if students remain in the same behavioral cluster over weeks or if they transition between ``types'' of learners (e.g., does a student transition from a ``Steady Worker'' to a ``Fragmented'' profile?).
+    \item \textbf{Cross-Context Validation:} Checking if the same choreographies emerge across different grades (e.g., 5th grade vs.\ 10th grade) to ensure the patterns are universal behavioral habits rather than course-specific artifacts.
+\end{itemize}
 
-Table~\ref{tab:feup} % (excerto adaptado de ``A FEUP em números'', 2011)
-serves to exemplify the alignment in the columns with numbers, and has nothing to do with any numerical data associated with \acs*{FEUP}'s resources and investments in 2025.
+\subsection{Association with Outcomes (Addressing RQ3)}
+To validate H1 (Regularity) and H2 (Balanced Participation), we will perform statistical correlation analysis between the identified choreographies and student success metrics.
 
-\begin{table}
-  \centering
-  \caption[Physical Resources of \acs*{FEUP}]{Physical Resources of \acs*{FEUP}~\parencite{kn:feup}.}
-  \begin{tabular}{@{}S@{}}
-    \toprule
-    {Some Values} \\
-    \midrule
-    2.3456 \\
-    34.2345 \\
-    -6.7835 \\
-    90.473 \\
-    5642.5 \\
-    1.2e3 \\
-    e4 \\
-    \bottomrule
-  \end{tabular}
-  \label{tab:feup}
+Given the specific needs of the at-risk population discussed in Section~\ref{sec:at-risk}, ``Success'' will be defined by two complementary metrics:
+\begin{enumerate}
+    \item \textbf{Academic Performance:} Final course grades and standardized test scores.
+    \item \textbf{Retention:} The student's ability to maintain enrollment and avoid dropout. As noted by Beck~\cite{beck_atrisk_2024}, for many at-risk students, retention is a critical indicator of educational success.
+\end{enumerate}
+
+We will use regression models to quantify the impact of adopting a specific choreography on these outcomes, controlling for demographic background.
+
+\subsection{Predictive Utility (Addressing RQ4)}
+We will train supervised classification models (specifically Random Forests, due to their interpretability) to predict student success at different snapshots of the semester (e.g., Week 4, Week 8). We will compare two conditions:
+\begin{enumerate}
+    \item \textbf{Baseline:} Prediction using only standard metrics (login count, total time online).
+    \item \textbf{Experimental:} Prediction using standard metrics + \textbf{Choreography Cluster ID}.
+\end{enumerate}
+This will determine if the ``shape'' of behavior adds predictive power beyond the simple volume of activity.
+
+\section{Expected Results}
+We anticipate identifying 4--6 distinct behavioral choreographies. Based on the hypotheses presented in Chapter~\ref{chap:manifest}:
+\begin{itemize}
+    \item We expect to confirm that \textbf{Regularity} (H1) is a stronger predictor of success than total time spent.
+    \item We anticipate uncovering a ``risk'' profile characterized by high asynchronous activity but low synchronous interaction (validating H5), supporting the concerns about isolation raised by Curtis and Werth~\cite{fostering_curtis_2015}.
+    \item The results will provide a new layer of analytics for Connections Academy, enabling teachers to intervene based on \textit{how} a student is learning, not just \textit{if} they are logging in.
+\end{itemize}
+
+\section{Work Plan}
+The following timeline details the schedule for the completion of the dissertation, ensuring all deliverables are met by the final deadline in June/July 2026.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|p{9cm}|}
+\hline
+\textbf{Month} & \textbf{Activity} \\ \hline
+\textbf{February} & \textbf{Data Preprocessing \& Abstraction:} Cleaning the Connections Academy dataset; implementing the mapping from URLs to Semantic Actions; separating cohorts. \\ \hline
+\textbf{March} & \textbf{Clustering \& Discovery (RQ1, RQ2):} Running k-Means and UMAP; refining the number of clusters; characterizing the identified choreographies. \\ \hline
+\textbf{April} & \textbf{Association Analysis (RQ3):} Statistical analysis linking clusters to Grades and Retention; testing Hypotheses H1--H3. \\ \hline
+\textbf{May} & \textbf{Predictive Modeling (RQ4) \& Visualization (RQ5):} Training Random Forest models; designing visualizations for the findings. \\ \hline
+\textbf{June} & \textbf{Writing \& Revision:} Finalizing the ``Results'' and ``Discussion'' chapters; integrating all chapters; final review with supervisors. \\ \hline
+\textbf{July} & \textbf{Submission \& Defense:} Final submission of the dissertation document and preparation for the public defense. \\ \hline
+\end{tabular}
+\caption{Work plan for the Spring 2026 semester.}
+\label{tab:workplan}
 \end{table}
-
-% \begin{table}
-%   \centering
-% \caption[Physical Resources of \acs*{FEUP}]{Physical Resources of \acs*{FEUP}~\parencite{kn:feup}.}
-% \begin{tabular}{| l | S[table-number-alignment = right] |}
-%   \hline
-%   \textbf{Description} & \textbf{Quantity} \\ \hline
-%   \hline
-%   Total area of the FEUP campus & \SI{93918}{\square\meter} \\ \hline
-%   Green spaces & \SI{23}{\kilo\square\meter} \\ \hline
-%   Number of computers dedicated to teaching & \num{1815} \\ \hline
-%   Investment in laboratory equipment & \SI{1.46}{\mega\eurocurrency} \\ \hline
-%   Investment in Sustainability & \SI{31.4}{\kilo\eurocurrency} \\
-%   \hline
-% \end{tabular}
-%   \label{tab:feup}
-% \end{table}
-
-Loren ipsum dolor sit amet, consectetuer adipiscing elit. 
-Praesent sit amet sem. Maecenas eleifend facilisis leo. Vestibulum et
-mi. Aliquam posuere, ante non tristique consectetuer, dui elit
-scelerisque augue, eu vehicula nibh nisi ac est. Suspendisse elementum
-sodales felis. Nullam laoreet fermentum urna. 
-
-Duis eget diam. In est justo, tristique in, lacinia vel, feugiat eget,
-quam. Pellentesque habitant morbi tristique senectus et netus et
-malesuada fames ac turpis egestas. Fusce feugiat, elit ac placerat
-fermentum, augue nisl ultricies eros, id fringilla enim sapien eu
-felis. Vestibulum ante ipsum primis in faucibus orci luctus et
-ultrices posuere cubilia Curae; Sed dolor mi, porttitor quis,
-condimentum sed, luctus in. 
-
-\subsection{Subsection Example --- Acronyms} \label{sec:acronym}
-
-This section shows how to use the acronyms \ac{AI} and \ac{ML}.  
-Later we can simply refer to \ac{AI} or \ac{ML} without expansion.
-
-In modern technology, \ac{NLP} plays a crucial role in virtual assistants 
-and chatbots.  
-We also rely on \ac{GPU} hardware for deep learning models.
-
-\subsubsection{Special use in titles as \acs*{FEUP}}
-
-Acronyms can also be made plural: \acp{GPU} are widely used in 
-high-performance computing.  
-Possessive forms are supported too: \ac{AI}'s impact on society is 
-profound at \ac{FEUP}.
-
-\section{Summary}
-
-Pellentesque habitant morbi tristique senectus et netus et
-malesuada fames ac turpis egestas. Fusce feugiat, elit ac placerat
-fermentum, augue nisl ultricies eros, id fringilla enim sapien eu
-felis. Vestibulum ante ipsum primis in faucibus orci luctus et
-ultrices posuere cubilia Curae; Sed dolor mi, porttitor quis,
-condimentum sed, luctus in. 
-
-
-%%%% Another chapter to force two pages in the index
-%%%%
-\chapter{Another chapter}
-
-Integer nec quam. Sed fermentum. Nunc vitae leo. Etiam sit amet
-quam. Nunc vestibulum massa in mauris. Duis eget nulla. 
-
-\section{Section Example}
-
-Fusce ultricies arcu eu nibh volutpat feugiat. Maecenas urna pede, 
-commodo quis, porta eu, bibendum elementum, pede. 
-
-\section{Section Example}
-
-Sed eros massa, molestie eget, mattis non, rutrum ac, magna. 
-Duis dui. Maecenas eget tortor ut dolor semper mattis. 
-Maecenas auctor, tellus et ultricies tempor, elit
-est placerat lacus, in posuere mauris lorem et arcu. 
-
-\subsection{Subsection Example}
-
-Nulla nec eros et pede vehicula aliquam. Aenean sodales pede vel
-ante. Fusce sollicitudin sodales lacus. Maecenas justo mauris,
-adipiscing vitae, ornare quis, convallis nec, eros. 
-
-\subsection{Subsection Example}
-
-Pellentesque pulvinar fringilla dolor. In sit amet pede. 
-Proin orci justo, semper vel, vulputate quis, convallis
-ac, nulla. Nulla at justo. Mauris feugiat dolor. 
-Etiam posuere fermentum eros. Morbi nisl ipsum, tempus id, 
-ornare quis, mattis id, dolor. Aenean molestie metus 
-suscipit dolor. Aliquam id lectus sed
-nisl lobortis rhoncus. Curabitur vitae diam sed sem aliquet
-tempus. Sed scelerisque nisi nec sem.
-
-\section{Section Example}
-
-Sed eros massa, molestie eget, mattis non, rutrum ac, magna. 
-Duis dui. Maecenas eget tortor ut dolor semper mattis. 
-Maecenas auctor, tellus et ultricies tempor, elit
-est placerat lacus, in posuere mauris lorem et arcu. 
-
-\subsection{Subsection Example}
-
-Nulla nec eros et pede vehicula aliquam. Aenean sodales pede vel
-ante. Fusce sollicitudin sodales lacus. Maecenas justo mauris,
-adipiscing vitae, ornare quis, convallis nec, eros. 
-
-\subsection{Subsection Example}
-
-\textcite{khakipoor_linear_2023,liu_energy_2023} aliquam id lectus sed nisl lobortis rhoncus. 
-Curabitur vitae diam sed sem aliquet tempus. Sed scelerisque 
-nisi nec sem.
-
-\section{Section Example}
-
-Maecenas urna pede, commodo quis, porta eu, bibendum elementum, 
-pede. Sed eros massa, molestie eget, mattis non, rutrum ac, 
-magna. Duis dui. Maecenas eget tortor ut dolor semper mattis. 
-Maecenas auctor, tellus et ultricies tempor, elit est placerat 
-lacus, in posuere mauris lorem et arcu~\parencite{monopoli_exploiting_2023,zhang_carma_2023,chang_adas_2023, guo_rapidstream_2023}. 
-
-\subsection{Subsection Example}
-
-Nulla nec eros et pede vehicula aliquam. Aenean sodales pede vel
-ante. Fusce sollicitudin sodales lacus. Maecenas justo mauris,
-adipiscing vitae, ornare quis, convallis nec, eros. 
-
-\subsection{Subsection Example}
-
-\textcite{khakipoor_linear_2023,liu_energy_2023} aliquam id lectus sed nisl lobortis rhoncus. 
-Curabitur vitae diam sed sem aliquet tempus. Sed scelerisque 
-nisi nec sem scelerisque.
-
-Nulla nec eros et pede vehicula aliquam. Aenean sodales pede vel
-ante. Fusce sollicitudin sodales lacus. Maecenas justo mauris,
-adipiscing vitae, ornare quis, convallis nec, eros. Etiam laoreet
-venenatis ipsum. In tellus odio, eleifend ac, ultrices vel, lobortis
-sed, nibh. Fusce nunc augue, dictum non, pulvinar sed, consectetuer
-eu, ipsum. Vivamus nec pede.  
