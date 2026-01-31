@@ -1,21 +1,18 @@
 \chapter{State of the Art}
 \label{chap:stateofart}
-%% Purpose: This chapter provides the technical foundation. It shifts from the educational problem (Chapter 2) to the computational solution (Chapter 3), justifying the specific algorithms and frameworks selected for this thesis.
+
+%% PURPOSE: This chapter provides the technical foundation (EDM).
+%% It shifts from the educational problem (Chap 2) to the computational solution (Chap 3), justifying the selection of Choreographies over Process Mining.
 
 \section{Overview}
-%% Purpose: Bridge the gap between Chapter 2 and Chapter 3.
 While the previous chapter focused on the educational context of K--12 online learning and the needs of at-risk populations, this chapter reviews the technological landscape.
 Specifically, it addresses the field of Educational Data Mining (EDM) and the computational methods available for discovering patterns in student behavior.
-The chapter begins by defining the scope of EDM and distinguishing it from Learning Analytics.
-It then contrasts traditional approaches, such as Educational Process Mining, with the proposed framework of \textit{Virtual Choreographies}.
-Finally, it reviews the specific unsupervised machine learning algorithms (clustering and dimensionality reduction) that will be used to implement this framework in the Connections Academy dataset.
+The chapter defines the scope of EDM, contrasts traditional Educational Process Mining with the proposed \textit{Virtual Choreographies} framework, and reviews the unsupervised machine learning algorithms selected for this study.
 
 \section{Educational Data Mining}
 \label{sec:edm}
-%% Purpose: Define the field using the standard "Romero & Ventura" survey. This proves you understand the academic territory.
-
 Educational Data Mining (EDM) is defined as the area of scientific inquiry centered on the development of methods for making discoveries within the unique kinds of data that come from educational settings~\cite{romero_edm_survey}.
-In their comprehensive survey, Romero and Ventura~\cite{romero_edm_survey} distinguish EDM from Learning Analytics (LA) based on their primary focus:
+In their comprehensive survey, Romero and Ventura~\cite{romero_edm_survey} distinguish EDM from Learning Analytics (LA):
 \begin{itemize}
     \item \textbf{Learning Analytics (LA):} Often focuses on human-led decision making (e.g., visual dashboards for teachers) and relies on statistics.
     \item \textbf{Educational Data Mining (EDM):} Emphasizes automated discovery and the development of algorithms to find hidden patterns without human intervention.
@@ -25,62 +22,47 @@ In the context of K--12 online schools, EDM is typically applied to three main t
 \begin{enumerate}
     \item \textbf{Prediction:} Using historical data (grades, login frequency) to forecast student outcomes or dropout risk.
     \item \textbf{Structure Discovery:} Finding underlying structures in data, such as grouping students with similar learning strategies.
-    \item \textbf{Relationship Mining:} Identifying relationships between variables, such as which specific activities lead to higher engagement.
+    \item \textbf{Relationship Mining:} Identifying relationships between variables.
 \end{enumerate}
-
-This dissertation focuses primarily on \textit{Structure Discovery}, using unsupervised learning to find patterns that are not immediately obvious to teachers.
+This dissertation focuses primarily on \textit{Structure Discovery}, using unsupervised learning to find patterns not immediately obvious to teachers.
 
 \section{Modeling Student Behavior}
 \label{sec:modeling}
-%% Purpose: The Core Argument. Compare the "Old Way" (Process Mining) to your "New Way" (Choreographies).
-
-To analyze student engagement beyond simple metrics (e.g., ``total time online'' or ``number of clicks''), researchers use advanced techniques to model the \emph{sequence} of student actions.
+%% CORE ARGUMENT: Comparing the "Old Way" (Process Mining) to the "New Way" (Choreographies).
+To analyze student engagement beyond simple metrics, researchers use techniques to model the \emph{sequence} of student actions.
 
 \subsection{Educational Process Mining (EPM)}
-%% Source: Bogarin et al. (2018) - The standard reference for EPM.
-
-A dominant approach in the literature is Educational Process Mining (EPM).
-As detailed in the survey by Bogarín et al.~\cite{bogarin_survey_2018}, EPM applies process mining techniques—originally designed for business workflow analysis—to educational data.
-EPM treats the learning process as a series of events (e.g., \texttt{Quiz Start} $\rightarrow$ \texttt{Quiz End}) and attempts to discover the ``process model'' or flow that students follow.
-
-While effective for structured tasks (like a specific exam), Bogarín et al.~\cite{bogarin_survey_2018} note that EPM can face challenges in more flexible open-ended learning environments.
-In full-time virtual schools where students have autonomy over their schedule, EPM often results in ``spaghetti models''—complex, tangled diagrams that are difficult to interpret because students do not follow a strict linear path.
+A dominant approach is Educational Process Mining (EPM). As detailed by Bogarín et al.~\cite{bogarin_survey_2018}, EPM applies process mining techniques to educational data, treating learning as a series of events (e.g., \texttt{Quiz Start} $\rightarrow$ \texttt{Quiz End}).
+While effective for structured tasks, Bogarín et al.~\cite{bogarin_survey_2018} note that EPM faces challenges in flexible environments.
+In full-time virtual schools, EPM often results in ``spaghetti models''—complex, tangled diagrams that are difficult to interpret. 
+%% FEEDBACK INTEGRATION: Added explicit link to RQ5 (Teacher Actionability) as requested.
+\textbf{This lack of readability makes such models unsuitable for teachers who need clear, actionable insights (addressing RQ5), necessitating a higher-level abstraction like Virtual Choreographies.}
 
 \subsection{The Virtual Choreographies Framework}
-%% Source: Cassola et al. (2022) - The INESC TEC framework you are adopting.
-
 To address the limitations of rigid process maps, this dissertation adopts the concept of \textbf{Virtual Choreographies}.
-This framework was developed within INESC TEC to identify behavioral patterns in complex environments.
 Cassola et al.~\cite{cassola_using_2022} define a \emph{Virtual Choreography} as a platform-independent representation of actions, interactions, and events that unfold over time.
-
-Although originally applied to domains such as Virtual Reality~\cite{cassola_design_2022} and energy consumption behavior~\cite{cassola_using_2022}, the core mathematical concept is highly applicable to education.
 Unlike raw clickstreams, a Virtual Choreography maps technical events into \textbf{semantic actions} (e.g., mapping \texttt{URL:/math/quiz/1} to \texttt{Assessment}).
 This abstraction allows for:
 \begin{itemize}
-    \item \textbf{Platform Independence:} The analysis focuses on the \textit{behavior} (studying), not the \textit{system} (clicking a specific button ID).
-    \item \textbf{Routine Discovery:} By analyzing these choreographies, we can identify clusters of students who share similar daily routines (e.g., ``Late Night Crammers'' vs. ``Steady Workers''), regardless of the specific course they are taking.
+    \item \textbf{Platform Independence:} The analysis focuses on the behavior, not the system.
+    \item \textbf{Routine Discovery:} It enables the identification of clusters of students who share similar daily routines (e.g., ``Late Night Crammers'' vs. ``Steady Workers'') regardless of the specific course.
 \end{itemize}
 
 \section{Unsupervised Learning Techniques}
 \label{sec:algorithms}
-%% Purpose: Explain the specific AI tools (Algorithms) used to implement the framework.
-
-The discovery of these choreographies relies on unsupervised machine learning algorithms to group similar behaviors without pre-defined labels.
+The discovery of these choreographies relies on unsupervised machine learning algorithms.
 
 \subsection{Clustering Algorithms}
-Clustering is the task of grouping a set of objects so that objects in the same group (cluster) are more similar to each other than to those in other groups.
+Clustering groups objects so that objects in the same group are more similar to each other than to those in other groups.
 In EDM, the most widely used algorithm is \textbf{k-Means}, due to its computational efficiency and interpretability~\cite{romero_edm_survey}.
-However, k-Means requires the number of clusters ($k$) to be specified in advance, often necessitating the use of validation metrics (such as the Elbow Method or Silhouette Score) to determine the optimal number of student profiles.
+However, k-Means requires the number of clusters ($k$) to be specified, necessitating the use of validation metrics such as the Elbow Method or Silhouette Score.
 
 \subsection{Dimensionality Reduction}
-Student behavioral data is often high-dimensional (e.g., counts of 50 different action types over 30 weeks).
-To visualize these clusters effectively, dimensionality reduction techniques are required.
-\textbf{t-SNE} (t-Distributed Stochastic Neighbor Embedding) and \textbf{UMAP} (Uniform Manifold Approximation and Projection) are state-of-the-art non-linear techniques used to project high-dimensional data into 2D or 3D space.
+Student behavioral data is often high-dimensional. To visualize clusters effectively, dimensionality reduction is required.
+\textbf{t-SNE} and \textbf{UMAP} are state-of-the-art non-linear techniques used to project high-dimensional data into 2D space.
 These visualizations allow researchers to ``see'' the separation between different student groups and validate whether the identified choreographies represent distinct behavioral patterns.
 
 \section{Summary}
-%% Purpose: Wrap up. Connects the "Tool" (Choreographies) back to the "Problem" (At-risk students) from Chapter 2.
-
-Current research in K--12 online learning (Chapter 2) highlights the need for better support systems for at-risk students.
-Technologically, while Educational Process Mining offers tools to analyze sequences, it can be overly rigid for the flexible nature of online schooling.
+Current research highlights the need for better support systems for at-risk students.
+Technologically, while EPM offers tools to analyze sequences, it can be overly rigid for online schooling.
 By adapting the \textit{Virtual Choreographies} framework~\cite{cassola_using_2022} and combining it with standard EDM clustering techniques~\cite{romero_edm_survey}, this thesis aims to discover interpretable patterns of student behavior that can inform the educational strategies discussed in the literature review.

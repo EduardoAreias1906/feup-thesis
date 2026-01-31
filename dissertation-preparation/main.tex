@@ -62,6 +62,10 @@
 %% url, setspace, makeidx, graphicx, xcolor, etc (see README)
 
 %% Include here any other packages you need
+% ---------------------------------------------------------
+% CORREÇÃO: Pacote necessário para a lista de acrónimos
+\usepackage{acronym}
+% ---------------------------------------------------------
 
 %% Use folder ``figures'' to keep all your figures
 %% Path to the figures directory
@@ -88,7 +92,7 @@
 %\thesisdate{July 31, 2008}
 
 %% Comment next line copyright text if not used
-\copyrightnotice{Eduardo Salé Areias, 2025}
+%\copyrightnotice{Eduardo Salé Areias, 2025}
 %\copyrightnotice{Eduardo Salé Areias, 2025}
 
 \supervisor{Supervisor}{Prof.\ Fernando Cassola Marques}
@@ -137,10 +141,10 @@
   %%--\cleardoublepage
   %%--\pdfbookmark[0]{List of Figures}{figures}
   %%--\listoffigures
-  %%--\cleardoublepage
-  %%--\pdfbookmark[0]{List of Tables}{tables}
-  %%--\listoftables
-  %%--\include{frontmatter/abbrevs}  % the list of acronyms used if needed
+  \cleardoublepage
+  \pdfbookmark[0]{List of Tables}{tables}
+  \listoftables
+  \include{frontmatter/abbrevs}  % the list of acronyms used if needed
 \end{Prolog}
 
 %%----------------------------------------
@@ -151,7 +155,7 @@
 \include{body/thesis-manifest} 
 \include{body/literature-review} 
 \include{body/state-of-art}
-\include{body/chapter3}
+\include{body/proposed_approach}
 %% Uncomment to see a listing example for option meic (meic.cfg loaded)
 %\--include{body/chapter45-listing}
 

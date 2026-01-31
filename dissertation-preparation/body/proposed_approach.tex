@@ -1,0 +1,130 @@
+\chapter{Proposed Approach}
+\label{chap:approach}
+
+%% PURPOSE: This chapter transforms the "What" (Literature) and "How" (State of Art) into a concrete "Work Plan". 
+%% It details the pipeline from Raw Data -> Educational Insight.
+
+\section{Overview}
+Building upon the research context defined in the Thesis Manifest (Chapter~\ref{chap:manifest}) and the technical state of the art (Chapter~\ref{chap:stateofart}), this chapter details the methodological approach adopted to identify and analyze Virtual Choreographies in K--12 online schools. 
+The proposed solution is a data-driven pipeline designed to transform raw interaction logs from the Connections Academy Learning Management System (LMS) into interpretable behavioral patterns. 
+The approach combines the semantic abstraction of the \textit{Virtual Choreographies} framework~\cite{cassola_using_2022} with the unsupervised machine learning techniques reviewed in Chapter~\ref{chap:stateofart}. 
+The ultimate goal is to move from low-level clickstream data to high-level educational insights that allow us to distinguish successful learning routines from those that signal disengagement, with a particular focus on the ``at-risk'' populations identified in the literature~\cite{beck_atrisk_2024}.
+
+\section{Methodological Architecture}
+The research will follow a four-stage pipeline: (1) Data Collection and Preprocessing, (2) Semantic Abstraction, (3) Pattern Discovery (Clustering), and (4) Evaluation and Association.
+
+\subsection{Stage 1: Data Collection and Context}
+The dataset for this dissertation is provided by Pearson Online and Blended Learning, encompassing activity logs from 32 Connections Academy schools across the United States.
+\begin{itemize}
+    \item \textbf{Population:} The study focuses on K--12 students. 
+    %% STRATEGY: Explicitly addressing the "At-Risk" focus here to satisfy Prof. Beck's concern about population specifics.
+    To address the concerns raised by Beck~\cite{beck_prepared_2023}, the data processing will preserve metadata that allows us to distinguish between general enrollment and students identified as ``at-risk'' (due to prior academic failure, special education status, or medical/social challenges).
+    \item \textbf{Data Granularity:} The raw data consists of server-level logs capturing timestamped events (e.g., login times, page accesses, quiz submissions, live lesson attendance).
+    \item \textbf{Privacy:} All data is pseudonymized to ensure student privacy. Personal identifiers are replaced with unique hash keys before the analysis begins.
+\end{itemize}
+
+\subsection{Stage 2: Semantic Abstraction (The Virtual Choreography)}
+A core challenge identified in Section~\ref{sec:modeling} is the ``spaghetti model'' problem inherent in analyzing flexible online learning environments~\cite{bogarin_survey_2018}. To overcome this, we apply the \textit{Virtual Choreography} abstraction layer.
+
+We will map raw URLs and system events into a finite set of \textbf{Semantic Actions}. As emphasized in the literature review regarding student isolation~\cite{fostering_curtis_2015}, this mapping will prioritize not only content consumption but also \textbf{social and interactive behaviors}.
+
+%% FEEDBACK INTEGRATION: Added "Rule-based audit" validation to address Prof. Beck's question on mapping quality.
+To ensure the reliability of this abstraction, we will conduct a \textbf{rule-based mapping audit}. A random sample of raw events will be manually reviewed against the generated semantic labels to verify that the mapping logic captures the educational intent correctly (e.g., ensuring a "Discussion Board" click is classified as interaction, not just passive viewing).
+
+Table~\ref{tab:mapping} illustrates proposed examples of this mapping strategy:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Raw Log Pattern (Example)} & \textbf{Semantic Action} & \textbf{Category} \\ \hline
+\texttt{URL:/math/algebra/quiz/start} & \textbf{Assessment\_Start} & Evaluation \\ \hline
+\texttt{URL:/live-lesson/room-101} & \textbf{Synchronous\_Participation} & Social/Instruction \\ \hline
+\texttt{URL:/mail/compose/teacher} & \textbf{Teacher\_Interaction} & Social \\ \hline
+\texttt{URL:/feedback/view} & \textbf{Feedback\_Review} & Metacognition \\ \hline
+\texttt{URL:/content/pdf/view} & \textbf{Content\_Study} & Asynchronous \\ \hline
+\end{tabular}
+\caption{Examples of mapping raw logs to Semantic Actions.}
+\label{tab:mapping}
+\end{table}
+
+This abstraction creates a sequence of events $S = \{a_1, a_2, ..., a_n\}$ for each student per day, which constitutes the basis of a daily choreography.
+
+\subsection{Stage 3: Pattern Discovery}
+To answer \textbf{RQ1 (Identification)}, we will employ unsupervised learning to group similar daily sequences.
+
+\begin{enumerate}
+    \item \textbf{Vectorization:} Student daily activities will be converted into numerical vectors to represent the ``rhythm'' of their day. Specifically, we will utilize \textbf{action frequency vectors} combined with \textbf{time-of-day bins} (e.g., Morning, Afternoon, Evening) to capture not just \textit{what} students do, but \textit{when} they do it.
+    
+    %% FEEDBACK INTEGRATION: Added "Segmented Analysis" to address Prof. Cassola's concern about washing out at-risk patterns.
+    \item \textbf{Targeted Segmentation (At-Risk Analysis):} While we will perform clustering on the general population, a key methodological step is the \textbf{segmented analysis of at-risk students}. We will run the clustering algorithms specifically within the sub-population of at-risk students. This ensures that subtle behavioral patterns unique to this group are not ``washed out'' by the dominant behaviors of the general student body.
+    
+    \item \textbf{Clustering:} As discussed in Section~\ref{sec:algorithms}, we will apply the \textbf{k-Means} algorithm. The optimal number of clusters ($k$) will be determined using the Elbow Method and Silhouette Analysis.
+    
+    \item \textbf{Visualization:} To inspect the robustness of these clusters (\textbf{RQ2}), we will use \textbf{UMAP} (Uniform Manifold Approximation and Projection) to project the high-dimensional data into 2D space.
+\end{enumerate}
+
+\section{Experimental Process and Evaluation Design}
+The evaluation is designed to directly address the Research Questions and test the Hypotheses (H1--H5) defined in the Thesis Manifest.
+
+\subsection{Stability and Robustness (Addressing RQ1 \& RQ2)}
+Once clusters are identified, we will validate them by:
+\begin{itemize}
+    \item \textbf{Temporal Stability (RQ1):} We will measure the consistency of student cluster membership over time using the \textbf{Adjusted Rand Index (ARI)} between weeks. This will determine if students possess a stable "learning type" or if their behavior is volatile.
+    \item \textbf{Cross-Context Validation (RQ2):} We will test the hypothesis that choreographies are more stable in highly structured subjects (e.g., Mathematics) compared to open-ended ones (e.g., Creative Arts). We will verify if the same patterns emerge across different grades (5th vs. 10th grade) to ensure they are universal habits.
+\end{itemize}
+
+\subsection{Association with Outcomes (Addressing RQ3)}
+To validate H1 (Regularity) and H2 (Balanced Participation), we will perform statistical correlation analysis between the identified choreographies and student success metrics.
+
+Given the specific needs of the at-risk population~\cite{beck_atrisk_2024}, "Success" will be defined by:
+\begin{enumerate}
+    \item \textbf{Academic Performance:} Final course grades and standardized test scores.
+    \item \textbf{Retention:} The student's ability to maintain enrollment (non-dropout).
+\end{enumerate}
+
+%% EVALUATION STRATEGY: Controlling for background variables is crucial to isolate the effect of behavior (Choreographies) from demographics.
+We will use regression models to quantify the impact of adopting a specific choreography on these outcomes. Crucially, we will control for student background using available variables such as \textbf{Free/Reduced Lunch status} (socioeconomic proxy) and \textbf{Special Education (IEP) status}.
+
+\subsection{Predictive Utility (Addressing RQ4)}
+%% DECISION: Removed "Lightweight Neural Networks" to focus on Random Forest, prioritizing interpretability (Feature Importance) over black-box accuracy.
+We will train supervised classification models to predict student success. We selected \textbf{Random Forests} as the primary model due to their ability to provide feature importance (interpretability), avoiding the "black box" nature of complex neural networks.
+
+\textbf{Validation Strategy:} To prevent data leakage, we will use a \textbf{time-based split}: training the models on data from the first half of the semester and testing on the second half (or using a previous cohort year for training and the current year for testing).
+
+We will compare two conditions:
+\begin{enumerate}
+    \item \textbf{Baseline:} Prediction using only standard institutional metrics (login count, total time online). These are the current "state-of-the-art" metrics available to teachers in most LMS dashboards.
+    \item \textbf{Experimental:} Prediction using standard metrics + \textbf{Choreography Cluster ID}.
+\end{enumerate}
+This will determine if the "shape" of behavior adds predictive power beyond the simple volume of activity.
+
+\subsection{Actionability (Addressing RQ5)}
+To determine which components drive success, we will analyze the \textbf{Feature Importance} (e.g., Gini importance or SHAP values) derived from the Random Forest models. This will allow us to tell teachers specifically which transitions (e.g., "Reviewing Feedback $\rightarrow$ Resubmitting") are the strongest signals of success.
+
+\section{Expected Results}
+We anticipate identifying 4--6 distinct behavioral choreographies. Based on the hypotheses presented in Chapter~\ref{chap:manifest}:
+\begin{itemize}
+    \item We expect to confirm that \textbf{Regularity} (H1) is a stronger predictor of success than total time spent.
+    \item We anticipate uncovering a ``risk'' profile characterized by high asynchronous activity but low synchronous interaction (validating H5), supporting the concerns about isolation raised by Curtis and Werth~\cite{fostering_curtis_2015}.
+    \item The results will provide a new layer of analytics for Connections Academy, enabling teachers to intervene based on \textit{how} a student is learning, not just \textit{if} they are logging in.
+\end{itemize}
+
+\section{Work Plan}
+The following timeline details the schedule for the completion of the dissertation.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|p{9cm}|}
+\hline
+\textbf{Month} & \textbf{Activity} \\ \hline
+\textbf{February} & \textbf{Data Preprocessing \& Abstraction:} Cleaning the Connections Academy dataset; implementing rule-based mapping audit; separating "at-risk" vs. general cohorts. \\ \hline
+\textbf{March} & \textbf{Clustering \& Discovery (RQ1, RQ2):} Running k-Means on both general and at-risk populations; refining the number of clusters; characterizing the identified choreographies. \\ \hline
+\textbf{April} & \textbf{Association Analysis (RQ3):} Statistical analysis linking clusters to Grades and Retention (controlling for IEP/Lunch status). \\ \hline
+\textbf{May} & \textbf{Predictive Modeling (RQ4) \& Visualization (RQ5):} Training Random Forest models with time-based splitting; designing visualizations. \\ \hline
+\textbf{June} & \textbf{Writing \& Revision:} Finalizing the ``Results'' and ``Discussion'' chapters; integrating all chapters; final review with supervisors. \\ \hline
+\textbf{July} & \textbf{Submission \& Defense:} Final submission of the dissertation document and preparation for the public defense. \\ \hline
+\end{tabular}
+\caption{Work plan for the Spring 2026 semester.}
+\label{tab:workplan}
+\end{table}

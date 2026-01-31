@@ -1,44 +1,37 @@
-\chapter{Thesis Manifest} \label{chap:manifest}
-%% early-stage scoping for alignment and feasibility; presents Context, Motivation, Problem, Research Questions, and Hypothesis in a concise, self-contained format.
+\chapter{Thesis Manifest}
+\label{chap:manifest}
 
-\section{Context} \label{sec:se1}
-%% situates the project in fully online K--12 schooling, states scale/setting, and frames why behavior patterns matter for learning progress.
+%% PURPOSE: This chapter serves as the project's "elevator pitch". 
+%% It ensures alignment between the educational problem (Context) and the engineering solution (Virtual Choreographies).
 
-Connections Academy, supported by Pearson Online and Blended Learning, operates fully online public schools serving K–12 students across 32 U.S. states and enrolling over 100,000 learners.
+\section{Context} \label{sec:context}
+Connections Academy, supported by Pearson Online and Blended Learning, operates fully online public schools serving K--12 students across 32 U.S. states and enrolling over 100,000 learners.
 Independent national reviews repeatedly find that students in full-time virtual schools, on average, underperform peers in traditional brick-and-mortar public schools on standardized measures~\cite{molnar_virtual_2023}.
 However, the literature suggests these schools often serve a distinct population of ``at-risk'' students who have opted out of traditional schooling due to medical, social, or academic challenges~\cite{beck_prepared_2023}.
+%% STRATEGY: Highlighting "at-risk" early to justify why standard analysis fails and why we need granular behavioral analysis.
 These complex demographics make it crucial to understand what students actually \emph{do} in virtual classrooms—beyond simple attendance—and how their behavioral routines relate to learning progress.
 
-\section{Motivation} \label{sec:ae2}
-%% explains why the topic matters now (practical and scientific relevance) and highlights the evidence gap the thesis will address.
-
-Despite the scale of full-time online schooling, there is limited empirical detail about students’ fine-grained learning activities—how they navigate content, participate in live sessions, and interact with teachers and peers—and how these behaviors connect to outcomes~\cite{online_johnson_2022}.
+\section{Motivation} \label{sec:motivation}
+Despite the scale of full-time online schooling, there is limited empirical detail about students' fine-grained learning activities—how they navigate content, participate in live sessions, and interact with teachers and peers—and how these behaviors connect to outcomes~\cite{online_johnson_2022}.
 Addressing this evidence gap can inform practice in large online school networks and help target support to the students who need it most, particularly those whose engagement patterns signal early risk of failure.
 
-\section{Problem} \label{sec:ae3}
-%% states the core research problem precisely—identify, describe, and relate online behavior patterns (virtual choreographies) to academic success.
-
-This dissertation investigates \emph{virtual choreographies}—recurring sequences of online learning actions—as a lens to characterize K–12 students’ behavior at scale and to examine how such patterns are associated with academic success.
+\section{Problem} \label{sec:problem}
+This dissertation investigates \emph{virtual choreographies}—recurring sequences of online learning actions—as a lens to characterize K--12 students' behavior at scale and to examine how such patterns are associated with academic success.
+%% DEFINITION: Connecting the problem directly to the INESC TEC framework (Cassola).
 Concretely, the aim is to identify, describe, and relate behavior patterns observed in activity logs to indicators of performance in fully online schools, utilizing the platform-independent framework proposed by Cassola et al.~\cite{cassola_using_2022}.
 
-\section{Research Questions} \label{sec:ae4}
-%% lists the guiding questions that structure the study design (discovery, variation, outcomes, and methodological approach).
-
+\section{Research Questions} \label{sec:rqs}
+%% STRATEGY: The RQs follow a logical pipeline: Find (RQ1) -> Verify (RQ2) -> Correlate (RQ3) -> Predict (RQ4) -> Act (RQ5).
 \begin{enumerate}
   \item[\textbf{RQ1}] \textbf{Identification.} Which \emph{virtual choreographies} (recurring sequences of online learning actions) can be reliably discovered in Connections Academy data using unsupervised clustering, and how stable are they over time?
-
   \item[\textbf{RQ2}] \textbf{Robustness across contexts.} To what extent do the discovered choreographies replicate across grades, subjects, schools, and cohorts (i.e., are they consistent behavioral habits rather than school- or cohort-specific artifacts)?
-
   \item[\textbf{RQ3}] \textbf{Association with outcomes.} How are choreography \emph{attributes}—such as temporal regularity, balance between synchronous and asynchronous participation, and frequency of feedback—associated with indicators of student success (e.g., progress, grades), when controlling for student background?
-
   \item[\textbf{RQ4}] \textbf{Predictive utility.} Do choreography-based representations improve early prediction of student success over standard activity metrics, and how early in the semester can such signals be detected?
-
   \item[\textbf{RQ5}] \textbf{Actionability and Visualization.} Which components within the choreographies (specific actions, transitions, or rhythms) most contribute to outcomes, and how can these be visualized to support teacher decision-making?
 \end{enumerate}
 
-
-\section{Hypotheses} \label{sec:ae5}
-%% Purpose: define "virtual choreography" and state testable expectations for the thesis.
+\section{Hypotheses} \label{sec:hypotheses}
+%% NOTE: Each hypothesis is directly testable by a specific chapter/experiment.
 
 \paragraph{Definition (Virtual Choreography).}
 A \emph{virtual choreography} is the structured set of actions carried out among agents (e.g., student, teacher, platform tools) that unfolds over time and within a specific learning space, abstracting specific platform clicks into semantic behaviors~\cite{cassola_using_2022}.
@@ -47,14 +40,23 @@ A \emph{virtual choreography} is the structured set of actions carried out among
 \noindent\textbf{H1 — Regularity.}
 Choreographies exhibiting stable temporal rhythms (e.g., consistent study times and revisits across the week) are positively associated with academic success.
 
+\medskip
 \noindent\textbf{H2 — Balanced participation.}
 Choreographies that balance synchronous participation (live sessions) and asynchronous work (content study, assignment submission) relate to better outcomes than predominantly one-sided patterns.
 
-\noindent\textbf{H3 — Feedback-centric interaction.}
-Choreographies with frequent teacher–student feedback exchanges (asking questions, reading feedback, revising submissions) are positively associated with success.
+\medskip
+%% FEEDBACK INTEGRATION: Added H_Robustness to specifically address Prof. Cassola's comment about missing a hypothesis for RQ2.
+\noindent\textbf{H\_Robustness — Context Stability (Addressing RQ2).}
+We hypothesize that choreographies associated with highly structured subjects (e.g., Mathematics) will exhibit higher stability across cohorts than those in open-ended or creative subjects, and that core behavioral habits will remain consistent across adjacent grade levels.
 
+\medskip
+\noindent\textbf{H3 — Feedback-centric interaction.}
+Choreographies with frequent teacher--student feedback exchanges (asking questions, reading feedback, revising submissions) are positively associated with success.
+
+\medskip
 \noindent\textbf{H4 — Purposeful navigation.}
 Choreographies characterized by efficient, task-aligned navigation (timely access to resources, limited detours) are associated with stronger progress than fragmented, sporadic engagement.
 
+\medskip
 \noindent\textbf{H5 — Risk signals (inverse).}
 Choreographies marked by long inactivity gaps, last-minute bursts, or minimal interaction with teachers/peers correlate with weaker outcomes.
