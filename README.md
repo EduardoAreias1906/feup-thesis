@@ -5,7 +5,7 @@
 * **Author:** Eduardo Salé Areias
 * **Supervisor:** Prof. Fernando Cassola Marques (FEUP/INESC TEC)
 * **Co-Supervisor:** Prof. Dennis Beck (University of Arkansas)
-* **Year:** 2024/2025
+* **Year:** 2025/2026
 
 ---
 
