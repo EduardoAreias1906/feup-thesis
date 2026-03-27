@@ -218,6 +218,7 @@ ARCHETYPES = {
     },
 }
 
+
 # ═══════════════════════════════════════════════════════════════════════════
 # HELPER FUNCTIONS
 # ═══════════════════════════════════════════════════════════════════════════
@@ -407,12 +408,12 @@ def generate_students(rng: np.random.Generator, num_students: int) -> pd.DataFra
             "school": school,
             "enrollment_start": enrollment_start.strftime("%Y-%m-%d"),
             "enrollment_end": enrollment_end.strftime("%Y-%m-%d"),
-            "withdrew_early": dropped,
             "at_risk": is_at_risk,
             "iep_504_plan": has_iep_504,
             "enrollment_reason": enrollment_reason,
-            "archetype": archetype,         # ground truth — useful for validation
             "subjects": ";".join(student_subjects),
+            "_archetype": archetype,        # internal only, dropped before saving
+            "_withdrew_early": dropped,     # internal only, dropped before saving
         })
 
     return pd.DataFrame(rows)
@@ -439,7 +440,7 @@ def generate_activity_logs(rng: np.random.Generator,
         if idx % 500 == 0:
             print(f"  Activity logs: student {idx + 1}/{total}...")
 
-        params = ARCHETYPES[student["archetype"]]
+        params = ARCHETYPES[student["_archetype"]]
         subjects = student["subjects"].split(";")
         enroll_start = datetime.strptime(student["enrollment_start"], "%Y-%m-%d")
         enroll_end = datetime.strptime(student["enrollment_end"], "%Y-%m-%d")
@@ -541,7 +542,7 @@ def generate_interactions(rng: np.random.Generator,
         if idx % 1000 == 0:
             print(f"  Interactions: student {idx + 1}/{total}...")
 
-        params = ARCHETYPES[student["archetype"]]
+        params = ARCHETYPES[student["_archetype"]]
         enroll_start = datetime.strptime(student["enrollment_start"], "%Y-%m-%d")
         enroll_end = datetime.strptime(student["enrollment_end"], "%Y-%m-%d")
         enrolled_weeks = max(1, (enroll_end - enroll_start).days // 7)
@@ -601,9 +602,9 @@ def generate_academic_outcomes(rng: np.random.Generator,
     rows = []
 
     for _, student in students_df.iterrows():
-        params = ARCHETYPES[student["archetype"]]
+        params = ARCHETYPES[student["_archetype"]]
         subjects = student["subjects"].split(";")
-        dropped = student["withdrew_early"]
+        dropped = student["_withdrew_early"]
 
         # Base academic ability (student-level random effect)
         ability_offset = rng.normal(0, 5)
@@ -662,7 +663,6 @@ def generate_academic_outcomes(rng: np.random.Generator,
                 "student_id": student["student_id"],
                 "subject": subject,
                 "final_grade": round(grade, 1),
-                "gpa_equivalent": round(np.clip(grade / 25, 0, 4.0), 2),
                 "assignment_scores": ";".join(map(str, assignment_scores)),
                 "quiz_scores": ";".join(map(str, quiz_scores)),
                 "standardized_test_score": std_test_score,
@@ -691,12 +691,10 @@ def generate_data_dictionary(output_dir: str):
 | grade_level        | int      | 0 = Kindergarten, 1–12                                   |
 | school             | string   | School identifier (e.g., CA-FL)                          |
 | enrollment_start   | date     | First day of enrollment (YYYY-MM-DD)                     |
-| enrollment_end     | date     | Last day (withdrawal date if withdrew_early=True)        |
-| withdrew_early     | bool     | True if student dropped out before year end              |
+| enrollment_end     | date     | Last day of enrollment (withdrawal date if applicable)   |
 | at_risk            | bool     | At-risk status indicator                                 |
 | iep_504_plan       | bool     | Has IEP or 504 accommodation plan                       |
 | enrollment_reason  | string   | Reason for choosing online school                        |
-| archetype          | string   | Ground-truth behavioral archetype (for validation only)  |
 | subjects           | string   | Semicolon-separated list of enrolled subjects            |
 
 ## activity_logs.csv
@@ -749,21 +747,11 @@ Feedback_Received, Forum_Post, Forum_Reply_Received, Live_Question_Asked
 | student_id                | string | Links to students.csv                            |
 | subject                   | string | Course/subject name                              |
 | final_grade               | float  | Final course grade (0–100)                       |
-| gpa_equivalent            | float  | Grade on 0.0–4.0 scale                          |
 | assignment_scores         | string | Semicolon-separated individual scores (0–100)    |
 | quiz_scores               | string | Semicolon-separated individual scores (0–100)    |
 | standardized_test_score   | int    | Standardized test (200–800 scale), null if N/A   |
 | completion_percentage     | float  | Percentage of course completed                   |
 | passed                    | bool   | True if grade >= 60 and completion >= 70%        |
-
-## Behavioral Archetypes (ground truth)
-| Archetype          | Hypothesis | Typical Profile                                    |
-|--------------------|------------|----------------------------------------------------|
-| Steady_Worker      | H1         | Regular rhythm, consistent times, high success      |
-| Balanced_Engager   | H2         | Good sync/async balance, strong feedback, success   |
-| Night_Crammer      | H5 partial | Late-night bursts, gaps, moderate outcomes          |
-| Minimal_Browser    | H4 inverse | Sporadic, fragmented, weak outcomes                 |
-| Disengaged_Ghost   | H5         | Long inactivity, minimal interaction, failure-prone |
 """
     path = os.path.join(output_dir, "DATA_DICTIONARY.md")
     with open(path, "w") as f:
@@ -802,14 +790,12 @@ def main():
     print("[1/4] Students & demographics...")
     students_df = generate_students(rng, args.num_students)
     students_path = os.path.join(args.output_dir, "students.csv")
-    students_df.to_csv(students_path, index=False)
+    # Drop internal columns before saving
+    save_cols = [c for c in students_df.columns if not c.startswith("_")]
+    students_df[save_cols].to_csv(students_path, index=False)
     print(f"  ✓ {len(students_df)} students → {students_path}")
 
-    # Print archetype distribution
-    print("\n  Archetype distribution:")
-    for name, count in students_df["archetype"].value_counts().items():
-        pct = count / len(students_df) * 100
-        print(f"    {name:20s}: {count:5d} ({pct:.1f}%)")
+    # Print summary
     print(f"  At-risk students: {students_df['at_risk'].sum()} "
           f"({students_df['at_risk'].mean()*100:.1f}%)")
     print()
@@ -853,9 +839,7 @@ def main():
         size_mb = os.path.getsize(fpath) / (1024 * 1024)
         print(f"  {fname:30s} {size_mb:8.1f} MB")
     print()
-    print("Tip: The 'archetype' column in students.csv is the ground truth.")
-    print("     Use it to validate your clustering pipeline, then remove it")
-    print("     before running blind experiments.")
+    print("Done! You can now inspect the data with inspect_data.py")
     print()
 
 
