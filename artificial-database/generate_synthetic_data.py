@@ -12,7 +12,7 @@ Generates four interlinked CSV files matching the Data Specification:
 
 Design principles
 -----------------
-  - 5 000 students, K–12, spread across 32 Connections Academy schools.
+  - 2 000 students, K–12, spread across 32 Connections Academy schools.
   - 5 behavioral archetypes baked in so that clustering (k-means, UMAP)
     will surface meaningful choreographies aligned with hypotheses H1–H5.
   - At-risk students (~30%) have shifted distributions for engagement,
@@ -23,20 +23,10 @@ Design principles
 Usage
 -----
   python generate_synthetic_data.py                     # defaults
-  python generate_synthetic_data.py --output-dir ./data # custom output
-  python generate_synthetic_data.py --seed 123          # reproducibility
-  python generate_synthetic_data.py --num-students 1000 # smaller sample
 
 Requirements
 ------------
   pip install pandas numpy
-
-Output (approx. sizes for 5 000 students)
-------------------------------------------
-  students.csv          ~  500 KB
-  activity_logs.csv     ~ 150–250 MB   (millions of rows)
-  interactions.csv      ~  10–20 MB
-  academic_outcomes.csv ~    1 MB
 =============================================================================
 """
 
@@ -771,8 +761,8 @@ def main():
                         help="Directory for output CSV files (default: ./data)")
     parser.add_argument("--seed", type=int, default=42,
                         help="Random seed for reproducibility (default: 42)")
-    parser.add_argument("--num-students", type=int, default=5000,
-                        help="Number of students to generate (default: 5000)")
+    parser.add_argument("--num-students", type=int, default=2000,
+                        help="Number of students to generate (default: 2000)")
     args = parser.parse_args()
 
     os.makedirs(args.output_dir, exist_ok=True)
@@ -801,7 +791,7 @@ def main():
     print()
 
     # B. Activity logs
-    print("[2/4] Activity logs (this takes a while for 5000 students)...")
+    print("[2/4] Activity logs (this takes a while for 2000 students)...")
     logs_df = generate_activity_logs(rng, students_df)
     logs_path = os.path.join(args.output_dir, "activity_logs.csv")
     logs_df.to_csv(logs_path, index=False)
