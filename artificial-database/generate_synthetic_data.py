@@ -679,11 +679,11 @@ def generate_data_dictionary(output_dir: str):
 |--------------------|----------|----------------------------------------------------------|
 | student_id         | string   | Anonymized unique ID (e.g., STU-000042)                  |
 | grade_level        | int      | 0 = Kindergarten, 1–12                                   |
-| school             | string   | School identifier (e.g., CA-FL)                          |
+| school             | string   | School identifier (e.g., CA-FL)                           |
 | enrollment_start   | date     | First day of enrollment (YYYY-MM-DD)                     |
 | enrollment_end     | date     | Last day of enrollment (withdrawal date if applicable)   |
 | at_risk            | bool     | At-risk status indicator                                 |
-| iep_504_plan       | bool     | Has IEP or 504 accommodation plan                       |
+| iep_504_plan       | bool     | Has IEP or 504 accommodation plan                        |
 | enrollment_reason  | string   | Reason for choosing online school                        |
 | subjects           | string   | Semicolon-separated list of enrolled subjects            |
 
@@ -691,7 +691,7 @@ def generate_data_dictionary(output_dir: str):
 | Column             | Type     | Description                                              |
 |--------------------|----------|----------------------------------------------------------|
 | student_id         | string   | Links to students.csv                                    |
-| timestamp          | datetime | Exact date and time (YYYY-MM-DD HH:MM:SS)               |
+| timestamp          | datetime | Exact date and time (YYYY-MM-DD HH:MM:SS)                |
 | session_id         | string   | Groups actions into a single study session               |
 | action_type        | string   | Semantic action (see list below)                         |
 | resource_category  | string   | Category of content accessed                             |
@@ -716,7 +716,7 @@ def generate_data_dictionary(output_dir: str):
 | Feedback_Review     | Metacognition        | Reviewed teacher feedback           |
 | Dashboard_View      | Navigation           | Viewed student dashboard            |
 | Grade_Check         | Navigation           | Checked grades                      |
-| Resource_Download   | Asynchronous Content | Downloaded a resource/file          |
+| Resource_Download   | Asynchronous Content | Downloaded a resource/file           |
 | Page_Navigation     | Navigation           | General page navigation             |
 
 ## interactions.csv
@@ -736,11 +736,11 @@ Feedback_Received, Forum_Post, Forum_Reply_Received, Live_Question_Asked
 |---------------------------|--------|--------------------------------------------------|
 | student_id                | string | Links to students.csv                            |
 | subject                   | string | Course/subject name                              |
-| final_grade               | float  | Final course grade (0–100)                       |
+| final_grade                | float   | Final course grade (0–100)                       |
 | assignment_scores         | string | Semicolon-separated individual scores (0–100)    |
 | quiz_scores               | string | Semicolon-separated individual scores (0–100)    |
 | standardized_test_score   | int    | Standardized test (200–800 scale), null if N/A   |
-| completion_percentage     | float  | Percentage of course completed                   |
+| completion_percentage     | float   | Percentage of course completed                   |
 | passed                    | bool   | True if grade >= 60 and completion >= 70%        |
 """
     path = os.path.join(output_dir, "DATA_DICTIONARY.md")
