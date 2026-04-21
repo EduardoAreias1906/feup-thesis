@@ -7,8 +7,4 @@ data/
 
 # Artificial database output files
 artificial-database/data/
-artificial-database/.venv/
 
-# Claude Code local settings
-.claude/
->>>>>>> f83f1a6f0610c195510201d72de5cfe85ed5b331
