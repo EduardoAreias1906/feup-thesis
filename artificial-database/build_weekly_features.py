@@ -4,28 +4,42 @@ build_weekly_features.py — Stage 3 Vectorization (Feature Engineering)
 Master's Thesis — Eduardo Salé Areias (FEUP / INESC TEC)
 =============================================================================
 
-Transforms the event-level activity_logs.csv into a WEEKLY feature matrix:
-one row per (Student_ID, week), where the columns are the action-frequency
-vector combined with time-of-day bins (Section 4.2.3 of the dissertation).
+Transforms event-level activity_logs.csv into a WEEKLY feature matrix:
+one row per (Student_ID, week). The vector deliberately separates two
+questions so neither drowns the other:
 
-This is the input for k-means clustering (RQ1) and UMAP visualization (RQ2).
+  WHAT the student does  -> proportion of each meaningful action type
+  WHEN they do it        -> proportion of activity in each time-of-day bin
 
-Unit of analysis: STUDENT-WEEK. All student-weeks are pooled so k-means learns
-GLOBAL cluster definitions; each student then has a sequence of weekly cluster
-labels, enabling the week-to-week ARI temporal-stability test (RQ1).
+WHY THIS DESIGN (important):
+A previous version used 17 actions x 4 time bins = 68 "Action__Bin" columns.
+That made k-means split students mostly by HOUR OF DAY (a Morning cluster, an
+Afternoon cluster...), because each action got fragmented across 4 columns and
+the time dimension dominated. It also let universal actions (Login, Logout,
+Page_Navigation) — which everyone does and which carry no behavioral signal —
+sit at the top of every cluster.
 
-Expected columns in activity_logs.csv:
-  Student_ID, Timestamp, Session_ID, Action_Type,
-  Subject, Resource_Category, Time_Of_Day, Duration_Seconds
+Fix:
+  1. DROP universal/structural actions that don't discriminate behavior
+     (Login, Logout). They just bound sessions.
+  2. Keep WHAT and WHEN as two SEPARATE, balanced blocks instead of a single
+     68-col cross product. "Content_Study" is now one feature regardless of
+     hour; the hour is summarized separately in 4 time-share columns.
 
-Feature columns: 17 action types x 4 time-of-day bins = 68 frequency features.
-  Morning 06:00-11:59 | Afternoon 12:00-17:59 | Evening 18:00-21:59 |
-  Night 22:00-05:59 (wraps midnight; captures late-night crammers)
+This focuses clustering on behavioral SHAPE (what mix of activities), which is
+what the hypotheses (H2 sync/async, H3 feedback, H5 disengagement) are about,
+while still preserving chronotype as a smaller, non-dominant signal.
 
-Plus 3 metadata columns (not clustered on; kept for the RQ4 volume baseline
-and for characterizing clusters): n_sessions, active_days, total_actions.
+Unit of analysis: STUDENT-WEEK. All student-weeks pooled -> global k-means
+clusters -> each student becomes a sequence of weekly labels (enables the
+week-to-week ARI temporal-stability test, RQ1).
 
-Outputs RAW COUNTS. Scaling/normalization happens in the clustering step.
+Output columns:
+  act__<ActionType>   : count of that action that week (raw count)
+  time__<Bin>         : count of events in that time bin that week (raw count)
+  n_sessions, active_days, total_actions : metadata (NOT clustered on)
+
+Scaling/normalization happens in run_clustering.py.
 
 Usage:
   python build_weekly_features.py
@@ -38,14 +52,14 @@ import os
 import numpy as np
 import pandas as pd
 
-# Column names as they appear in YOUR activity_logs.csv
 COL_STUDENT = "Student_ID"
 COL_TIME    = "Timestamp"
 COL_SESSION = "Session_ID"
 COL_ACTION  = "Action_Type"
 
-ACTION_TYPES = [
-    "Login", "Logout",
+# Actions that carry behavioral meaning (used as WHAT features).
+# Login/Logout are EXCLUDED: everyone does them, they only bound sessions.
+BEHAVIORAL_ACTIONS = [
     "Content_Study", "Video_Watch",
     "Assessment_Start", "Assessment_Submit",
     "Assignment_Start", "Assignment_Submit",
@@ -56,6 +70,9 @@ ACTION_TYPES = [
     "Resource_Download",
     "Page_Navigation",
 ]
+
+# Actions excluded from the WHAT block (still counted in metadata totals).
+EXCLUDED_ACTIONS = ["Login", "Logout"]
 
 TIME_BINS = ["Morning", "Afternoon", "Evening", "Night"]
 
@@ -82,20 +99,30 @@ def build_features(logs: pd.DataFrame, min_actions: int) -> pd.DataFrame:
         logs[COL_TIME] - pd.to_timedelta(logs[COL_TIME].dt.weekday, unit="D")
     ).dt.normalize()
 
-    print("  Assigning time-of-day bins...")
     logs["time_bin"] = assign_time_bin(logs["hour"])
-    logs["feature"] = logs[COL_ACTION] + "__" + logs["time_bin"]
 
-    print("  Aggregating counts per student-week x feature...")
-    counts = (
-        logs.groupby([COL_STUDENT, "week_start", "feature"])
+    # ---- WHAT block: counts per behavioral action (Login/Logout dropped) ----
+    print("  Building WHAT block (action-type counts)...")
+    behav = logs[logs[COL_ACTION].isin(BEHAVIORAL_ACTIONS)]
+    what = (
+        behav.groupby([COL_STUDENT, "week_start", COL_ACTION])
         .size()
-        .unstack("feature", fill_value=0)
+        .unstack(COL_ACTION, fill_value=0)
     )
+    what = what.reindex(columns=BEHAVIORAL_ACTIONS, fill_value=0)
+    what.columns = [f"act__{c}" for c in what.columns]
 
-    full_cols = [f"{a}__{b}" for a in ACTION_TYPES for b in TIME_BINS]
-    counts = counts.reindex(columns=full_cols, fill_value=0)
+    # ---- WHEN block: counts per time-of-day bin (all events) ----
+    print("  Building WHEN block (time-of-day counts)...")
+    when = (
+        logs.groupby([COL_STUDENT, "week_start", "time_bin"])
+        .size()
+        .unstack("time_bin", fill_value=0)
+    )
+    when = when.reindex(columns=TIME_BINS, fill_value=0)
+    when.columns = [f"time__{c}" for c in when.columns]
 
+    # ---- Metadata (not clustered on) ----
     print("  Computing per-week metadata (sessions, active days, totals)...")
     meta = logs.groupby([COL_STUDENT, "week_start"]).agg(
         n_sessions=(COL_SESSION, "nunique"),
@@ -103,7 +130,8 @@ def build_features(logs: pd.DataFrame, min_actions: int) -> pd.DataFrame:
         total_actions=(COL_ACTION, "size"),
     )
 
-    features = counts.join(meta).reset_index()
+    features = what.join(when, how="outer").join(meta, how="outer").reset_index()
+    features = features.fillna(0)
 
     before = len(features)
     features = features[features["total_actions"] >= min_actions].copy()
@@ -117,7 +145,8 @@ def build_features(logs: pd.DataFrame, min_actions: int) -> pd.DataFrame:
 
 
 def print_summary(features: pd.DataFrame):
-    feature_cols = [c for c in features.columns if "__" in c]
+    act_cols  = [c for c in features.columns if c.startswith("act__")]
+    time_cols = [c for c in features.columns if c.startswith("time__")]
     n_students = features[COL_STUDENT].nunique()
     weeks_per_student = features.groupby(COL_STUDENT).size()
 
@@ -126,7 +155,8 @@ def print_summary(features: pd.DataFrame):
     print("=" * 60)
     print(f"  Rows (student-weeks):     {len(features):,}")
     print(f"  Unique students:          {n_students:,}")
-    print(f"  Feature columns:          {len(feature_cols)} (action x time-bin)")
+    print(f"  WHAT features (actions):  {len(act_cols)}  (Login/Logout excluded)")
+    print(f"  WHEN features (time):     {len(time_cols)}")
     print(f"  Date range:               {features['week_start'].min().date()} "
           f"-> {features['week_start'].max().date()}")
     print()
@@ -136,14 +166,16 @@ def print_summary(features: pd.DataFrame):
           f"max={weeks_per_student.max()}  "
           f"mean={weeks_per_student.mean():.1f}")
     print()
-    block = features[feature_cols].values
-    sparsity = (block == 0).mean() * 100
-    print(f"  Feature-matrix sparsity:  {sparsity:.1f}% zeros")
+    print("  Total action counts (WHAT block, summed across all weeks):")
+    totals = features[act_cols].sum().sort_values(ascending=False)
+    for name, val in totals.items():
+        print(f"    {name:28s} {int(val):>12,}")
     print()
-    print("  Most frequent actions overall (sum across all weeks):")
-    totals = features[feature_cols].sum().sort_values(ascending=False)
-    for name, val in totals.head(8).items():
-        print(f"    {name:32s} {int(val):>10,}")
+    print("  Time-of-day distribution (WHEN block):")
+    tt = features[time_cols].sum()
+    tt_pct = tt / tt.sum() * 100
+    for name in time_cols:
+        print(f"    {name:18s} {tt_pct[name]:5.1f}%")
     print()
 
 
@@ -187,7 +219,7 @@ def main():
     print_summary(features)
     print(f"  Saved -> {out_path}")
     print()
-    print("  Next step: clustering (k-means + UMAP) on the 68 feature columns.")
+    print("  Next step: re-run clustering (python run_clustering.py).")
     print()
 
 

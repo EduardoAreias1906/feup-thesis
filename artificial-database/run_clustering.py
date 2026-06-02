@@ -57,6 +57,27 @@ def normalize_shape(X):
     return X / row_sums
 
 
+def safe_standardize(X):
+    """
+    Standardize columns (mean 0, std 1) but leave near-constant columns alone.
+    A plain StandardScaler divides by std; when a feature almost never occurs
+    its std is ~0, the division blows up (inf / NaN), and those exploded values
+    dominate k-means distances. Here we only scale columns with real variance
+    and zero-center the rest, so dead features simply carry no weight.
+    """
+    mean = X.mean(axis=0)
+    std = X.std(axis=0)
+    near_zero = std < 1e-8
+    std_safe = std.copy()
+    std_safe[near_zero] = 1.0          # avoid divide-by-zero
+    Xs = (X - mean) / std_safe
+    Xs[:, near_zero] = 0.0             # constant features contribute nothing
+    n_dropped = int(near_zero.sum())
+    if n_dropped:
+        print(f"  ({n_dropped} near-constant feature columns neutralized)")
+    return Xs
+
+
 def select_k(X_scaled, k_min, k_max, seed, out_dir):
     """Compute inertia (elbow) and silhouette across k; save plot."""
     from sklearn.cluster import KMeans
@@ -187,7 +208,6 @@ def main():
     args = ap.parse_args()
 
     from sklearn.cluster import KMeans
-    from sklearn.preprocessing import StandardScaler
 
     feat_path = args.features or os.path.join(args.data_dir, "student_week_features.csv")
     if not os.path.exists(feat_path):
@@ -206,7 +226,7 @@ def main():
     # 1. Shape normalization + standardization
     X_counts = df[feature_cols].values.astype(float)
     X_prop = normalize_shape(X_counts)          # proportions (for characterization)
-    X_scaled = StandardScaler().fit_transform(X_prop)  # for distance-based k-means
+    X_scaled = safe_standardize(X_prop)         # for distance-based k-means
 
     # 2. Choose k
     if args.k is None:

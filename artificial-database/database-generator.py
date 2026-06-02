@@ -3,6 +3,7 @@ import numpy as np
 from datetime import datetime, timedelta
 import random
 import os
+import argparse
 
 # Set seeds for reproducibility
 np.random.seed(42)
@@ -65,6 +66,35 @@ RESOURCE_MAP = {
     'Grade_Check':         'Navigation',
     'Resource_Download':   'Asynchronous Content',
     'Page_Navigation':     'Navigation',
+}
+
+# Mid-session actions — Login / Logout are enforced as explicit session boundaries
+MID_SESSION_ACTIONS = [
+    'Content_Study', 'Video_Watch',
+    'Assessment_Start', 'Assessment_Submit',
+    'Assignment_Start', 'Assignment_Submit',
+    'Synchronous_Join', 'Synchronous_Leave',
+    'Forum_View', 'Forum_Post',
+    'Feedback_Review',
+    'Dashboard_View', 'Grade_Check',
+    'Resource_Download', 'Page_Navigation',
+]
+
+def _norm(w):
+    a = np.array(w, dtype=float)
+    return a / a.sum()
+
+# Unnormalized weights, one value per MID_SESSION_ACTIONS entry (same order):
+# Content_Study, Video_Watch,
+# Assessment_Start, Assessment_Submit, Assignment_Start, Assignment_Submit,
+# Synchronous_Join, Synchronous_Leave, Forum_View, Forum_Post,
+# Feedback_Review, Dashboard_View, Grade_Check, Resource_Download, Page_Navigation
+ARCHETYPE_WEIGHTS = {
+    'Steady_Worker':    _norm([18,  8,  8,  7, 10,  9,  4,  4,  5,  3,  8,  6,  5,  6,  9]),
+    'Balanced_Engager': _norm([ 8,  5,  3,  3,  4,  4, 14, 13, 15, 13,  5,  5,  3,  4,  6]),
+    'Night_Crammer':    _norm([25, 18, 12, 11, 10,  9,  1,  1,  2,  1,  2,  3,  4,  6,  5]),
+    'Minimal_Browser':  _norm([ 4,  3,  2,  1,  2,  1,  3,  3,  4,  2,  2, 18, 10,  3, 22]),
+    'Disengaged_Ghost': _norm([ 2,  1,  1,  1,  1,  1,  1,  1,  2,  1,  1, 12,  5,  1, 29]),
 }
 
 # Actions that carry duration
@@ -210,15 +240,25 @@ def generate_activity_logs(students_df):
         enroll_end   = student['Enrollment_End']
         subjects     = student['Subjects'].split(';')
 
-        # Behavioural profile
+        # Behavioural profile — archetype drives action-type probabilities
         if is_at_risk:
             chronotype  = np.random.choice(['morning', 'afternoon', 'evening'], p=[0.20, 0.30, 0.50])
             att_rate    = np.random.uniform(0.50, 0.82)
             events_mean = np.random.randint(3, 10)
+            archetype   = np.random.choice(
+                ['Night_Crammer', 'Minimal_Browser', 'Disengaged_Ghost'],
+                p=[0.25, 0.45, 0.30],
+            )
         else:
             chronotype  = np.random.choice(['morning', 'afternoon', 'evening'], p=[0.40, 0.45, 0.15])
             att_rate    = np.random.uniform(0.78, 0.97)
             events_mean = np.random.randint(7, 18)
+            archetype   = np.random.choice(
+                ['Steady_Worker', 'Balanced_Engager', 'Night_Crammer'],
+                p=[0.45, 0.35, 0.20],
+            )
+
+        weights = ARCHETYPE_WEIGHTS[archetype]
 
         active_days = [
             d for d in SCHOOL_DAYS
@@ -237,10 +277,24 @@ def generate_activity_logs(students_df):
             session_id   = f"SESS_{random.randint(10000, 99999)}"
             subject      = random.choice(subjects)
             num_events   = max(1, events_mean + random.randint(-3, 3))
+            session_open = False
 
             for i in range(num_events):
                 # Occasionally start a new session or switch subject
                 if i > 0 and random.random() > 0.85:
+                    if session_open:
+                        all_logs.append({
+                            'Student_ID':        student['Student_ID'],
+                            'Timestamp':         current_time,
+                            'Session_ID':        session_id,
+                            'Action_Type':       'Logout',
+                            'Subject':           subject,
+                            'Resource_Category': RESOURCE_MAP['Logout'],
+                            'Time_Of_Day':       get_time_bin(current_time.hour),
+                            'Duration_Seconds':  0,
+                            'Archetype':         archetype,
+                        })
+                        session_open = False
                     session_id    = f"SESS_{random.randint(10000, 99999)}"
                     current_time += timedelta(minutes=random.randint(30, 120))
                     if random.random() > 0.60:
@@ -249,9 +303,27 @@ def generate_activity_logs(students_df):
                 current_time += timedelta(minutes=random.randint(2, 40))
 
                 if current_time.hour >= 23 or current_time.date() > enroll_end.date():
+                    if session_open:
+                        all_logs.append({
+                            'Student_ID':        student['Student_ID'],
+                            'Timestamp':         current_time,
+                            'Session_ID':        session_id,
+                            'Action_Type':       'Logout',
+                            'Subject':           subject,
+                            'Resource_Category': RESOURCE_MAP['Logout'],
+                            'Time_Of_Day':       get_time_bin(current_time.hour),
+                            'Duration_Seconds':  0,
+                            'Archetype':         archetype,
+                        })
+                        session_open = False
                     break
 
-                action   = random.choice(ACTION_TYPES)
+                if not session_open:
+                    action = 'Login'
+                    session_open = True
+                else:
+                    action = np.random.choice(MID_SESSION_ACTIONS, p=weights)
+
                 resource = RESOURCE_MAP[action]
                 duration = random.randint(30, 1800) if action in DURATION_ACTIONS else 0
 
@@ -264,6 +336,21 @@ def generate_activity_logs(students_df):
                     'Resource_Category': resource,
                     'Time_Of_Day':       get_time_bin(current_time.hour),
                     'Duration_Seconds':  duration,
+                    'Archetype':         archetype,
+                })
+
+            # Close any session that outlasted the event loop
+            if session_open:
+                all_logs.append({
+                    'Student_ID':        student['Student_ID'],
+                    'Timestamp':         current_time + timedelta(minutes=random.randint(1, 5)),
+                    'Session_ID':        session_id,
+                    'Action_Type':       'Logout',
+                    'Subject':           subject,
+                    'Resource_Category': RESOURCE_MAP['Logout'],
+                    'Time_Of_Day':       get_time_bin(current_time.hour),
+                    'Duration_Seconds':  0,
+                    'Archetype':         archetype,
                 })
 
     df = pd.DataFrame(all_logs)
@@ -367,18 +454,24 @@ def generate_academic_outcomes(students_df):
 # ==========================================
 # Execute
 # ==========================================
-os.makedirs('data', exist_ok=True)
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Generate synthetic VLE activity database.')
+    parser.add_argument('--num-students', type=int, default=NUM_STUDENTS,
+                        help=f'Number of students to generate (default: {NUM_STUDENTS})')
+    args = parser.parse_args()
 
-df_demographics = generate_demographics(NUM_STUDENTS)
-df_demographics.to_csv('data/demographics.csv', index=False)
+    os.makedirs('data', exist_ok=True)
 
-df_activity = generate_activity_logs(df_demographics)
-df_activity.to_csv('data/activity_logs.csv', index=False)
+    df_demographics = generate_demographics(args.num_students)
+    df_demographics.to_csv('data/demographics.csv', index=False)
 
-df_interactions = generate_interaction_metadata(df_demographics)
-df_interactions.to_csv('data/interaction_metadata.csv', index=False)
+    df_activity = generate_activity_logs(df_demographics)
+    df_activity.to_csv('data/activity_logs.csv', index=False)
 
-df_outcomes = generate_academic_outcomes(df_demographics)
-df_outcomes.to_csv('data/academic_outcomes.csv', index=False)
+    df_interactions = generate_interaction_metadata(df_demographics)
+    df_interactions.to_csv('data/interaction_metadata.csv', index=False)
 
-print("\nDatabase generated successfully.")
+    df_outcomes = generate_academic_outcomes(df_demographics)
+    df_outcomes.to_csv('data/academic_outcomes.csv', index=False)
+
+    print("\nDatabase generated successfully.")
