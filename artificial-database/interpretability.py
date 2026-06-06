@@ -115,9 +115,33 @@ def main():
     print(f"  Model AUC on test set: {auc:.3f}")
 
     # ---- 1. Gini importance ----
+    # Every decision tree split reduces Gini impurity (the probability that two
+    # randomly chosen samples in a node have different labels). The Gini importance
+    # of a feature is the total impurity reduction it causes, summed over all
+    # nodes and trees in the forest, then normalized to sum to 1.
+    # LIMITATION: Gini importance is biased toward features with many distinct
+    # values (e.g. continuous volume metrics like total_actions). Such features
+    # get more split candidates evaluated and therefore more impurity-reduction
+    # credit by chance, even if they are not the most predictive. Proportion
+    # features (bounded 0–1) are less affected, but the bias is still present.
     gini = pd.Series(rf.feature_importances_, index=feat_names)
 
     # ---- 2. Permutation importance ----
+    # After training, take the held-out TEST set. For each feature in turn:
+    #   - Randomly shuffle that feature's values across all test samples
+    #     (breaking any real association with the label).
+    #   - Re-evaluate model accuracy with the shuffled feature.
+    #   - Record the drop in accuracy (averaged over n_repeats shuffles).
+    # A large accuracy drop = the model relied on that feature to get predictions
+    # right; a zero or negative drop = the model did not rely on it (possibly
+    # because another correlated feature can substitute for it).
+    # Permutation importance is more trustworthy than Gini because:
+    #   - It is measured on the TEST set (not training data), so it reflects
+    #     generalization rather than memorization.
+    #   - It is not biased by feature cardinality.
+    #   - Features correlated with each other will show low permutation importance
+    #     for the redundant ones (the model can "get by" using the other),
+    #     revealing unique vs shared contribution.
     print("  Computing permutation importance (this can take a moment)...")
     perm = permutation_importance(rf, Xte, yte, n_repeats=10,
                                   random_state=args.seed, n_jobs=-1)
@@ -159,6 +183,24 @@ def main():
     print(f"\n  Saved {p}")
 
     # ---- 4. SHAP (optional bonus) ----
+    # SHAP (SHapley Additive exPlanations) decomposes each individual prediction
+    # into per-feature contributions, grounded in cooperative game theory (Shapley
+    # values from economics: how much does each "player" contribute to the
+    # coalition's outcome?). For a given student, SHAP says:
+    #   "The model predicted 0.73 probability of passing. Content_Study contributed
+    #    +0.12 toward that prediction; Night activity contributed −0.05 ..."
+    # Mean |SHAP| across all test samples gives a global feature ranking.
+    #
+    # Advantages over permutation importance:
+    #   1. DIRECTION: each SHAP value is signed, so you know whether a feature
+    #      pushes predictions toward pass (+) or fail (−) for each student.
+    #   2. INDIVIDUAL explanations: you can explain a specific student's prediction,
+    #      not just a population average — useful for actionable teacher feedback.
+    #   3. TreeExplainer computes exact Shapley values for tree ensembles (not
+    #      approximations) in O(T × L) time where T = trees and L = leaves,
+    #      making it practical for forests of a few hundred trees.
+    # For the thesis, the mean |SHAP| ranking corroborates permutation importance
+    # and can be cited as a robustness check across two independent methods.
     try:
         import shap
         print("\n  Computing SHAP values (TreeExplainer)...")

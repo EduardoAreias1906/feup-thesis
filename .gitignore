@@ -1,10 +1,7 @@
 .DS_Store
 **/.DS_Store
-<<<<<<< HEAD
-data/
-**/data/
-=======
+__pycache__/
+**/__pycache__/
 
-# Artificial database output files
+# Artificial database dataset (generated, not tracked)
 artificial-database/data/
-

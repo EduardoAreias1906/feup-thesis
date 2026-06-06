@@ -43,6 +43,7 @@ import argparse
 import os
 import numpy as np
 import pandas as pd
+from cluster_names import name as cluster_name
 
 
 def main():
@@ -110,6 +111,27 @@ def main():
     print(summary.to_string())
 
     # ---- 2. ANOVA on Final_Grade across clusters ----
+    # One-way ANOVA tests whether the mean Final_Grade differs significantly
+    # across choreography groups, or whether the observed spread could plausibly
+    # arise from random sampling variation alone.
+    #
+    # F-statistic: the ratio of variance BETWEEN group means to variance WITHIN
+    # groups. A large F means the groups differ more than expected by chance.
+    # F = 1.0 would mean "between-group variance equals within-group variance"
+    # (no signal above noise).
+    #
+    # p-value: the probability of observing an F this large if all choreographies
+    # truly had the same population mean (the null hypothesis). p < 0.05 is the
+    # conventional threshold for rejecting the null — i.e. the differences are
+    # unlikely to be noise.
+    #
+    # eta-squared (η²): the effect size — what FRACTION of total grade variance
+    # is explained by choreography membership. Interpretation:
+    #   < 0.06 = small, ~0.14 = medium, > 0.14 = large (Cohen's conventions).
+    # A statistically significant result with a tiny η² means "real but trivially
+    # small" (common with large n). A large η² means choreography explains a
+    # substantial portion of outcome variance — the effect is practically
+    # meaningful, not just statistically detectable.
     try:
         from scipy import stats
         groups = [df[df["dominant_cluster"] == c]["final_grade"].values
@@ -134,6 +156,21 @@ def main():
         print("\n  (scipy not installed — skipping ANOVA. pip install scipy)")
 
     # ---- 3. Background control: grade by cluster, split by at-risk ----
+    # "Confounding" is when a third variable influences both the predictor
+    # (choreography) and the outcome (grade), making a naive comparison misleading.
+    # Here: at-risk students are more likely to be in the Low_Engagement
+    # choreography AND more likely to have lower grades — for entirely separate
+    # reasons (prior academic history, socioeconomic factors). If we only compare
+    # choreographies without accounting for at-risk status, we may conclude that
+    # Low_Engagement causes lower grades when in fact it is partially or fully
+    # a proxy for being at-risk.
+    #
+    # The fix is to look at choreography effects WITHIN each at-risk group:
+    #   "Among non-at-risk students, does choreography still predict grade?"
+    #   "Among at-risk students, does choreography still matter?"
+    # If yes — the choreography has a real DIRECT effect on grade beyond the
+    # at-risk confound. If the effect vanishes within each group, choreography
+    # was just a proxy for at-risk status and has no independent predictive value.
     df["at_risk"] = (df["At_Risk_Status"].astype(str).str.strip().str.lower()
                      .isin(["true", "1", "yes", "at-risk", "at_risk"]))
     print("\n  Mean Final_Grade by choreography, split by background:")
@@ -165,11 +202,12 @@ def main():
     # ---- Plots ----
     fig, ax = plt.subplots(figsize=(8, 5))
     order = summary.sort_values("avg_final_grade", ascending=False).index
-    ax.bar([f"C{c}" for c in order],
+    ax.bar([cluster_name(c) for c in order],
            summary.loc[order, "avg_final_grade"].values, color="#1f6feb")
     ax.set_ylabel("Mean Final Grade")
     ax.set_xlabel("Dominant choreography (cluster)")
     ax.set_title("Final grade by choreography")
+    ax.tick_params(axis="x", rotation=20)
     ax.set_ylim(0, 100)
     for i, c in enumerate(order):
         ax.text(i, summary.loc[c, "avg_final_grade"] + 1,
@@ -196,7 +234,8 @@ def main():
             ax.text(c - w/2, 2, "n/a", ha="center", fontsize=8, rotation=90)
         if g_risk[c] == 0:
             ax.text(c + w/2, 2, "n/a", ha="center", fontsize=8, rotation=90)
-    ax.set_xticks(x); ax.set_xticklabels([f"C{c}" for c in range(n_clusters)])
+    ax.set_xticks(x); ax.set_xticklabels([cluster_name(c) for c in range(n_clusters)],
+                                         rotation=20, ha="right")
     ax.set_ylabel("Mean Final Grade"); ax.set_ylim(0, 100)
     ax.set_title("Final grade by choreography, controlled for at-risk status")
     ax.legend()

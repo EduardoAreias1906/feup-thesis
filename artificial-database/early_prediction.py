@@ -53,7 +53,23 @@ COL_ACTION = "Action_Type"
 
 
 def build_early_features(logs, clusters, first_n_weeks):
-    """Volume features + dominant cluster from each student's first N weeks."""
+    """
+    Build per-student feature vectors using only their first N weeks of activity.
+
+    Data leakage prevention: "data leakage" happens when information from the
+    future (post-outcome period) is used to train or evaluate a prediction model.
+    In education this is a common pitfall — if features include Week 30 engagement
+    patterns, then the "early" model has effectively already seen behaviour that
+    only happens AFTER the student has passed or failed. The model would perform
+    well in retrospect but be useless in real-time.
+
+    Here we compute week_idx = weeks since each student's OWN first week (not a
+    global calendar week). We then discard any events with week_idx >= first_n_weeks,
+    so ALL features reflect only what was observable in the first N weeks of
+    enrolment. The label (pass/fail) still comes from the FINAL outcome and is
+    never used as a feature. This simulates a teacher checking a dashboard after
+    exactly N weeks with no hindsight.
+    """
     logs = logs.copy()
     logs[COL_TIME] = pd.to_datetime(logs[COL_TIME])
     logs["week_start"] = (
@@ -149,6 +165,29 @@ def main():
         X_base = data[vol_cols].values
         X_exp = np.hstack([data[vol_cols].values, cl_dummies.values])
 
+        # ---- How a Random Forest predicts ----
+        # A single decision tree asks a sequence of binary questions about features
+        # (e.g. "is total_actions > 120?") and assigns the majority class of
+        # training points that reach each leaf. A Random Forest grows many trees,
+        # each trained on a random bootstrap sample of the training data and using
+        # a random subset of features at each split candidate. This "bagging +
+        # feature randomness" makes the trees decorrelated — their individual
+        # errors tend to cancel when averaged, producing a more stable and
+        # generalizable probability estimate than any single tree.
+        # class_weight="balanced" compensates for pass/fail imbalance by giving
+        # the minority class (fail) proportionally higher weight during training,
+        # preventing the model from simply predicting the majority class always.
+        #
+        # ---- Why ROC-AUC, not accuracy? ----
+        # If 80% of students pass, a trivial classifier that predicts "pass" for
+        # everyone achieves 80% accuracy — often beating naive models. ROC-AUC
+        # (area under the Receiver Operating Characteristic curve) is immune to
+        # class imbalance: it measures the probability that the model ranks a
+        # randomly chosen passer ABOVE a randomly chosen failer. 0.5 = no better
+        # than random; 1.0 = perfect rank ordering. This is the right metric when
+        # the goal is to identify at-risk students from a mixed population, because
+        # it captures how well the model ORDERS students by risk rather than whether
+        # a fixed threshold yields the right binary label.
         results_n = {}
         for name, X in [("baseline", X_base), ("experimental", X_exp)]:
             Xtr, Xte, ytr, yte = train_test_split(

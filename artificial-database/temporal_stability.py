@@ -70,6 +70,18 @@ def main():
           f"{n_clusters} clusters.")
 
     # ---- 1. Week-over-week ARI ----
+    # For each consecutive calendar week pair (W, W+1):
+    #   1. Find the students present in BOTH weeks (intersection of Student_IDs).
+    #      A student absent one week is excluded from that pair — we only compare
+    #      students for whom we have a label in both weeks.
+    #   2. Extract their cluster labels: vector 'la' for week W, 'lb' for W+1.
+    #   3. Compute ARI(la, lb). A high ARI means the PARTITION of students into
+    #      groups was preserved — students grouped together in W are still grouped
+    #      together in W+1. ARI is invariant to label permutations: if clusters 0
+    #      and 2 swap numbers between weeks, retention % would drop to near 0 but
+    #      ARI would remain high, correctly reflecting stable groupings.
+    #   Retention % (same cluster number, simpler to explain) is reported alongside
+    #   ARI as a plain-language complement.
     weeks = sorted(df["week_start"].unique())
     rows = []
     for i in range(len(weeks) - 1):
@@ -117,6 +129,19 @@ def main():
     print(f"  Saved {p1}")
 
     # ---- 2. Transition matrix (consecutive 7-day weeks) ----
+    # For each student, sort their weeks chronologically and align each week with
+    # the NEXT week using shift(-1). This creates pairs (this_cluster, next_cluster)
+    # for every consecutive week in the student's history. Pairs where the gap is
+    # not exactly 7 days are dropped — a student who skips a week would have a
+    # 14-day gap, which is an absence, not a direct behavioral transition.
+    # pd.crosstab then counts how often each (from, to) cluster combination occurs.
+    # normalize="index" turns row counts into row percentages: "of all student-weeks
+    # in cluster i, what fraction moved to cluster j the following week?"
+    # The DIAGONAL of the resulting matrix is the "stickiness" of each choreography
+    # — the percentage of students who were still in the same cluster one week later.
+    # A high diagonal (e.g. 80%+) means the choreography is a stable habit;
+    # a low diagonal would suggest it is a transient pattern driven by week-specific
+    # events (e.g. exam week) rather than a persistent behavioral style.
     df_sorted = df.sort_values(["Student_ID", "week_start"]).copy()
     g = df_sorted.groupby("Student_ID")
     df_sorted["next_cluster"] = g["cluster"].shift(-1)

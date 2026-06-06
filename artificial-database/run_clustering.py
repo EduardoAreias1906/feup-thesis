@@ -35,6 +35,7 @@ import argparse
 import os
 import numpy as np
 import pandas as pd
+from cluster_names import name as cluster_name
 
 COL_STUDENT = "Student_ID"
 COL_WEEK    = "week_start"
@@ -51,7 +52,24 @@ def load_features(path):
 
 
 def normalize_shape(X):
-    """L1-normalize each row to proportions (focus on behavior shape)."""
+    """
+    L1-normalize each row to proportions (focus on behavior shape).
+
+    Why proportions instead of raw counts?
+    Consider two students: one who logs 200 actions/week and spends 20% on
+    Content_Study, and one who logs 20 actions/week also spending 20% on
+    Content_Study. Their behavioral SHAPE (what mix of activities) is identical,
+    but their raw count vectors differ by a factor of 10. Without normalization,
+    k-means would separate students mainly by HOW MUCH they do (volume), not
+    WHAT they do (behavior type) — producing a "high-volume" cluster and a
+    "low-volume" cluster rather than meaningful choreography types.
+
+    After L1 normalization every row sums to 1.0, so k-means distances measure
+    how different the behavior MIX is, independent of total volume. Volume is
+    still captured in the metadata columns (total_actions, n_sessions) which are
+    kept for analysis but deliberately excluded from the feature matrix used
+    for clustering.
+    """
     row_sums = X.sum(axis=1, keepdims=True)
     row_sums[row_sums == 0] = 1  # guard against empty rows
     return X / row_sums
@@ -60,10 +78,24 @@ def normalize_shape(X):
 def safe_standardize(X):
     """
     Standardize columns (mean 0, std 1) but leave near-constant columns alone.
-    A plain StandardScaler divides by std; when a feature almost never occurs
-    its std is ~0, the division blows up (inf / NaN), and those exploded values
-    dominate k-means distances. Here we only scale columns with real variance
-    and zero-center the rest, so dead features simply carry no weight.
+
+    Why standardize after L1 normalization?
+    Even after proportions, features have very different scales: Content_Study
+    might average 5% per row while Forum_Post averages 0.5%. k-means uses
+    Euclidean distance, so a 1-pp shift in Content_Study carries 10x the weight
+    of a 1-pp shift in Forum_Post, regardless of which is behaviorally more
+    discriminating. Standardization (subtract mean, divide by std) puts every
+    feature on a common "units of typical deviation" scale, so rare-but-diagnostic
+    actions like Forum_Post can actually influence cluster assignments.
+
+    Why NOT use a plain StandardScaler from scikit-learn?
+    Some actions are so rare that their column has essentially no variance across
+    the dataset (std ≈ 0). Dividing by ~0 produces inf or NaN, which then
+    propagates through every k-means distance calculation and can corrupt the
+    entire clustering result. This function detects those near-constant columns
+    (std < 1e-8) and zeroes them out instead — they carry no discriminative
+    information, so zeroing them means they contribute nothing to the distance
+    metric, which is exactly the right behaviour.
     """
     mean = X.mean(axis=0)
     std = X.std(axis=0)
@@ -89,6 +121,27 @@ def select_k(X_scaled, k_min, k_max, seed, out_dir):
     ks = list(range(k_min, k_max + 1))
     inertias, silhouettes = [], []
 
+    # ---- Elbow vs Silhouette: two different questions about k ----
+    # Inertia (elbow method): the sum of squared distances from each point to its
+    # assigned centroid. It strictly decreases as k grows — more clusters always
+    # means you can park a centroid closer to every point. The "elbow" is the k
+    # where the curve bends, i.e. where adding one more cluster buys little extra
+    # compactness. The bend is often subjective and can be gradual, especially
+    # in real behavioral data where there is no hard partition between types.
+    #
+    # Silhouette score: for each point, computes
+    #   (distance to nearest OTHER cluster centre - distance to own centre)
+    #   / max(both distances)
+    # Averaged across all points, it measures how well-separated the clusters are
+    # from each other relative to how tight they are internally. Range: [-1, +1].
+    # Higher is better. Unlike inertia, silhouette can *decrease* when k is too
+    # large (clusters start cutting into genuinely similar regions).
+    #
+    # The two can disagree: a k that minimizes inertia may split a natural cluster
+    # and therefore lower silhouette, while a slightly smaller k keeps natural
+    # groupings intact. We use silhouette to auto-select k (it incorporates
+    # inter-cluster separation) but also save the elbow plot so the user can
+    # override with domain knowledge.
     print(f"  Searching k = {k_min}..{k_max} ...")
     for k in ks:
         km = KMeans(n_clusters=k, n_init=10, random_state=seed)
@@ -136,7 +189,7 @@ def characterize(df, feature_cols, X_prop, labels, out_dir):
         lift = cluster_mean - global_mean
         top_idx = np.argsort(lift)[::-1][:6]
 
-        print(f"\n  Cluster {c}  ({size:,} student-weeks, {share:.1f}%)")
+        print(f"\n  Cluster {c} [{cluster_name(c)}]  ({size:,} student-weeks, {share:.1f}%)")
         print(f"    Avg total_actions/week: "
               f"{df.loc[mask, 'total_actions'].mean():.1f}  |  "
               f"sessions: {df.loc[mask, 'n_sessions'].mean():.1f}  |  "
@@ -173,6 +226,18 @@ def plot_umap(X_scaled, labels, sample, seed, out_dir):
     else:
         idx = np.arange(n)
 
+    # ---- What UMAP does, and how it relates to k-means ----
+    # k-means already assigned every point to a cluster in the original 19-feature
+    # space. UMAP is used here only for VISUALIZATION — it learns a mapping from
+    # 19D to 2D that tries to preserve local neighborhood structure: points that
+    # are close together in 19D should also be close in 2D. This lets a human eye
+    # check whether the clusters form visible, well-separated blobs or whether they
+    # blend smoothly into each other (which would suggest the behavioral space is
+    # continuous and the chosen k is somewhat arbitrary). The UMAP projection does
+    # not influence which cluster any point belongs to; that was determined by
+    # k-means alone and is only color-coded here for interpretation.
+    # n_neighbors controls how many local neighbors define "close"; min_dist
+    # controls how tightly points are packed in the 2D layout.
     print(f"\n  Running UMAP on {len(idx):,} points (this can take a minute)...")
     reducer = umap.UMAP(n_neighbors=15, min_dist=0.1,
                         random_state=seed, n_components=2)
@@ -183,8 +248,9 @@ def plot_umap(X_scaled, labels, sample, seed, out_dir):
                          cmap="tab10", s=4, alpha=0.5)
     ax.set_title("UMAP projection of weekly choreographies")
     ax.set_xlabel("UMAP-1"); ax.set_ylabel("UMAP-2")
-    legend = ax.legend(*scatter.legend_elements(),
-                       title="Cluster", loc="best", fontsize=8)
+    handles, _ = scatter.legend_elements()
+    labels = [cluster_name(i) for i in range(len(handles))]
+    legend = ax.legend(handles, labels, title="Choreography", loc="best", fontsize=8)
     ax.add_artist(legend)
     fig.tight_layout()
     path = os.path.join(out_dir, "umap_clusters.png")

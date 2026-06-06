@@ -45,6 +45,7 @@ import argparse
 import os
 import numpy as np
 import pandas as pd
+from cluster_names import name as cluster_name
 
 
 def cosine(a, b):
@@ -111,13 +112,14 @@ def main():
         bottom = np.zeros(len(tab))
         for c in range(n_clusters):
             ax.bar(tab.index.astype(str), tab[c].values, bottom=bottom,
-                   label=f"Cluster {c}")
+                   label=cluster_name(c))
             bottom += tab[c].values
         ax.set_ylabel("Share of student-weeks (%)")
         ax.set_xlabel(xlabel)
         ax.set_title(title)
         ax.legend(ncol=n_clusters, fontsize=8)
         ax.set_ylim(0, 100)
+        ax.tick_params(axis="x", rotation=90, labelsize=7)
         fig.tight_layout()
         path = os.path.join(args.results_dir, fname)
         fig.savefig(path, dpi=130)

@@ -78,7 +78,14 @@ TIME_BINS = ["Morning", "Afternoon", "Evening", "Night"]
 
 
 def assign_time_bin(hours: pd.Series) -> np.ndarray:
-    """Map hour-of-day (0-23) to one of four bins. Night wraps midnight."""
+    """
+    Map hour-of-day (0-23) to one of four coarse bins.
+
+    Four bins keeps the WHEN block balanced in size with the WHAT block (~15
+    action features vs 4 time features). Finer bins (hourly) would let the
+    time dimension dominate k-means distances. Night wraps midnight (22-05h)
+    and is the default/catch-all so no hour is left unlabelled.
+    """
     conditions = [
         (hours >= 6) & (hours < 12),
         (hours >= 12) & (hours < 18),
@@ -104,15 +111,28 @@ def build_features(logs: pd.DataFrame, min_actions: int) -> pd.DataFrame:
     # ---- WHAT block: counts per behavioral action (Login/Logout dropped) ----
     print("  Building WHAT block (action-type counts)...")
     behav = logs[logs[COL_ACTION].isin(BEHAVIORAL_ACTIONS)]
+
+    # groupby([student, week, action]).size() produces a Series with a
+    # 3-level MultiIndex (Student_ID, week_start, Action_Type) and a count value.
+    # .unstack(COL_ACTION) pivots the Action_Type level into columns, turning a
+    # "long" format (one row per event type) into a "wide" format (one row per
+    # student-week, one column per action). fill_value=0 ensures that actions a
+    # student never performed that week get 0 rather than NaN, so the resulting
+    # matrix is dense and suitable for k-means distance calculations.
     what = (
         behav.groupby([COL_STUDENT, "week_start", COL_ACTION])
         .size()
         .unstack(COL_ACTION, fill_value=0)
     )
+    # reindex guarantees every action column is present in a fixed order,
+    # even if no student performed that action in the loaded dataset.
     what = what.reindex(columns=BEHAVIORAL_ACTIONS, fill_value=0)
     what.columns = [f"act__{c}" for c in what.columns]
 
     # ---- WHEN block: counts per time-of-day bin (all events) ----
+    # All events (including Login/Logout) count toward WHEN: the clock time of
+    # a login is just as valid a chronotype signal as the clock time of studying.
+    # The same groupby+unstack pattern is used — pivot time_bin into columns.
     print("  Building WHEN block (time-of-day counts)...")
     when = (
         logs.groupby([COL_STUDENT, "week_start", "time_bin"])
