@@ -1,0 +1,89 @@
+\chapter{Results}
+\label{chap:results}
+
+%% PURPOSE: This chapter presents the raw findings, one section per RQ.
+%% Keep it factual — save interpretation for Chapter 6 (Discussion).
+%% Each section should reference the specific figure/table produced by the pipeline.
+
+\section{Overview}
+\label{sec:results-overview}
+% TODO: Write a 3-5 sentence roadmap of the chapter. State the order in which
+% the five RQs are addressed and give the reader one headline result per RQ
+% so they know what to look for as they read.
+
+\section{RQ1: Identification of Choreographies}
+\label{sec:rq1-results}
+% TODO: Present the k-selection results:
+%   - Table or figure of silhouette scores and inertia for k = 2..10
+%     (k_selection.png).
+%   - Justification for k = 4 based on the silhouette peak.
+%
+% Present the four discovered choreographies:
+%   - For each cluster: name, size (student-weeks, % of total), top 6
+%     over-represented features with lift values (from run_clustering.py
+%     characterization output).
+%   - Include the UMAP visualization (umap_clusters.png) and comment on
+%     the degree of visual separation between clusters.
+%
+% Present the validation against ground-truth archetypes:
+%   - Cluster × archetype contingency table (row %, from cluster_vs_archetype.csv).
+%   - Dominant archetype and purity per cluster.
+%   - ARI and NMI values and their interpretation (reference Section~\ref{sec:evaluation-design}).
+
+\section{RQ2: Robustness (Temporal and Cross-Context)}
+\label{sec:rq2-results}
+% TODO: (a) Temporal stability:
+%   - Report mean, std, min/max of the week-over-week ARI series.
+%   - Report mean same-cluster retention percentage.
+%   - Include temporal_ari.png (ARI + retention over the academic year).
+%   - Present the transition matrix (transition_matrix.png) and report the
+%     diagonal stickiness values per cluster.
+%
+% (b) Cross-context stability:
+%   - Present the choreography share (%) table by Grade_Level.
+%   - Report grade-std and state-std for each cluster.
+%   - Include profile_by_grade.png and profile_by_state.png.
+%   - Report cosine similarity of per-cluster behavioral signatures
+%     across grade bands (K-5 vs 6-12), and the mean across all clusters.
+
+\section{RQ3: Association with Outcomes}
+\label{sec:rq3-results}
+% TODO: Present the outcomes-by-dominant-choreography summary table:
+%   - Columns: n_students, avg_final_grade, avg_quiz, avg_completion, pass_rate.
+%   - Order clusters by avg_final_grade descending.
+%
+% Report the ANOVA result:
+%   - F-statistic, p-value, eta-squared effect size.
+%   - State whether differences are statistically significant.
+%
+% Present the at-risk-stratified comparison:
+%   - Mean Final_Grade for not-at-risk and at-risk students within each cluster.
+%   - Note any cells with n = 0 (structural absence due to archetype-at-risk
+%     correlation in the generator) and explain what this implies.
+%   - Include grade_by_cluster.png and grade_by_cluster_atrisk.png.
+
+\section{RQ4: Predictive Utility}
+\label{sec:rq4-results}
+% TODO: Present early prediction results for both time windows (first 4 weeks,
+% first 8 weeks):
+%   - Table with accuracy, F1, and ROC-AUC for baseline and experimental models
+%     at each window.
+%   - Report the AUC gain (experimental − baseline) at each window.
+%   - Include rq4_comparison.png (AUC over time windows for both models).
+%   - Discuss what the gain (or its magnitude) implies about how early the
+%     choreography signal becomes detectable.
+
+\section{RQ5: Actionability and Interpretation}
+\label{sec:rq5-results}
+% TODO: Present the feature importance results:
+%   - Table of top features ranked by permutation importance, with their
+%     Gini importance alongside for comparison.
+%   - Direction-of-effect table: for the top 8 features, pass rate in the
+%     bottom third vs top third, and the direction arrow.
+%   - Note any discrepancy between Gini and permutation rankings (high-cardinality
+%     features inflated in Gini).
+%   - If SHAP was computed, present the top 8 features by mean |SHAP| and confirm
+%     alignment with permutation importance.
+%   - Include rq5_importance.png.
+%   - Translate the top features into plain-language pedagogical implications
+%     (e.g., "more Content_Study proportion → higher pass rate").

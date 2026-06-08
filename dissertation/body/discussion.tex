@@ -1,0 +1,135 @@
+\chapter{Discussion}
+\label{chap:discussion}
+
+%% PURPOSE: This chapter interprets the results from Chapter 5 in light of the
+%% research questions, prior literature (Chapters 2-3), and the hypotheses
+%% (Chapter 1). It also honestly acknowledges what the study cannot claim.
+%% The discussion should be the most intellectually dense chapter — avoid
+%% re-stating results, focus on what they mean.
+
+\section{Interpretation of Findings}
+\label{sec:interpretation}
+% TODO: Synthesize the five sets of results into a coherent narrative about
+% what virtual choreographies reveal about K-12 online learning behavior.
+% Key questions to address:
+%   - Do the four discovered archetypes (Steady_Worker, Balanced_Engager,
+%     Low_Engagement, Night_Crammer) correspond to theoretically meaningful
+%     behavioral types, or are they data artifacts?
+%   - How do the choreographies align with constructs from the literature, such
+%     as self-regulated learning (SRL) theory and transactional distance?
+%   - What does the moderate ARI (~0.53) tell us about the inherent difficulty
+%     of recovering behavioral types from noisy, week-level log data?
+%   - What does the high temporal stability (week-over-week ARI) imply about
+%     whether choreographies are habits or situational responses?
+
+\section{Revisiting the Hypotheses (H1--H5)}
+\label{sec:hypotheses-revisited}
+% TODO: For each hypothesis, state the verdict (Supported / Partially Supported /
+% Not Supported / Inconclusive) and cite the specific result (section + metric)
+% that justifies it.
+%
+%   H1 — Regularity: choreographies with stable temporal rhythms → better outcomes.
+%     TODO: Relate Steady_Worker's high active_days and consistent time-of-day
+%     distribution to its higher mean final grade (Section~\ref{sec:rq3-results}).
+%
+%   H2 — Balanced participation: sync/async balance → better outcomes.
+%     TODO: Evaluate Balanced_Engager (Forum_View, Synchronous_Join) vs
+%     other clusters on grade outcomes.
+%
+%   H\_Robustness — Context stability: structured subjects → more stable
+%   choreographies across cohorts.
+%     TODO: Discuss the cosine similarity results and grade-band stickiness
+%     from Section~\ref{sec:rq2-results}. Note that the synthetic generator
+%     does not vary by subject, so this hypothesis can only be partially assessed.
+%
+%   H3 — Feedback-centric interaction: frequent feedback → better outcomes.
+%     TODO: Evaluate Feedback_Review and related features in the permutation
+%     importance results (Section~\ref{sec:rq5-results}).
+%
+%   H4 — Purposeful navigation: efficient navigation → stronger progress.
+%     TODO: Discuss the role of Page_Navigation in Low_Engagement (over-represented
+%     there) vs its importance in the outcome model.
+%
+%   H5 — Risk signals: inactivity / last-minute bursts → weaker outcomes.
+%     TODO: Discuss Night_Crammer (Evening/Night over-represented, lower pass
+%     rate) and Low_Engagement (low volume, low pass rate) as evidence for H5.
+
+\section{Relation to Prior Work}
+\label{sec:relation-to-prior-work}
+% TODO: Compare the findings to the literature surveyed in Chapters 2 and 3:
+%   - Do the discovered choreographies align with behavioral types described
+%     in prior EDM clustering studies?
+%   - Does the ARI/NMI validation compare favorably to similar synthetic
+%     validation studies in the EDM literature?
+%   - How do the outcome associations (RQ3) relate to Beck's findings on the
+%     role of at-risk status and parental engagement?
+%   - Does the early prediction result (RQ4) echo findings in EDM about the
+%     predictive power of first-week engagement signals?
+%   - How does the interpretability approach (RQ5) advance on or complement
+%     prior feature importance analyses in educational prediction models?
+
+\section{Limitations}
+\label{sec:limitations}
+% TODO: Discuss each limitation honestly and in enough depth to satisfy a
+% critical reader at the thesis defense:
+%
+%   (1) Synthetic data — the generator produces idealized, well-separated
+%       archetypes. Real Pearson logs will have more noise, behaviorally
+%       ambiguous students, longitudinal drift, and subject-level variation
+%       not captured here. The synthetic study establishes pipeline validity;
+%       it does not make empirical claims about actual Connections Academy students.
+%
+%   (2) Fixed k = 4 — the number of choreographies in real data may differ.
+%       The silhouette criterion on synthetic data suggests k = 4, but the
+%       real data may support a different number or reveal that the space is
+%       continuous rather than discretely clustered.
+%
+%   (3) Feature coverage — the act__ and time__ blocks capture what actions
+%       are taken and when, but not interaction quality (e.g., length or
+%       coherence of forum posts, quality of submitted work, response latency
+%       to teacher feedback). Richer features may yield better-separated clusters.
+%
+%   (4) At-risk confounding — the generator correlates at-risk status with
+%       archetype (Low_Engagement is predominantly at-risk). This structural
+%       correlation limits the independence of the RQ3 analysis; it is
+%       difficult to attribute the grade gap purely to choreography when
+%       at-risk status and choreography are partially confounded by design.
+%
+%   (5) Single-semester snapshot — the dataset covers one academic year of
+%       synthetic data for one cohort. Longitudinal stability across years,
+%       or the effect of school transitions (e.g., elementary to middle school),
+%       cannot be assessed.
+
+\section{Threats to Validity}
+\label{sec:threats-to-validity}
+% TODO: Use the standard four-category framework (Wohlin et al.) to structure
+% the threats:
+%
+%   Internal validity:
+%     - k-means is sensitive to centroid initialization; fixed seed (42) reduces
+%       but does not eliminate this sensitivity. Report whether different seeds
+%       produced materially different cluster assignments (if tested).
+%     - The dominant-cluster heuristic (mode of weekly labels per student)
+%       collapses within-student variability into a single label for RQ3/RQ4.
+%       Students who transition between choreographies mid-year are misrepresented.
+%
+%   External validity:
+%     - Synthetic data; results cannot be directly generalized to real
+%       Connections Academy students without replication on the real dataset.
+%     - The generator was calibrated from the K-12 online learning literature
+%       but not from actual Pearson log statistics; the feature distributions
+%       may not match the real data's true marginals.
+%
+%   Construct validity:
+%     - "Pass" as a binary outcome label conflates different failure modes
+%       (dropout, academic failure, incomplete). Finer-grained labels might
+%       reveal different choreography effects.
+%     - ARI as a stability metric assumes that cluster label permutations are
+%       the only source of disagreement; it may be inflated if the number of
+%       students present in both consecutive weeks is small.
+%
+%   Statistical conclusion validity:
+%     - Five RQs tested on the same dataset increase the risk of Type I error;
+%       no Bonferroni correction was applied.
+%     - ANOVA assumes homogeneity of variance across groups; this was not
+%       formally tested (consider adding Levene's test in the final version).

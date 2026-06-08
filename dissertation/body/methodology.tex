@@ -1,0 +1,143 @@
+\chapter{Methodology}
+\label{chap:methodology}
+
+%% PURPOSE: This chapter explains the HOW of the research — the pipeline from raw
+%% data to validated choreographies. It must justify every design choice and connect
+%% each stage explicitly to an RQ. The synthetic-data section is load-bearing: it
+%% must convince the reader that the pipeline can be trusted before the real
+%% Pearson data is analysed.
+
+\section{Overview}
+\label{sec:methodology-overview}
+% TODO: Write a short (3-5 sentence) roadmap of the chapter. Describe the four
+% pipeline stages (synthetic data generation → feature engineering → pattern
+% discovery → evaluation) and state which RQ each stage is primarily designed
+% to address.
+
+\section{Synthetic Data as a Methodological Choice}
+\label{sec:synthetic-data-rationale}
+% TODO: Justify why synthetic data was used as the primary substrate for this
+% dissertation, covering:
+%   (1) What it enables — known ground-truth archetypes allow quantitative
+%       validation of the clustering pipeline (we can compute ARI/NMI against
+%       the true labels, which is impossible with real anonymized logs).
+%   (2) Practical constraints — the real Connections Academy / Pearson log data
+%       is under a data-sharing agreement; synthetic data allows full open-source
+%       reproducibility and public release of the pipeline.
+%   (3) Generative design fidelity — explain how the synthetic generator was
+%       calibrated to reproduce realistic behavioral distributions (action
+%       frequencies, time-of-day patterns, session lengths) observed in the
+%       K-12 online learning literature.
+%   (4) Explicit scope limitations — results cannot be directly generalized to
+%       real students without repeating the analysis on the real dataset; the
+%       synthetic study establishes pipeline validity, not empirical claims about
+%       Connections Academy students.
+
+\section{Synthetic Data Generation}
+\label{sec:synthetic-data-generation}
+% TODO: Describe the synthetic data generator in detail:
+%   - The five behavioral archetypes and their defining parameters:
+%       Steady_Worker, Balanced_Engager, Low_Engagement, Night_Crammer,
+%       Disengaged_Ghost.
+%   - How students are sampled from each archetype (proportions, at-risk
+%     correlation per archetype).
+%   - How school-level demographic structure is assigned (32 schools, 32 states,
+%     13 grade levels from K to Grade 12).
+%   - How activity logs are generated per student per week (action type
+%     distribution, time-of-day distribution, session length, duration).
+%   - Fixed random seed (42) for full reproducibility.
+%   Reference the generation script in the repository.
+
+\section{Feature Engineering}
+\label{sec:feature-engineering}
+% TODO: Describe the weekly feature matrix construction (build_weekly_features.py):
+%   - The unit of analysis: student-week (one row per student per calendar week).
+%   - The two-block design rationale:
+%       WHAT block (act__ prefix) — proportions of each semantic action type.
+%       WHEN block (time__ prefix) — proportions of activity in each
+%       time-of-day bin (Morning, Afternoon, Evening, Night).
+%   - Why Login and Logout are excluded from the WHAT block (universal/structural
+%     actions that do not discriminate behavior).
+%   - Why the two blocks are kept separate rather than crossed (a crossed
+%     17-action × 4-bin design would let the time dimension dominate k-means).
+%   - The groupby + unstack reshaping pipeline: how the event-level log is
+%     transformed into the wide student-week matrix.
+%   - Metadata columns (n_sessions, active_days, total_actions) and why they
+%     are excluded from the clustering feature space.
+
+\section{Pattern Discovery (Clustering)}
+\label{sec:pattern-discovery}
+% TODO: Describe the clustering pipeline (run_clustering.py) in three sub-stages:
+%
+%   Preprocessing:
+%   - L1 shape normalization (normalize_shape): converts raw action counts to
+%     proportions so clustering focuses on behavioral shape, not volume.
+%     Motivate with the example of two students with the same mix but different
+%     total actions.
+%   - Safe standardization (safe_standardize): zero-centres and scales each
+%     feature to unit variance, but zeroes out near-constant columns to avoid
+%     divide-by-zero issues that would corrupt k-means distances.
+%
+%   k-Selection:
+%   - Elbow method (inertia) and Silhouette score across k = 2..10.
+%   - Why silhouette is used to auto-select k (it accounts for inter-cluster
+%     separation, not just intra-cluster compactness).
+%   - How the two metrics can disagree and how the final k = 4 was chosen.
+%
+%   Clustering and Visualization:
+%   - Final k-means fit with k = 4, n_init = 10, random_state = 42.
+%   - UMAP projection to 2D for visual validation (n_neighbors = 15,
+%     min_dist = 0.1). Clarify that UMAP is visualization-only; it does not
+%     influence cluster assignments.
+
+\section{Evaluation Design}
+\label{sec:evaluation-design}
+% TODO: Map each research question to its evaluation method and metric(s):
+%
+%   RQ1 — Identification:
+%     Contingency table (cluster × archetype), purity per cluster, Adjusted
+%     Rand Index (ARI), and Normalized Mutual Information (NMI) against the
+%     ground-truth archetype labels from the generator.
+%
+%   RQ2 — Robustness:
+%     (a) Temporal: week-over-week ARI and same-cluster retention %; cluster
+%         transition matrix and per-cluster stickiness (diagonal).
+%     (b) Cross-context: choreography share (%) distribution by grade level
+%         and by state; standard deviation across contexts; cosine similarity
+%         of per-cluster behavioral signatures across grade bands (K-5 vs 6-12).
+%
+%   RQ3 — Association with outcomes:
+%     Dominant choreography per student (mode of weekly labels); one-way ANOVA
+%     on Final_Grade across choreographies; eta-squared effect size; mean grade
+%     stratified by at-risk status within each choreography.
+%
+%   RQ4 — Predictive utility:
+%     Random Forest classifier trained on first-N-weeks features only (N = 4
+%     and N = 8). Baseline (volume only) vs. experimental (volume + one-hot
+%     dominant cluster). Primary metric: ROC-AUC. Data leakage is prevented
+%     by strict temporal feature cutoff.
+%
+%   RQ5 — Actionability:
+%     Gini importance and permutation importance from the trained Random Forest;
+%     direction of effect (pass rate in top vs. bottom third of each feature);
+%     SHAP (TreeExplainer) mean absolute values for corroboration.
+
+\section{Reproducibility and Implementation Details}
+\label{sec:reproducibility}
+% TODO: State all implementation decisions that affect reproducibility:
+%   - Fixed random seed 42 used throughout (k-means, UMAP, train/test split,
+%     Random Forest, SHAP sampling).
+%   - Python toolchain and versions: scikit-learn, umap-learn, pandas, numpy,
+%     matplotlib, seaborn, scipy, shap (optional).
+%   - Pipeline execution order:
+%       generate_data.py
+%       → build_weekly_features.py
+%       → run_clustering.py --k 4
+%       → validate_clusters.py
+%       → temporal_stability.py
+%       → context_stability.py
+%       → outcome_association.py
+%       → early_prediction.py
+%       → interpretability.py
+%   - All scripts located in artificial-database/ in the public repository.
+%   - Hardware and runtime estimates (optional: useful for reproducibility).

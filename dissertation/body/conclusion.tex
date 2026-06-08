@@ -1,0 +1,73 @@
+\chapter{Conclusion}
+\label{chap:conclusion}
+
+%% PURPOSE: This chapter closes the dissertation by restating what was actually
+%% achieved (contributions) and what remains open (future work). It should be
+%% concise and free of hedging — by this point the reader has seen the evidence.
+
+\section{Summary of Contributions}
+\label{sec:contributions}
+% TODO: Enumerate the concrete, citable contributions of the dissertation.
+% Be specific — avoid vague claims like "this thesis advances the field."
+% Suggested structure (adapt based on the final results):
+%
+%   (1) A validated, open-source pipeline for discovering virtual choreographies
+%       from K-12 online learning event logs, demonstrated to recover known
+%       behavioral archetypes from synthetic data with ARI ~ 0.53 and NMI ~ 0.59.
+%
+%   (2) Identification and characterization of four virtual choreographies in the
+%       synthetic Connections Academy dataset (Steady_Worker, Balanced_Engager,
+%       Low_Engagement, Night_Crammer), with quantified outcome associations and
+%       statistical effect sizes.
+%
+%   (3) Evidence that temporal regularity and synchronous-participation balance
+%       are positively associated with academic success (supporting H1, H2),
+%       while night-heavy and low-engagement patterns correlate with weaker
+%       outcomes (supporting H5).
+%
+%   (4) A first-N-weeks early prediction study showing that choreography labels
+%       add predictive value (ROC-AUC gain) over volume metrics alone as early
+%       as the first four weeks of enrolment (addressing RQ4).
+%
+%   (5) A multi-method interpretability analysis (permutation importance + SHAP)
+%       that identifies the specific behavioral signals most actionable for
+%       on-site teacher facilitators, directly addressing the actionability
+%       requirement of RQ5.
+%
+%   (6) An honest characterization of the scope of the synthetic study, including
+%       the conditions under which the findings can be expected to transfer to
+%       the real Pearson log data.
+
+\section{Future Work}
+\label{sec:future-work}
+% TODO: Describe the planned and recommended next steps. Order from most
+% immediate to most exploratory:
+%
+%   (1) Application to real Pearson / Connections Academy log data — the primary
+%       planned follow-up. This will validate whether the pipeline generalizes
+%       beyond the synthetic setting and produce empirical claims about actual
+%       K-12 students.
+%
+%   (2) Longitudinal choreography tracking — follow students' cluster membership
+%       across multiple semesters or academic years. Do choreographies shift after
+%       interventions? Can transitions (e.g., Low_Engagement → Balanced_Engager)
+%       be predicted early enough to trigger support?
+%
+%   (3) Richer feature engineering — incorporate interaction quality features
+%       beyond counts: response latency to teacher feedback, forum post length,
+%       revision cycles on submitted assignments, and synchronous attendance rate.
+%       These may improve cluster separation and outcome prediction.
+%
+%   (4) Teacher-facing early-warning dashboard — translate the interpretability
+%       results into actionable, student-level risk scores for on-site facilitators,
+%       with choreography-specific intervention recommendations.
+%
+%   (5) Subject-level choreography analysis — re-run the pipeline within individual
+%       subjects (e.g., Mathematics vs. English Language Arts) to test
+%       H\_Robustness more rigorously and identify subject-specific behavioral
+%       signatures.
+%
+%   (6) Comparison with supervised approaches — once human-validated choreography
+%       labels are available from the real data, compare unsupervised discovery
+%       against supervised multi-label classification to quantify how much is
+%       gained or lost by requiring labeled training data.

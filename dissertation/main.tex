@@ -1,0 +1,170 @@
+%% FEUP THESIS template for `feupteses.sty`
+%%
+%% Read the documentation inline and at the included `README` file
+%%
+
+\documentclass[11pt,a4paper]{report}
+
+%% For two-sided printing (for dead-tree output) comment previous line
+%% and uncomment the next line
+%\documentclass[11pt,a4paper,twoside,openright]{report}
+
+%% Source text uses in UTF-8 encoding
+\usepackage[utf8]{inputenc}
+
+%% The package feupteses.sty may take several options
+%% There are options for specific FEUP programmes/degrees
+%% When no programme specification is given, a generic thesis format is used
+%%
+%% option  degree/programme
+%% -----------------------------
+%% meec    Master's degree in Electrical and Computer Engineering
+%% meic    Master's degree in Informatics Engineering and Computation
+%% mem     Master's degree in Mechanical Engineering
+%% mesw    Master's degree in Software Engineering
+%% mci     Master's degree in Information Science
+
+%% In general, the dissertation goes through several stages
+%%
+%% option       stage
+%% -----------------------------
+%% (no option)  text is in the preparation stage   <-- currently active
+%% juri         version for evaluation by committee
+%% final        version for final submission (after acceptance)
+
+%% Switch to the appropriate line when the document advances to jury/final stage.
+\usepackage[meic]{feupteses}
+
+%% PT
+%\usepackage[portugues]{feupteses}
+
+%% MEIC jury version
+%\usepackage[meic,juri]{feupteses}
+%% MEIC final PDF version
+%\usepackage[meic,final]{feupteses}
+
+%% Packages loaded by feupteses.sty:
+%% url, setspace, makeidx, graphicx, xcolor, etc (see README)
+
+%% Include here any other packages you need
+% ---------------------------------------------------------
+\usepackage{acronym}
+% ---------------------------------------------------------
+
+%% Use folder ``figures'' to keep all your figures
+\graphicspath{{figures/}}
+
+%% Use folder ``backmatter'' to keep all your bibliography files
+%\addbibresource{backmatter/references.bib}
+
+%%========================================
+%% Start of document
+%%========================================
+\begin{document}
+
+%%----------------------------------------
+%% Information about the work
+%%----------------------------------------
+\title{Virtual Choreographies of Learning: AI-Driven Discovery in K--12 Online American Schools}
+\author{Eduardo Salé Areias}
+
+%% Uncomment next line for PRODEI
+%\degree{Programa Doutoral em Engenharia Informática}
+
+%% Uncomment next line for date of submission
+%\thesisdate{July 31, 2026}
+
+%% Comment next line copyright text if not used
+%\copyrightnotice{Eduardo Salé Areias, 2026}
+
+\supervisor{Supervisor}{Prof.\ Fernando Cassola Marques}
+
+%% Uncomment next line if necessary
+\supervisor{Co-Supervisor}{Prof.\ Dennis Beck}
+
+%% Comment committee stuff for final version, if not used
+\committeetext{Approved in oral examination by the committee:}
+\committeemember{President}{Prof.\ $<$Name of the Professor$>$}
+\committeemember{Referee}{Prof.\ $<$Name of the Professor$>$}
+\committeemember{Referee}{Prof.\ $<$Name of the Professor$>$}
+
+%% PT
+%\committeetext{Aprovado em provas públicas pelo Júri:}
+%\committeemember{Presidente}{Prof.\ $<$Nome do presidente do júri$>$}
+%\committeemember{Arguente}{Prof.\ $<$Nome do arguente do júri$>$}
+%\committeemember{Vogal}{Prof.\ $<$Nome do vogal do júri$>$}
+
+%% uncomment next line to draw a line for handwritten signature if needed
+%\signature
+
+%% Specify cover logo (in folder ``figures'') if needed
+%\logo{logo.pdf}
+
+%% Uncomment next line for additional text below the author's name (front page)
+%\additionalfronttext{$<$Additional text$>$}
+
+%%----------------------------------------
+%% Preliminary materials
+%%----------------------------------------
+
+% comment or remove unnecessary \include{} commands
+\begin{Prolog}
+  \include{frontmatter/abstract}          % the abstract
+  %%--\include{frontmatter/ethics}        % declaration of honour — uncomment before submission
+  %%--\include{frontmatter/un-sdg}        % UN SDG mapping — uncomment if required by FEUP
+  %%--\include{frontmatter/acknows}       % acknowledgements — uncomment when ready
+  %%--\include{frontmatter/quote}         % opening quotation — uncomment if desired
+  %%\cleardoublepage
+  %% PT: Uncomment next line for PT
+  \renewcommand{\contentsname}{Índice}
+  \pdfbookmark[0]{Table of Contents}{contents}
+  \tableofcontents
+  \cleardoublepage
+  \pdfbookmark[0]{List of Figures}{figures}
+  \listoffigures
+  \cleardoublepage
+  \pdfbookmark[0]{List of Tables}{tables}
+  \listoftables
+  \include{frontmatter/abbrevs}           % list of acronyms
+\end{Prolog}
+
+%%----------------------------------------
+%% Body
+%%----------------------------------------
+\StartBody
+
+%% Chapter 1 — Thesis Manifest (introduction, RQs, hypotheses)
+\include{body/thesis-manifest}
+
+%% Chapter 2 — Literature Review (K-12 online learning, at-risk populations)
+\include{body/literature-review}
+
+%% Chapter 3 — State of the Art (EDM, choreographies, clustering, UMAP)
+\include{body/state-of-art}
+
+%% Chapter 4 — Methodology (pipeline design, synthetic data, feature engineering)
+\include{body/methodology}
+
+%% Chapter 5 — Results (RQ1-RQ5 experimental results)
+\include{body/results}
+
+%% Chapter 6 — Discussion (interpretation, hypotheses, limitations, threats)
+\include{body/discussion}
+
+%% Chapter 7 — Conclusion (contributions, future work)
+\include{body/conclusion}
+
+%%----------------------------------------
+%% Final materials
+%%----------------------------------------
+
+%% Bibliography
+\bibliographystyle{plainnat}
+\bibliography{backmatter/references}
+%\PrintBib
+
+%% comment next 2 commands if numbered appendices are not used
+%%--\appendix
+%%--\include{backmatter/appendix1}
+
+\end{document}
