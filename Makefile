@@ -18,24 +18,21 @@ preparation:
 	@cd dissertation-preparation && \
 	if command -v latexmk >/dev/null 2>&1; then \
 		echo "Found latexmk, using it..."; \
-		latexmk -pdf main.tex; \
+		latexmk -pdf -interaction=nonstopmode main.tex; \
 	else \
 		echo "latexmk not found. Falling back to manual build sequence."; \
-		pdflatex main.tex; \
+		pdflatex -interaction=nonstopmode main.tex; \
 		if command -v bibtex >/dev/null 2>&1; then \
 			echo "Found bibtex, running bibliography..."; \
 			bibtex main; \
-			pdflatex main.tex; \
-			pdflatex main.tex; \
+			pdflatex -interaction=nonstopmode main.tex; \
+			pdflatex -interaction=nonstopmode main.tex; \
 		else \
 			echo "WARNING: bibtex not found. References/Bibliography may not appear correctly."; \
 		fi; \
 	fi; \
 	echo "Cleaning up intermediate files..."; \
-	if command -v latexmk >/dev/null 2>&1; then \
-		latexmk -c; \
-	fi; \
-	rm -f *.aux *.log *.out *.toc *.fls *.fdb_latexmk *.bcf *.run.xml *.bbl *.blg *.synctex.gz; \
+	rm -f main.aux main.bbl main.blg main.fdb_latexmk main.fls main.lof main.log main.lot main.out main.toc main.bcf main.run.xml main.synctex.gz; \
 	find . -type f -name "*.aux" -delete
 
 # Build the dissertation report
@@ -44,24 +41,21 @@ dissertation:
 	@cd dissertation && \
 	if command -v latexmk >/dev/null 2>&1; then \
 		echo "Found latexmk, using it..."; \
-		latexmk -pdf main.tex; \
+		latexmk -pdf -interaction=nonstopmode main.tex; \
 	else \
 		echo "latexmk not found. Falling back to manual build sequence."; \
-		pdflatex main.tex; \
+		pdflatex -interaction=nonstopmode main.tex; \
 		if command -v bibtex >/dev/null 2>&1; then \
 			echo "Found bibtex, running bibliography..."; \
 			bibtex main; \
-			pdflatex main.tex; \
-			pdflatex main.tex; \
+			pdflatex -interaction=nonstopmode main.tex; \
+			pdflatex -interaction=nonstopmode main.tex; \
 		else \
 			echo "WARNING: bibtex not found. References/Bibliography may not appear correctly."; \
 		fi; \
 	fi; \
 	echo "Cleaning up intermediate files..."; \
-	if command -v latexmk >/dev/null 2>&1; then \
-		latexmk -c; \
-	fi; \
-	rm -f *.aux *.log *.out *.toc *.fls *.fdb_latexmk *.bcf *.run.xml *.bbl *.blg *.synctex.gz; \
+	rm -f main.aux main.bbl main.blg main.fdb_latexmk main.fls main.lof main.log main.lot main.out main.toc main.bcf main.run.xml main.synctex.gz; \
 	find . -type f -name "*.aux" -delete
 
 # Placeholder for the future thesis report
