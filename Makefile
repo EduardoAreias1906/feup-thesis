@@ -1,7 +1,7 @@
 # Makefile for FEUP Thesis
 
 # Defaults
-.PHONY: all report preparation dissertation thesis clean check_deps
+.PHONY: all report preparation dissertation thesis clean check_deps check_latex
 
 # Default target
 all: report
@@ -35,8 +35,25 @@ preparation:
 	rm -f main.aux main.bbl main.blg main.fdb_latexmk main.fls main.lof main.log main.lot main.out main.toc main.bcf main.run.xml main.synctex.gz; \
 	find . -type f -name "*.aux" -delete
 
+# Check for common LaTeX mistakes before building
+# Catches unescaped underscores inside \texttt{} — use \_ instead of _
+check_latex:
+	@echo "Checking for unescaped underscores inside \\texttt{}..."
+	@python3 -c "\
+import re, sys, glob; \
+pat = re.compile(r'\\\\texttt\{([^}]*)\}'); \
+errors = []; \
+[errors.append(f'{f}:{i}: {l.rstrip()}') \
+  for f in glob.glob('body/*.tex') \
+  for i, l in enumerate(open(f), 1) \
+  for m in pat.finditer(l) \
+  if re.search(r'(?<!\\\\)_', m.group(1))]; \
+(print('ERROR: Unescaped _ inside \\\\texttt{} — use \\\\_ instead:\\n' + chr(10).join('  ' + e for e in errors)) or sys.exit(1)) if errors else None \
+" 2>&1 || exit 1
+	@echo "  OK — no unescaped underscores found."
+
 # Build the dissertation report
-dissertation:
+dissertation: check_latex
 	@echo "Building Dissertation..."
 	@cd dissertation && \
 	if command -v latexmk >/dev/null 2>&1; then \

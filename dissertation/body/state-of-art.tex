@@ -5,7 +5,7 @@
 %% It shifts from the educational problem (Chap 2) to the computational solution (Chap 3), justifying the selection of Choreographies over Process Mining.
 
 \section{Overview}
-While the previous chapter focused on the educational context of K--12 online learning and the needs of at-risk populations, this chapter reviews the technological landscape.
+While the previous chapter focused on the educational context of K-12 online learning and the needs of at-risk populations, this chapter reviews the technological landscape.
 Specifically, it addresses the field of Educational Data Mining (EDM) and the computational methods available for discovering patterns in student behavior.
 The chapter defines the scope of EDM, contrasts traditional Educational Process Mining with the proposed \textit{Virtual Choreographies} framework, and reviews the unsupervised machine learning algorithms selected for this study.
 
@@ -18,7 +18,7 @@ In their comprehensive survey, Romero and Ventura~\cite{romero_edm_survey} disti
     \item \textbf{Educational Data Mining (EDM):} Emphasizes automated discovery and the development of algorithms to find hidden patterns without human intervention.
 \end{itemize}
 
-In the context of K--12 online schools, EDM is typically applied to three main tasks~\cite{romero_edm_survey}:
+In the context of K-12 online schools, EDM is typically applied to three main tasks~\cite{romero_edm_survey}:
 \begin{enumerate}
     \item \textbf{Prediction:} Using historical data (grades, login frequency) to forecast student outcomes or dropout risk.
     \item \textbf{Structure Discovery:} Finding underlying structures in data, such as grouping students with similar learning strategies.
@@ -34,8 +34,8 @@ To analyze student engagement beyond simple metrics, researchers use techniques 
 \subsection{Educational Process Mining (EPM)}
 A dominant approach is Educational Process Mining (EPM). As detailed by Bogarín et al.~\cite{bogarin_survey_2018}, EPM applies process mining techniques to educational data, treating learning as a series of events (e.g., \texttt{Quiz Start} $\rightarrow$ \texttt{Quiz End}).
 While effective for structured tasks, Bogarín et al.~\cite{bogarin_survey_2018} note that EPM faces challenges in flexible environments.
-In full-time virtual schools, EPM often results in ``spaghetti models''—complex, tangled diagrams that are difficult to interpret. 
-%% FEEDBACK INTEGRATION: Added explicit link to RQ5 (Teacher Actionability) as requested.
+In full-time virtual schools, EPM often results in ``spaghetti models'': complex, tangled diagrams that are difficult to interpret. 
+
 \textbf{This lack of readability makes such models unsuitable for teachers who need clear, actionable insights (addressing RQ5), necessitating a higher-level abstraction like Virtual Choreographies.}
 
 \subsection{The Virtual Choreographies Framework}
@@ -60,7 +60,8 @@ However, k-Means requires the number of clusters ($k$) to be specified, necessit
 \subsection{Dimensionality Reduction}
 Student behavioral data is often high-dimensional. To visualize clusters effectively, dimensionality reduction is required.
 \textbf{t-SNE} and \textbf{UMAP} are state-of-the-art non-linear techniques used to project high-dimensional data into 2D space.
-These visualizations allow researchers to ``see'' the separation between different student groups and validate whether the identified choreographies represent distinct behavioral patterns.
+These visualizations allow researchers to ``see'' the separation between different student groups and visually assess whether the identified choreographies represent distinct behavioral patterns.
+For this work, UMAP was preferred over t-SNE. While both are non-linear techniques, t-SNE excels at preserving local structure — grouping similar points together — but does not preserve global distances well. UMAP, by contrast, retains the overall structure of the data, ensuring that profiles which are conceptually opposite, such as the Steady Worker and the Low Engagement choreographies, appear clearly separated in the 2D map. UMAP also scales to thousands of student-weeks in a fraction of the time, which made it a decisive advantage for this study.
 
 \section{Summary}
 Current research highlights the need for better support systems for at-risk students.
