@@ -5,8 +5,8 @@
 %%
 \NeedsTeXFormat{LaTeX2e}
 \def\filename {feupteses.sty}
-\def\filedate {2026/01/27}
-\def\fileversion {1.1.6}
+\def\filedate {2025/07/24}
+\def\fileversion {1.1.4}
 \ProvidesPackage {feupteses}[\filedate\space\fileversion\space]
 \typeout{Document Style `FEUP Teses' \fileversion\space <\filedate>}
 
@@ -39,11 +39,6 @@
 \newif\if@mci
 \@mcifalse
 \DeclareOption{mci}{\@mcitrue}
-
-%% Option mia
-\newif\if@mia
-\@miafalse
-\DeclareOption{mia}{\@miatrue}
 
 %% Option juri
 \newif\if@juri
@@ -102,10 +97,6 @@
 \newif\if@uselineno
 \@uselinenofalse
 
-%% Internal: widelogo
-\newif\if@widelogo
-\@widelogofalse
-
 \ProcessOptions\relax
 
 %% Process internal options
@@ -126,36 +117,42 @@
 
 \if@juri
   \@watermarktrue
-  \if@meec
-    \@uselinenofalse
-  \else
-    \@uselinenotrue  
+  \if@meic  
+    \@uselinenotrue
+  \fi
+  \if@mci
+    \@uselinenotrue
+  \fi
+  \if@mesw
+    \@uselinenotrue
   \fi
 \fi
 
 \if@meec
   \@ieeerefstrue
+  \@numericrefsfalse
+  \@alpharefsfalse
 \fi
 
 \if@meic
   \@numericrefstrue
-\fi
-
-\if@mesw
-  \@numericrefstrue
-\fi
-
-\if@mem
-  \@numericrefstrue
+  \@alpharefsfalse
 \fi
 
 \if@mci
   \@isotrue
+  \@numericrefsfalse
+  \@alpharefsfalse
 \fi
 
-\if@mia
+\if@mem
   \@numericrefstrue
-  \@widelogotrue
+  \@alpharefsfalse
+\fi
+
+\if@mesw
+  \@numericrefstrue
+  \@alpharefsfalse
 \fi
 
 %% Make sure that report has been loaded
@@ -196,22 +193,22 @@ with the `report' document style}{}}{}
 \widowpenalty=6000
 
 \RequirePackage{mathptmx}	       % font times
-\RequirePackage[scaled]{couriers}  % font courier
+%\RequirePackage[scaled]{couriers}  % font courier
 \RequirePackage[scaled]{helvet}    % font helvetica
 \RequirePackage[pdftex]{graphicx}  % direct creation of PDF
-\RequirePackage{xurl}              % URL-sensitive line breaks
+\RequirePackage{url}               % URL-sensitive line breaks
 \RequirePackage{setspace}          % set space between lines
 \RequirePackage[tableposition=top]{caption}   % captions in floating environments
 \RequirePackage{booktabs}          % to create professional-quality tables
 \RequirePackage{xcolor}            % driver-independent color extensions
 \RequirePackage{float}             % Improved interface for floating objects
 \RequirePackage{array}             % modern tabular an array environments
-\RequirePackage{multirow}          % Create tabular cells spanning multiple rows
+%\RequirePackage{multirow}          % Create tabular cells spanning multiple rows
 \RequirePackage{longtable}         % for tables that spans more than one page
-\RequirePackage[printonlyused]{acronym} % for acronyms
+%\RequirePackage[printonlyused]{acronym} % for acronyms
 \RequirePackage{eurosym}           % for the Euro currency symbol
-\RequirePackage{siunitx}           % for SI unit rules and style conventions
-\DeclareSIUnit{\eurocurrency}{\text{\euro}}  % for the Euro symbol in siunitex
+%\RequirePackage{siunitx}           % for SI unit rules and style conventions
+%\DeclareSIUnit{\eurocurrency}{\text{\euro}}  % for the Euro symbol in siunitex
 
 \RequirePackage[pagewise]{lineno}  % line numbers on paragraphs
 \modulolinenumbers[2]
@@ -219,26 +216,9 @@ with the `report' document style}{}}{}
   \RequirePackage[firstpage]{draftwatermark}
 \fi
 
-%% bibliography
-\RequirePackage{csquotes}          % context sensitive quotation facilities
-\if@iso
-    \usepackage[backend=biber,style=iso-authoryear]{biblatex}
-    \DeclareDelimFormat{nameyeardelim}{\addspace}
-\else
-    \if@numericrefs
-      \usepackage[backend=biber,style=numeric-comp]{biblatex}
-    \else
-      \if@alpharefs 
-         \usepackage[backend=biber,style=alphabetic]{biblatex}
-      \else
-         \if@ieeerefs
-           \usepackage[backend=biber,style=ieee]{biblatex}
-         \else
-           \usepackage[backend=biber,authordate]{biblatex-chicago}
-        \fi
-      \fi
-  \fi
-\fi
+%% Bibliography: Use natbib/bibtex as fallback
+\usepackage[sort,numbers,square]{natbib}
+%\usepackage[backend=biber,style=numeric-comp]{biblatex}
 
 %% Global style defaults
 
@@ -387,18 +367,14 @@ with the `report' document style}{}}{}
 \fi
 \vfill\vfill
 \hbox to \textwidth{%
-  \if@widelogo
-    \setbox\@crestbox=\vbox{\includegraphics[width=142mm]{\@logo}}%
-   \else
-     \setbox\@crestbox=\vbox{\includegraphics[width=72mm]{\@logo}}%
-    \fi
+  \setbox\@crestbox=\vbox{\includegraphics[width=72mm]{\@logo}}%
 \box\@crestbox%
 }
 \vfill%
-{\large\bf \@degree}%
-\vskip 6mm
+{\large \@degree}%
+\vskip 2mm
 \unvbox\@supervisorstext
-\vskip 12mm
+\vskip 10mm
 \@thesisdate
 \end{titlepage}%
 
@@ -555,7 +531,7 @@ with the `report' document style}{}}{}
 \newcommand{\@StartPrelim}{\cleardoublepage\pagenumbering{roman}\setcounter{page}{1}\pagestyle{fancy}}
 
 %% External commands
-\newcommand{\StartBody}{\cleardoublepage\pagenumbering{arabic}\setcounter{page}{1}\pagestyle{fancy}\Activate@lineno\acresetall}
+\newcommand{\StartBody}{\cleardoublepage\pagenumbering{arabic}\setcounter{page}{1}\pagestyle{fancy}\Activate@lineno}
 
 \newenvironment{Prolog}{\maketitle\if@committeepage\committeepage\fi\@StartPrelim\begin{singlespace}}{\end{singlespace}}
 
@@ -580,12 +556,6 @@ with the `report' document style}{}}{}
   \degree{Mestrado em Ciência da Informação}
   \school{Faculdade de Engenharia da Universidade do Porto\\[4mm]
   Faculdade de Letras da Universidade do Porto}
-\fi
-
-\if@mia
-  \degree{Mestrado em Inteligência Artificial}
-  \school{Faculdade de Ciências da Universidade do Porto\\[4mm]
-  Faculdade de Engenharia da Universidade do Porto}
 \fi
 
 %% Some language-dependent definitions
@@ -646,16 +616,12 @@ with the `report' document style}{}}{}
 \InputIfFileExists{./config/mesw.cfg}{\message{^^JFile mesw.cfg loaded.^^J}}{}
 \fi
 
-\if@mem
-\InputIfFileExists{./config/mem.cfg}{\message{^^JFile mem.cfg loaded.^^J}}{}
-\fi
-
 \if@mci
 \InputIfFileExists{./config/mci.cfg}{\message{^^JFile mci.cfg loaded.^^J}}{}
 \fi
 
-\if@mia
-\InputIfFileExists{./config/mia.cfg}{\message{^^JFile mia.cfg loaded.^^J}}{}
+\if@mem
+\InputIfFileExists{./config/mem.cfg}{\message{^^JFile mem.cfg loaded.^^J}}{}
 \fi
 
 \endinput
