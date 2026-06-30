@@ -1,38 +1,30 @@
 \chapter*{List of Acronyms}
-% Print the list of acronyms
 \chaptermark{LIST OF ACRONYMS}
 
-%% sort acronym entries manualy yourself
-
-%% only the acronyms used in the text will be printed
-
-\begin{acronym}[ASCII] % The longest acronym goes here (for alignment)
-  \acro{ADT}{Abstract Data Type}
-  \acro{AI}{Artificial Intelligence}
-  \acro{API}{Application Programming Interface}
-  \acro{ASCII}{American Standard Code for Information Interchange}
-  \acro{BIOS}{Basic Input/Output System}
-  \acro{CLI}{Command Line Interface}
-  \acro{CPU}{Central Processing Unit}
-  \acro{CSS}{Cascading Style Sheets}
-  \acro{DNS}{Domain Name System}
-  \acro{FEUP}{Faculdade de Engenharia da Universidade do Porto}
-  \acro{FTP}{File Transfer Protocol}
-  \acro{GPU}{Graphics Processing Unit}
-  \acro{GUI}{Graphical User Interface}
-  \acro{HTML}{HyperText Markup Language}
-  \acro{HTTP}{HyperText Transfer Protocol}
-  \acro{IP}{Internet Protocol}
-  \acro{JSON}{JavaScript Object Notation}
-  \acro{LAN}{Local Area Network}
-  \acro{ML}{Machine Learning}
-  \acro{NIC}{Network Interface Card}
-  \acro{NLP}{Natural Language Processing}
-  \acro{OOP}{Object-Oriented Programming}
-  \acro{OS}{Operating System}
-  \acro{RAM}{Random Access Memory}
-  \acro{SDG}{Sustainable Development Goals}
-  \acro{SQL}{Structured Query Language}
-  \acro{SSD}{Solid State Drive}
-  \acro{URL}{Uniform Resource Locator}
-\end{acronym}
+%% Using a description environment so all acronyms always appear.
+%% (feupteses.sty loads the acronym package with [printonlyused], which would
+%%  suppress entries not called via \ac{} in the text.)
+\begin{description}
+  \item[AI]      Artificial Intelligence
+  \item[ANOVA]   Analysis of Variance
+  \item[ARI]     Adjusted Rand Index
+  \item[AUC]     Area Under the ROC Curve
+  \item[EDM]     Educational Data Mining
+  \item[EPM]     Educational Process Mining
+  \item[FEUP]    Faculdade de Engenharia da Universidade do Porto
+  \item[IEP]     Individualized Education Program
+  \item[K-12]    Kindergarten to 12th Grade
+  \item[LA]      Learning Analytics
+  \item[LMS]     Learning Management System
+  \item[ML]      Machine Learning
+  \item[NEPC]    National Education Policy Center
+  \item[NLP]     Natural Language Processing
+  \item[NMI]     Normalized Mutual Information
+  \item[ROC]     Receiver Operating Characteristic
+  \item[ROC-AUC] Receiver Operating Characteristic -- Area Under the Curve
+  \item[RQ]      Research Question
+  \item[SHAP]    SHapley Additive exPlanations
+  \item[t-SNE]   t-Distributed Stochastic Neighbor Embedding
+  \item[UMAP]    Uniform Manifold Approximation and Projection
+  \item[URL]     Uniform Resource Locator
+\end{description}

@@ -44,8 +44,8 @@
 
 %% for Portuguese, find lines with the "PT" comment
 
-%% Generic format (for other degrees, including Ph.D. programmes)
-\usepackage{feupteses} 
+%% MEIC working version — enables numeric citations and MEIC degree title
+\usepackage[meic]{feupteses}
 
 %% For each of the next, comment previous line
 
@@ -60,9 +60,19 @@
 %\usepackage[meic,portugues]{feupteses}
 
 %% Packages loaded by feupteses.sty:
-%% url, setspace, makeidx, graphicx, xcolor, etc (see README)
+%% url, setspace, makeidx, graphicx, xcolor, float, acronym, etc (see README)
 
 %% Include here any other packages you need
+
+%% Fix: override typewriter font to Computer Modern Typewriter.
+%% feupteses expects Courier (couriers.sty), but its TFM metrics are absent
+%% from the basic TeX Live distribution. cmtt prevents nullfont errors.
+\renewcommand{\ttdefault}{cmtt}
+
+%% Sort the bibliography alphabetically by author (Name, Year, Title).
+%% The [meic] option above loads style=numeric-comp via feupteses.sty;
+%% \ExecuteBibliographyOptions lets us override the sort order afterward.
+\ExecuteBibliographyOptions{sorting=nyt}
 
 %% Use folder ``figures'' to keep all your figures
 %% Path to the figures directory
@@ -79,31 +89,28 @@
 %%----------------------------------------
 %% Information about the work
 %%----------------------------------------
-\title{$<$Dissertation Title$>$}
-\author{$<$Author's Full Name$>$}
+\title{Virtual Choreographies of Learning: AI-Driven Discovery in K-12 Online American Schools}
+\author{Eduardo Salé Areias}
 
-%% Uncomment next line for PRODEI
-%\degree{Programa Doutoral em Engenharia Informática}
+%% Degree / Programme (override the feupteses.sty default)
+\degree{Master in Informatics and Computing Engineering}
 
 %% Uncomment next line for date of submission
 %\thesisdate{July 31, 2008}
 
-%% Comment next line copyright text if not used
-\copyrightnotice{$<$Name of the Author, \the\year{}$>$}
-%\copyrightnotice{$<$Nome do Autor, \the\year{}$>$}
+%% Copyright notice
+\copyrightnotice{Eduardo Salé Areias, \the\year{}}
 
-\supervisor{Supervisor}{Prof.\ $<$Name of the Supervisor$>$}
-%\supervisor{Orientador}{Prof.\ $<$Name of the Supervisor$>$}
+\supervisor{Supervisor}{Prof.\ Fernando Cassola Marques}
 
-%% Uncomment next line if necessary
-\supervisor{Second Supervisor}{Prof.\ $<$Name of the Supervisor$>$}
-%\supervisor{Segundo Orientador}{Prof.\ $<$Name of the Supervisor$>$}
+%% Co-supervisor
+\supervisor{Second Supervisor}{Prof.\ Dennis Beck}
 
-%% Comment committee stuff for final version, if not used
-\committeetext{Approved in oral examination by the committee:}
-\committeemember{President}{Prof.\ $<$Name of the Professor$>$}
-\committeemember{Examiner}{Prof.\ $<$Name of the Professor$>$}
-\committeemember{Member}{Prof.\ $<$Name of the Professor$>$}
+%% Committee members — fill in for juri/final versions
+%\committeetext{Approved in oral examination by the committee:}
+%\committeemember{President}{}
+%\committeemember{Examiner}{}
+%\committeemember{Member}{}
 
 %% PT
 %\committeetext{Aprovado em provas públicas pelo Júri:}
@@ -130,7 +137,7 @@
   \include{frontmatter/un-sdg}   % United Nations Sustainable Development Goals (SGD)
   \include{frontmatter/acknows}  % the acknowledgments
   \include{frontmatter/ethics}   % the declaration of honour
-%  \include{frontmatter/quote}    % initial quotation if needed
+  \include{frontmatter/quote}    % initial quotation if needed
   \cleardoublepage
   %% PT: Uncomment next line for PT
   %\renewcommand{\contentsname}{Índice}
@@ -151,11 +158,13 @@
 \StartBody
 
 %% Use a separate file for each chapter
-\include{body/chapter1} 
-\include{body/chapter2}
-\include{body/chapter3}
-%% Uncomment to see a listing example for option meic (meic.cfg loaded)
-%\include{body/chapter45-listing}
+\include{body/01_thesis_manifest}
+\include{body/02_literature_review}
+\include{body/03_state_of_the_art}
+\include{body/04_methodology}
+\include{body/05_results}
+\include{body/06_discussion}
+\include{body/07_conclusion}
 
 %%----------------------------------------
 %% Final materials
@@ -165,7 +174,7 @@
 \PrintBib
 
 %% comment next 2 commands if numbered appendices are not used
-\appendix
-\include{backmatter/appendix1}
+%\appendix
+%\include{backmatter/appendix1}
 
 \end{document}

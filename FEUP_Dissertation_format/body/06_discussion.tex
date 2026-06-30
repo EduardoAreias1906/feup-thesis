@@ -1,0 +1,98 @@
+\chapter{Discussion}
+\label{chap:discussion}
+
+%% PURPOSE: This chapter interprets the results from Chapter 5 in light of the
+%% research questions, prior literature (Chapters 2-3), and the hypotheses
+%% (Chapter 1). It also honestly acknowledges what the study cannot claim.
+%% The discussion should be the most intellectually dense chapter — avoid
+%% re-stating results, focus on what they mean.
+
+\section{Interpretation of Findings}
+\label{sec:interpretation}
+The central message emerging from this discussion is that learning choreographies are consistently associated with academic outcomes, indicating that the quality and intent of a student's engagement distinguish success more than the mere volume of clicks. The behavioral patterns mapped here showed that risk signals, such as unproductive navigation, are analytically identifiable at an early stage. The need for rigor, however, requires acknowledging that these dynamics were observed in a synthetic data environment designed to simulate the routines of thousands of students. The main contribution of this dissertation is therefore the construction of a robust methodological and predictive pipeline, now fully prepared to receive the institution's real data and to inform pedagogical interventions in the field.
+
+\section{Revisiting the Hypotheses (H1--H5)}
+\label{sec:hypotheses-revisited}
+
+\subsection{H1 --- Regularity}
+
+The results support H1. The premise that stable, regular temporal routines are associated with academic success is borne out by the data on two fronts. In terms of the behavioral profiles (RQ3), the Steady Worker, which by design represents a student with a consistent, disciplined weekly cadence, achieved top results, with an average final grade of 73 and an 81\% pass rate, making it one of the most effective routines against failure.
+
+In terms of the predictive model (RQ5), the number of sessions stood out as the most prominent signal of success: activity spread across many sessions, which inherently reflects a regular and sustained routine rather than effort concentrated in a single day, raised the probability of passing to 98\%. Conversely, late-night study, typically associated with irregular last-minute effort, was flagged as a risk signal.
+
+Taken together, the results are consistent with H1, suggesting that consistency is more advantageous than sporadic effort, though it should be recognized that this association was, in part, built into the design of the synthetic data.
+
+\subsection{H2 --- Balanced Participation}
+
+The results support H2. The premise that a balance between synchronous participation and asynchronous work translates into better outcomes is borne out by the data in two ways.
+
+First, the Balanced Engager embodies this hypothesis: characterized precisely by combining independent study and assignment submission with attendance in live sessions and social interaction, it was the best-performing group in RQ3, with the highest average grade and pass rate, outperforming more one-dimensional patterns.
+
+Second, in RQ5 the \texttt{Synchronous\_Join} variable emerged as one of the primary predictive signals of success, alongside purely asynchronous actions such as \texttt{Assignment\_Submit} and \texttt{Content\_Study}, suggesting that both components contribute to positive outcomes~\cite{fostering_curtis_2015}.
+
+The data therefore support this hypothesis without establishing causality. As with H1, it should be acknowledged that the consistency with which the Balanced Engager mirrors this theory partly reflects the synthetic generation process, which translated these theoretical premises into the dataset.
+
+\subsection{H3 --- Feedback-centric Interaction}
+
+Looking honestly at the data and at the decisions made along the way, H3 cannot be considered adequately tested. The interaction metadata --- which held the richest record of message exchanges and direct teacher--student feedback --- was deliberately left out of the clustering, which was built exclusively on activity and navigation logs to define the choreographies.
+
+Consistently, in the RQ5 analysis the \texttt{Feedback\_Review} action does not appear among the variables with the greatest predictive power: the Random Forest gave priority to starting and submitting assignments, synchronous attendance, raw session volume, and the risk behaviors, leaving feedback consumption in a secondary statistical role. The data therefore do not provide evidence to confirm H3.
+
+Rather than a weakness, this delimits a boundary of the present work and points directly to a promising direction for future research: incorporating the interaction metadata to test the role of feedback explicitly.
+
+\subsection{H4 --- Purposeful Navigation}
+
+H4 finds substantial support in the results, but it calls for a methodological nuance. The core premise that purposeful navigation is associated with better outcomes is supported by the data. In RQ5, the most surprising finding was precisely that ``unproductive navigation'' acts as a prominent risk signal, dropping the pass rate from 95\% to 73\%. Consistently, the profiles dominated by this scattered behavior, such as Low Engagement, obtained the lowest grades and pass rates in RQ3.
+
+There is, however, an important nuance. The model did not measure navigation efficiency in its strict, mechanical sense: the speed or directness of reaching a resource. What it captured was the qualitative difference between productive navigation, oriented toward coursework, and empty or anxious navigation.
+
+The results thus support the premise of H4 while refining its focus: the real differentiating factor is not the efficiency of the path, but the productive intent of the navigation. Being caught in cycles of empty monitoring is detrimental to a student's progress.
+
+\subsection{H5 --- Risk Signals}
+
+H5 is the hypothesis that finds the most consistent support across the analysis. The data support the premise that inactivity, late or irregular effort, and a lack of productive interaction are associated with the poorest outcomes, and this support appears at several stages of the results.
+
+In RQ3, the Low Engagement profile, the embodiment of inactivity and minimal interaction, was by far the lowest-performing group, with an average grade of only 62 and a concerning pass rate of 52\%. In RQ5, the predictive model captured exactly the behaviors described in the hypothesis: late-night study was flagged as a risk signal, supporting the danger of last-minute effort, while empty, anxious navigation dropped the probability of passing from 95\% to 73\%, showing that being connected without producing is nearly as associated with failure as total inactivity.
+
+Finally, in RQ2, the transition matrix revealed the Night Crammer as the most unstable profile: when these students cannot sustain their nocturnal sessions, they tend to slide into the Low Engagement pattern, falling into the highest-risk group.
+
+The data support H5, although the sharpness with which extreme disengagement and irregular study manifest themselves also derives from the architecture of the data generation.
+
+\section{Relation to Prior Work}
+\label{sec:relation-to-prior-work}
+
+In the literature, Beck~\cite{beck_atrisk_2024, beck_prepared_2023} has argued that the success of at-risk students in online education does not depend solely on what they do in front of the screen, but is deeply tied to external factors, in particular the presence of an "advocate". Our results are consistent with this view. By showing that, within the same study choreography, whether the disciplined routine of a Steady Worker or the effort of a Night Crammer, students flagged as at-risk consistently obtain lower grades, it becomes apparent that the behavior visible on the platform does not explain everything. This persistent disadvantage suggests that the student's background and the absence of an external support network continue to exert a negative association on performance, regardless of their dedication within the virtual environment. In this sense, our findings reinforce the idea that analyzing system metrics alone is insufficient for vulnerable students, and they support the importance of the family and social support structures emphasized by the author.
+
+The results also show a parallel with the work of Curtis and Werth~\cite{fostering_curtis_2015} on the concept of "transactional distance" and the risks of isolation in online education. According to these authors, the lack of interaction in virtual environments creates a psychological and communicational barrier, transactional distance, that severely harms student engagement and success. Our data reflect this perspective. The effectiveness of the Balanced Engager, the best-performing profile in the cohort (grade 74, 82\% pass rate), illustrates the student who refuses isolation: by combining autonomous (asynchronous) study with social (synchronous) presence, this student reduces transactional distance and benefits from a richer learning environment. Consistently, in RQ5 participation in live sessions (\texttt{Synchronous\_Join}) emerged as one of the main predictors of passing, rising from 80\% to 93\%. In this sense, our findings are consistent with the thesis of Curtis and Werth, suggesting that mitigating isolation through synchronous moments is associated not merely with a better "experience" but with a tangible increase in the likelihood of academic success. It should be noted, however, that this association was itself built into the synthetic data, so the results illustrate rather than independently confirm their argument.
+
+Our results also establish a structural link with the conclusions of the systematic reviews by Martin et al.~\cite{martin_systematic_2020} and Johnson et al.~\cite{online_johnson_2022}. The central thesis of these authors is that the effectiveness of online education is not dictated by the technological medium itself, but by how instructional design, facilitation, and student engagement are structured. Our data are consistent with this perspective. Observing that students immersed in the same learning environment show such disparate academic trajectories and success rates, contrasting the 81\% pass rate of the Steady Worker with only 52\% for the Low Engagement profile, suggests that the technology acts as a neutral stage. What truly shapes the outcome is not the platform, but the manner and quality of the student's engagement within it. In this way, our analysis reinforces the idea underlying these reviews: the focus of educators and researchers should not be on questioning the "medium", but on understanding and supporting the patterns of participation that take place inside it.
+
+\section{Limitations}
+\label{sec:limitations}
+
+The main technical limitations of this work center on five points.
+
+The synthetic nature of the data. This is the central limitation. Although the dataset was generated from realistic logics and distributions, the data reflect the mathematical rules imposed on them. As a result, the sharpness of the profiles does not capture the full organic noise of human behavior, and the findings cannot be directly generalized to real students without subsequent validation.
+
+Inflated robustness and stability (RQ2). As a consequence of the previous point, the high temporal consistency and the uniformity of the choreographies across different states and grade levels largely reflect the stability of the generator itself. The natural drift that local sociocultural factors would introduce in real life could not be observed.
+
+Statistical confounding between choreography and initial risk (RQ3). The "empty cells" problem constrained this analysis. Because the Balanced Engager profile was generated with almost no at-risk students, and the Low Engagement profile was composed almost entirely of them, the two factors became mathematically entangled by construction. This prevented us from rigorously isolating what is attributable to the student's routine and what is the weight of their prior history.
+
+Exclusion of the interaction metadata (H3). The hypothesis on the importance of feedback (H3) was not adequately tested. Because the direct interactions were excluded from the clustering in order to focus on the activity and navigation logs, feedback consumption did not carry enough weight in the analysis to confirm or reject its influence.
+
+Coupling between volume and behavior (RQ4). The fact that the choreography added no predictive power over the baseline model illustrates a limitation in the separation of variables. In the way the routines were designed and generated, how a student studies is strongly coupled with how much they study, so the machine learning model could not extract useful new information.
+
+\section{Threats to Validity}
+\label{sec:threats-to-validity}
+
+External validity, which is the ability to transfer and generalize these findings to the real world, is most threatened by the synthetic nature of the dataset. Although the generation process respected plausible pedagogical logics and academic rhythms, the behavioral data are ultimately a product of predefined rules, probabilities, and mathematical distributions. They lack the organic noise, the human unpredictability, and the complex socioeconomic conditions that affect real students. It cannot therefore be assured that the profiles identified here, or their success metrics, would manifest identically in a real school population.
+
+Mitigation of this threat is, however, structurally anticipated by the design of the project. The entire analytical pipeline, from the transformation of raw logs into student-week matrices, through clustering, to the predictive machine learning models was developed to be agnostic to the origin of the data. The natural mitigation will therefore be to feed this pipeline with the institution's real data once it becomes available, replicating the methodology to test its validity in the field.
+
+Causality cannot be claimed; only associations can be reported. There are two concrete reasons for this. The first is confounding. As explored in RQ3, there is an inseparable overlap between the behavioral profile and the at-risk factor. With too few students to compare across all scenarios, the effect of each variable cannot be isolated, and it is impossible to state whether a student's failure was directly caused by a weak clicking routine or determined by their prior history of academic risk and vulnerability. The second, and more fundamental, reason is the circularity inherent to synthetic data. Because the dataset was generated by us, the relationships between behaviors and final grades were, to some extent, parameterized by the generator's rules. Claiming a pure cause-and-effect relationship in this context would amount to circular reasoning.
+
+They are, inevitably, an approximation. Although the student-week matrix and the categorization of thousands of clicks into high-level semantic actions attempt to operationalize Cassola's theoretical concept of a learning choreography, log data capture only the student's digital trace on the platform. They do not measure genuine cognitive effort, the level of attention on the other side of the screen, or offline study: a student may be generating \texttt{Video\_Watch} events while looking at their phone. Furthermore, the labels assigned to the groups are ultimately heuristic, qualitative interpretations based on the data distributions; another researcher could look at the same action proportions and assign slightly different names or pedagogical meanings. The main threat to construct validity, therefore, is assuming that click counts and timestamps represent the entirety of a student's learning routine, when they are in fact only its digital shadow.
+
+The statistical inferences are broadly sound, and this is the category in which the study shows the greatest methodological robustness. To avoid drawing premature or illusory conclusions from the data, several deliberate decisions were made. First, a focus on effect size: in RQ3, using eta-squared rather than relying solely on ANOVA p-values avoided the classic large-sample trap, measuring the real magnitude of the effect rather than mere statistical significance. Second, fair metrics for imbalanced data: in RQ4 and RQ5, adopting ROC-AUC instead of plain accuracy was crucial — with a base pass rate of 87.6\%, accuracy would have given a false sense of predictive power, whereas AUC evaluated the model by its genuine ability to distinguish the two classes. Third, unbiased feature importance: in RQ5, permutation importance was used instead of Gini impurity, neutralizing the algorithm's known bias toward inflating the importance of high-cardinality variables and ensuring that the extracted success and risk signals were genuine.
+
+One honest threat nonetheless remains. The entire data generation, train/test split, and model initialization rested on a single random seed. While this ensures full reproducibility for anyone running the code, it also means the inferences depend on that specific initialization, and with other seeds the marginal numbers could fluctuate slightly. A more robust statistical analysis would require running multiple seeds to confirm that the conclusions hold beyond any variance introduced by initialization.

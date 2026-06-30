@@ -2,98 +2,41 @@
 %% -------------------------------------------------------
 \chapter*{Resumo}
 %
-Este documento ilustra o formato a usar em dissertações na \ac{FEUP}.
-São dados exemplos de margens, cabeçalhos, títulos, paginação, estilos
-de índices, etc. 
-São ainda dados exemplos de formatação de citações, figuras e tabelas,
-equações, referências cruzadas, lista de referências e índices.
-Este documento não pretende exemplificar conteúdos a usar. 
-É usado o \emph{Loren Ipsum} para preencher a dissertação.
-%
-Lorem ipsum dolor sit amet, \ac{FEUP} consectetuer adipiscing elit. Etiam vitae
-quam sed mauris auctor porttitor. Mauris porta sem vitae arcu sagittis
-facilisis. Proin sodales risus sit amet arcu. Quisque eu pede eu elit
-pulvinar porttitor. Maecenas dignissim tincidunt dui. Pellentesque
-habitant morbi tristique senectus et netus et malesuada fames ac
-turpis egestas. Donec non augue sit amet nulla gravida
-rutrum. Vestibulum ante ipsum primis in faucibus orci luctus et
-ultrices posuere cubilia Curae; Nunc at nunc. Etiam egestas. 
-%
-Donec malesuada pede eget nunc. Fusce porttitor felis eget mi mattis
-vestibulum \ac{FEUP}. Pellentesque faucibus. Cras adipiscing dolor quis
-mi. Quisque sagittis, justo sed dapibus pharetra, lectus velit
-tincidunt eros, ac fermentum nulla velit vel sapien. Vestibulum sem
-mauris, hendrerit non, feugiat ac, varius ornare, lectus. Praesent
-urna tellus, euismod in, hendrerit sit amet, pretium vitae,
-nisi. Proin nisl sem, ultrices eget, faucibus a, feugiat non,
-purus. Etiam mi tortor, convallis quis, pharetra ut, consectetuer eu,
-orci. Vivamus aliquet. Aenean mollis fringilla erat. Vivamus mollis,
-purus at pellentesque faucibus, sapien lorem eleifend quam, mollis
-luctus mi purus in dui. Maecenas volutpat mauris eu lectus. Morbi vel
-risus et dolor bibendum malesuada. Donec feugiat tristique erat. Nam
-porta auctor mi. Nulla purus. Nam aliquam. 
+Os modelos de ensino totalmente online para o ensino básico e secundário (K--12), como os disponibilizados pela Connections Academy, servem mais de 100 000 alunos nos Estados Unidos, muitos dos quais transitam do ensino tradicional devido a dificuldades académicas ou pessoais prévias. Embora os relatórios nacionais mostrem frequentemente resultados mais baixos em exames padronizados para os alunos online, estes ambientes acolhem uma proporção significativamente maior de alunos em risco, o que dificulta comparações justas. Apesar da grande escala do ensino online, existe pouca investigação detalhada sobre a forma como os alunos efetivamente navegam nestas plataformas, como evoluem os seus padrões de estudo e como essas rotinas se relacionam com o seu progresso de aprendizagem.
+
+Esta dissertação aborda estas questões adaptando o enquadramento das coreografias de aprendizagem para modelar padrões de comportamento semanais baseados em proporções de ações de aprendizagem online. Devido à indisponibilidade dos registos institucionais proprietários, o projeto adotou uma abordagem de engenharia de dados, desenvolvendo um simulador para gerar um conjunto de dados sintético de larga escala, concebido para refletir as regras pedagógicas e os ritmos letivos de um ambiente K--12 totalmente online. Foi então construído um \textit{pipeline} analítico completo: métodos não supervisionados, sobretudo o algoritmo k-means, foram usados para identificar perfis comportamentais distintos, enquanto um modelo supervisionado de Random Forest foi treinado para prever o sucesso dos alunos e extrair sinais comportamentais precoces.
+
+A análise revelou quatro coreografias de aprendizagem distintas, indicando que, neste ambiente simulado, a qualidade e a intenção do envolvimento estão associadas ao sucesso académico mais do que o simples volume de cliques. O modelo preditivo identificou que sessões de estudo frequentes e distribuídas, bem como a participação síncrona, estão positivamente associadas à aprovação, ao passo que sinalizou a "navegação improdutiva" --- como a consulta excessiva do painel e a verificação repetida de notas sem consumo de conteúdo --- como um sinal de risco precoce. Em última análise, este trabalho contribui com um \textit{pipeline} analítico validado e agnóstico à origem dos dados, totalmente preparado para processar dados institucionais reais e apoiar os educadores com informação acionável para intervenções pedagógicas atempadas.
 
 \vspace{\fill}
 \begin{flushleft}
 {\Large \textbf{Palavras-chave}:} 
-keyword1 \(\bullet\) 
-keyword2 \(\bullet\)
-keyword3 \(\bullet\)
-keyword4
+Ensino Online K--12 \(\bullet\) 
+Coreografias de Aprendizagem \(\bullet\)
+Mineração de Dados Educacionais \(\bullet\)
+Dados Sintéticos \(\bullet\)
+Machine Learning
 \end{flushleft}
 \vspace*{24mm}
 
 \acresetall %% to reset the acronym usage
 
 \chapter*{Abstract}
-% Here goes the abstract written in English. It should say the same.
+%
+Fully online K--12 education models, such as those provided by Connections Academy, serve over 100,000 students across the U.S., many of whom transition from traditional schools due to prior academic or personal challenges. While national reports often show lower standardized test scores for online learners, these environments enroll a significantly higher proportion of at-risk students, complicating fair comparisons. Despite the massive scale of online learning, there is limited granular research on how students actually navigate these platforms, how their study patterns evolve, and how these routines relate to their learning progress.
 
-Here goes the abstract written in English. 
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed vehicula
-lorem commodo dui \ac{FEUP}. Fusce mollis feugiat elit. Cum sociis natoque
-penatibus et magnis dis parturient montes, nascetur ridiculus
-mus. Donec eu quam. Aenean consectetuer odio quis nisi. Fusce molestie
-metus sed neque. Praesent nulla. Donec quis urna. Pellentesque
-hendrerit vulputate nunc. Donec id eros et leo ullamcorper
-placerat. Curabitur aliquam tellus et diam. 
-%
-Ut tortor. Morbi eget elit. Maecenas nec risus. Sed ultricies. Sed
-scelerisque libero faucibus sem \ac{FEUP}. Nullam molestie leo quis
-tellus. Donec ipsum. Nulla lobortis purus pharetra turpis. Nulla
-laoreet, arcu nec hendrerit vulputate, tortor elit eleifend turpis, et
-aliquam leo metus in dolor. Praesent sed nulla. Mauris ac augue. Cras
-ac orci. Etiam sed urna eget nulla sodales venenatis. Donec faucibus
-ante eget dui. Nam magna. Suspendisse sollicitudin est et mi. 
-%
-Fusce sed ipsum vel velit imperdiet dictum. Sed nisi purus, dapibus
-ut, iaculis ac, placerat id, purus. Integer aliquet elementum
-libero. Phasellus facilisis leo eget elit. Nullam nisi magna, ornare
-at, aliquet et, porta id, odio. Sed volutpat tellus consectetuer
-ligula. Phasellus turpis augue, malesuada et, placerat fringilla,
-ornare nec, eros. Class aptent taciti sociosqu ad litora torquent per
-conubia nostra, per inceptos himenaeos. Vivamus ornare quam nec sem
-mattis vulputate. Nullam porta, diam nec porta mollis, orci leo
-condimentum sapien, quis venenatis mi dolor a metus. Nullam
-mollis. Aenean metus massa, pellentesque sit amet, sagittis eget,
-tincidunt in, arcu. Vestibulum porta laoreet tortor. Nullam mollis
-elit nec justo. In nulla ligula, pellentesque sit amet, consequat sed,
-faucibus id, velit. Fusce purus. Quisque sagittis urna at quam. Ut eu
-lacus. Maecenas tortor nibh, ultricies nec, vestibulum varius, egestas
-id, sapien. 
-%
-Donec hendrerit. Vivamus suscipit egestas nibh. In ornare leo ut
-massa. Donec nisi nisl, dignissim quis, faucibus a, bibendum ac,
-diam. Nam adipiscing hendrerit mi. Morbi ac nulla. Nullam id est ac
-nisi consectetuer commodo. Pellentesque aliquam massa sit amet
-tellus. Vivamus sodales aliquam leo. 
+This dissertation addresses these questions by adapting the learning choreographies framework to model weekly behavior patterns based on proportions of online learning actions. Due to the unavailability of proprietary institutional logs, the project adopted a data engineering approach, developing a simulator to generate a large-scale synthetic dataset designed to reflect the pedagogical rules and academic rhythms of a fully online K--12 environment. An end-to-end analytical pipeline was then constructed: unsupervised methods, primarily k-means clustering, were used to identify distinct behavioral profiles, while a supervised Random Forest model was trained to predict student success and extract early behavioral signals.
+
+The analysis surfaced four distinct learning choreographies, indicating that within this simulated environment, the quality and intent of engagement are associated with academic success more than the sheer volume of clicks. The predictive model found that frequent, distributed study sessions and synchronous participation are positively associated with passing, while it flagged "unproductive navigation"---such as excessive dashboard refreshing and repeated grade-checking without content consumption---as an early risk signal. Ultimately, this work contributes a validated, data-agnostic analytical pipeline, fully prepared to process real institutional data and to support educators with actionable insights for early pedagogical interventions.
 
 \vspace{\fill}
 \begin{flushleft}
 {\Large \textbf{Keywords}:} 
-keyword1 \(\bullet\) 
-keyword2 \(\bullet\)
-keyword3 \(\bullet\)
-keyword4
+K--12 Online Learning \(\bullet\) 
+Learning Choreographies \(\bullet\)
+Educational Data Mining \(\bullet\)
+Synthetic Data \(\bullet\)
+Machine Learning
 \end{flushleft}
 \vspace*{24mm}
 

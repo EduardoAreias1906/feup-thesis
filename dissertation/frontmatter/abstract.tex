@@ -2,18 +2,42 @@
 %% -------------------------------------------------------
 \chapter*{Resumo}
 %
-Os modelos de ensino totalmente online para o ensino básico e secundário (K–12), como os disponibilizados pela Connections Academy, servem mais de 100 000 alunos nos Estados Unidos, muitos dos quais transitam do ensino tradicional devido a dificuldades académicas ou pessoais prévias. Embora os relatórios nacionais mostrem frequentemente resultados mais baixos em exames padronizados para os alunos online, estes ambientes acolhem uma proporção significativamente maior de alunos em risco, o que dificulta comparações justas. Apesar da grande escala do ensino online, existe pouca investigação detalhada sobre a forma como os alunos efetivamente navegam nestas plataformas, como evoluem os seus padrões de estudo e como essas rotinas se relacionam com o seu progresso de aprendizagem.
+Os modelos de ensino totalmente online para o ensino básico e secundário (K--12), como os disponibilizados pela Connections Academy, servem mais de 100 000 alunos nos Estados Unidos, muitos dos quais transitam do ensino tradicional devido a dificuldades académicas ou pessoais prévias. Embora os relatórios nacionais mostrem frequentemente resultados mais baixos em exames padronizados para os alunos online, estes ambientes acolhem uma proporção significativamente maior de alunos em risco, o que dificulta comparações justas. Apesar da grande escala do ensino online, existe pouca investigação detalhada sobre a forma como os alunos efetivamente navegam nestas plataformas, como evoluem os seus padrões de estudo e como essas rotinas se relacionam com o seu progresso de aprendizagem.
 
-Esta dissertação aborda estas questões aplicando o enquadramento das coreografias de aprendizagem para detetar sequências recorrentes de ações de aprendizagem online. Devido à indisponibilidade dos registos institucionais proprietários, o projeto adotou uma abordagem de engenharia de dados, desenvolvendo um simulador para gerar um conjunto de dados sintético de larga escala, concebido para refletir as regras pedagógicas e os ritmos letivos de um ambiente K–12 totalmente online. Foi então construído um pipeline analítico completo: métodos não supervisionados, sobretudo o algoritmo k-means, foram usados para identificar perfis comportamentais distintos, enquanto um modelo supervisionado de Random Forest foi treinado para prever o sucesso dos alunos e extrair sinais comportamentais precoces.
+Esta dissertação aborda estas questões adaptando o enquadramento das coreografias de aprendizagem para modelar padrões de comportamento semanais baseados em proporções de ações de aprendizagem online. Devido à indisponibilidade dos registos institucionais proprietários, o projeto adotou uma abordagem de engenharia de dados, desenvolvendo um simulador para gerar um conjunto de dados sintético de larga escala, concebido para refletir as regras pedagógicas e os ritmos letivos de um ambiente K--12 totalmente online. Foi então construído um \textit{pipeline} analítico completo: métodos não supervisionados, sobretudo o algoritmo k-means, foram usados para identificar perfis comportamentais distintos, enquanto um modelo supervisionado de Random Forest foi treinado para prever o sucesso dos alunos e extrair sinais comportamentais precoces.
 
-A análise revelou quatro coreografias de aprendizagem distintas, indicando que a qualidade e a intenção do envolvimento estão associadas ao sucesso académico muito mais do que o simples volume de cliques. O modelo preditivo identificou que sessões de estudo frequentes e distribuídas, bem como a participação síncrona, estão fortemente associadas à aprovação, ao passo que sinalizou a "navegação improdutiva", como a consulta excessiva do painel e a verificação repetida de notas sem consumo de conteúdo como um sinal de risco precoce e crítico. Em última análise, este trabalho contribui com um pipeline analítico validado e agnóstico à origem dos dados, totalmente preparado para processar dados institucionais reais e apoiar os educadores com informação acionável para intervenções pedagógicas atempadas.
-% \acresetall
+A análise revelou quatro coreografias de aprendizagem distintas, indicando que, neste ambiente simulado, a qualidade e a intenção do envolvimento estão associadas ao sucesso académico mais do que o simples volume de cliques. O modelo preditivo identificou que sessões de estudo frequentes e distribuídas, bem como a participação síncrona, estão positivamente associadas à aprovação, ao passo que sinalizou a "navegação improdutiva" --- como a consulta excessiva do painel e a verificação repetida de notas sem consumo de conteúdo --- como um sinal de risco precoce. Em última análise, este trabalho contribui com um \textit{pipeline} analítico validado e agnóstico à origem dos dados, totalmente preparado para processar dados institucionais reais e apoiar os educadores com informação acionável para intervenções pedagógicas atempadas.
+
+\vspace{\fill}
+\begin{flushleft}
+{\Large \textbf{Palavras-chave}:} 
+Ensino Online K--12 \(\bullet\) 
+Coreografias de Aprendizagem \(\bullet\)
+Mineração de Dados Educacionais \(\bullet\)
+Dados Sintéticos \(\bullet\)
+Machine Learning
+\end{flushleft}
+\vspace*{24mm}
+
+\acresetall %% to reset the acronym usage
 
 \chapter*{Abstract}
 %
-Fully online K–12 education models, such as those provided by Connections Academy, serve over 100,000 students across the U.S., many of whom transition from traditional schools due to prior academic or personal challenges. While national reports often show lower standardized test scores for online learners, these environments enroll a significantly higher proportion of at-risk students, complicating fair comparisons. Despite the massive scale of online learning, there is limited granular research on how students actually navigate these platforms, how their study patterns evolve, and how these routines relate to their learning progress.
+Fully online K--12 education models, such as those provided by Connections Academy, serve over 100,000 students across the U.S., many of whom transition from traditional schools due to prior academic or personal challenges. While national reports often show lower standardized test scores for online learners, these environments enroll a significantly higher proportion of at-risk students, complicating fair comparisons. Despite the massive scale of online learning, there is limited granular research on how students actually navigate these platforms, how their study patterns evolve, and how these routines relate to their learning progress.
 
-This dissertation addresses these questions by applying the learning choreographies framework to detect recurring sequences of online learning actions. Due to the unavailability of proprietary institutional logs, the project adopted a data engineering approach, developing a simulator to generate a large-scale synthetic dataset designed to reflect the pedagogical rules and academic rhythms of a fully online K–12 environment. An end-to-end analytical pipeline was then constructed: unsupervised methods, primarily k-means clustering, were used to identify distinct behavioral profiles, while a supervised Random Forest model was trained to predict student success and extract early behavioral signals.
+This dissertation addresses these questions by adapting the learning choreographies framework to model weekly behavior patterns based on proportions of online learning actions. Due to the unavailability of proprietary institutional logs, the project adopted a data engineering approach, developing a simulator to generate a large-scale synthetic dataset designed to reflect the pedagogical rules and academic rhythms of a fully online K--12 environment. An end-to-end analytical pipeline was then constructed: unsupervised methods, primarily k-means clustering, were used to identify distinct behavioral profiles, while a supervised Random Forest model was trained to predict student success and extract early behavioral signals.
 
-The analysis surfaced four distinct learning choreographies, indicating that the quality and intent of engagement are associated with academic success far more than the sheer volume of clicks. The predictive model found that frequent, distributed study sessions and synchronous participation are strongly associated with passing, while it flagged "unproductive navigation", such as excessive dashboard refreshing and repeated grade-checking without content consumption as an early and critical risk signal. Ultimately, this work contributes a validated, data-agnostic analytical pipeline, fully prepared to process real institutional data and to support educators with actionable insights for early pedagogical interventions.
-% \acresetall %% to reset the acronym usage
+The analysis surfaced four distinct learning choreographies, indicating that within this simulated environment, the quality and intent of engagement are associated with academic success more than the sheer volume of clicks. The predictive model found that frequent, distributed study sessions and synchronous participation are positively associated with passing, while it flagged "unproductive navigation"---such as excessive dashboard refreshing and repeated grade-checking without content consumption---as an early risk signal. Ultimately, this work contributes a validated, data-agnostic analytical pipeline, fully prepared to process real institutional data and to support educators with actionable insights for early pedagogical interventions.
+
+\vspace{\fill}
+\begin{flushleft}
+{\Large \textbf{Keywords}:} 
+K--12 Online Learning \(\bullet\) 
+Learning Choreographies \(\bullet\)
+Educational Data Mining \(\bullet\)
+Synthetic Data \(\bullet\)
+Machine Learning
+\end{flushleft}
+\vspace*{24mm}
+
+\acresetall %% to reset the acronym usage

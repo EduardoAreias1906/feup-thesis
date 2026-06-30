@@ -1,0 +1,41 @@
+\chapter{Conclusion}
+\label{chap:conclusion}
+
+%% PURPOSE: This chapter closes the dissertation by restating what was actually
+%% achieved (contributions) and what remains open (future work). It should be
+%% concise and free of hedging — by this point the reader has seen the evidence.
+
+\section{Summary of Contributions}
+\label{sec:contributions}
+
+The main contributions of this dissertation fall along three axes: methodological, analytical, and practical. The value of the work lies not only in the results obtained, but in the architecture built to reach them.
+
+Methodological contribution. The robust achievement of this thesis is the creation and validation of a complete, structured, and reproducible analytical pipeline. From the conversion of raw logs into weekly activity matrices, through clustering, and culminating in predictive modeling and interpretation, the entire system was designed to be strictly agnostic to the origin of the data. The main methodological legacy is therefore a fully operational analytical infrastructure, ready to process the school institution's real data.
+
+Analytical contribution. Applying this pipeline to a large-scale synthetic environment made it possible to map four distinct learning choreographies and to show associations between behavioral patterns and academic outcomes. The thesis consolidates findings such as the identification of counter-intuitive risk signals and the demonstration that early prediction is feasible, while also reporting negative results with full transparency, namely that adding the choreography did not improve on the predictive power of a model based on activity volume alone.
+
+Practical contribution. For an educational institution, this work translates into a tool for early warning and pedagogical management. The thesis shows that risk profiles can be identified within the first four weeks of the school year. By indicating that the quality of interaction and task-oriented navigation matter, it offers teachers a lens beyond mere ``being online'', enabling timely interventions to support students caught in cycles of unproductive monitoring or irregular effort.
+
+\section{Project Limitations}
+\label{sec:project-limitations}
+
+The external circumstances that shaped and constrained the course of this dissertation are distinct from the purely technical limitations and center on three logistical and operational factors.
+
+The inaccessibility of institutional data. The principal limitation of this project was the failure to obtain real data from the institutions initially expected (such as Pearson or Stride). This logistical blocker forced a substantial restructuring of the entire dissertation. Rather than working on an existing school dataset, it became necessary to pivot toward data engineering, requiring the full development of a log simulator to make the research viable.
+
+The compressed Master's timeline. A dissertation operates within a fixed and demanding time window. The substantial time invested in overcoming the absence of data, conceptualizing, coding, and validating the synthetic generator to ensure it reflected plausible school dynamics consumed a significant portion of the schedule. With data available from the outset, that time could have been channeled into exploring additional algorithms or into the exhaustive testing of hypotheses that ultimately remained secondary, such as the text analysis of interactions for H3.
+
+The autonomous development of the infrastructure. In many Educational Data Mining contexts, or within large research teams, data extraction and architecture are already established. In this project, the entire ecosystem from the foundation of action generation to the final analytical and predictive pipeline had to be designed, built, and tested individually. While this enriched the technical robustness of the work, this engineering effort naturally limited the breadth of the final analysis.
+
+\section{Future Work}
+\label{sec:future-work}
+
+The avenues for future work follow naturally from the caveats and mitigations mapped throughout the dissertation. The next logical steps center on moving to a real-world setting, deepening the variables analyzed, and expanding the analytical toolkit.
+
+Applying the infrastructure to real data. This is an immediate step. Since the entire pipeline was designed to be agnostic to the origin of the data, the central goal is to feed this architecture with the partner institution's operational logs as soon as they become available. This would close the project's loop, making it possible to test whether the choreographies and risk signals extracted from the synthetic environment manifest in a real school population.
+
+Testing H3 through the interaction metadata. To address the limitation acknowledged in the Discussion, future work should recover the direct communication data and incorporate the teacher--student message flow into the clustering, possibly drawing on Natural Language Processing (NLP) techniques to assess the content of feedback. This would finally allow the role of feedback and transactional distance in relation to success rates to be examined directly.
+
+Strengthening statistical robustness. To address the threat to conclusion validity introduced by the use of a single seed, future iterations of the predictive model should integrate mechanisms such as Monte Carlo cross-validation or the execution of multiple seeds, ensuring that the performance metrics (AUC) and feature-importance signals hold beyond any variance from algorithmic initialization.
+
+Algorithmic exploration and sequential analysis. Finally, the analytical approach can be considerably expanded. Testing non-parametric clustering algorithms could capture student groupings with more complex contours than those identified by k-means. Moreover, a natural evolution of this work would be to move from proportional counts to process mining, analyzing the exact sequential order of clicks to understand not only what a student does in a session, but their step-by-step navigation trajectory.
